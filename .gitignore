@@ -1,0 +1,7 @@
+# 暫存與快取檔案
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+toeic_raw.json
+debug_analysis.txt
