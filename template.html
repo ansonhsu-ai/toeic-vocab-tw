@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRS 單字學習 Flash Card</title>
+    <!-- 現代字體支援 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-back: #fdfdfd;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --again-color: #ef4444;
+            --again-bg: #fef2f2;
+            --again-border: #fecaca;
+            --hard-color: #f59e0b;
+            --hard-bg: #fffbeb;
+            --hard-border: #fde68a;
+            --known-color: #0ea5e9;
+            --known-bg: #f0f9ff;
+            --known-border: #bae6fd;
+            --easy-color: #10b981;
+            --easy-bg: #ecfdf5;
+            --easy-border: #a7f3d0;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #090d16;
+            --bg-card: #131b2e;
+            --bg-card-back: #111827;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #1e293b;
+            --card-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1);
+            --again-bg: #2d1518;
+            --again-border: #7f1d1d;
+            --hard-bg: #2d2212;
+            --hard-border: #78350f;
+            --known-bg: #10243e;
+            --known-border: #075985;
+            --easy-bg: #0d281e;
+            --easy-border: #065f46;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* App Container */
+        .app-container {
+            width: 100%;
+            max-width: 580px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            flex: 1;
+        }
+
+        /* Header Bar */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.25rem;
+        }
+
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .brand-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--primary);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            text-transform: uppercase;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .icon-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        /* Status & Progress Bar */
+        .progress-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .file-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 9999px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Card Perspective Container */
+        .card-stage {
+            perspective: 1400px;
+            width: 100%;
+            flex: 1;
+            min-height: 440px;
+            position: relative;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.55s cubic-bezier(0.2, 0.85, 0.4, 1.15);
+            cursor: pointer;
+            border-radius: var(--radius-lg);
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        /* Front Face */
+        .card-front {
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        .front-top-toolbar {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .sound-btn {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--primary);
+            padding: 0.45rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .sound-btn:hover {
+            background: rgba(59, 130, 246, 0.16);
+            transform: scale(1.04);
+        }
+
+        .sound-btn:active {
+            transform: scale(0.96);
+        }
+
+        .front-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            margin: auto 0;
+        }
+
+        .front-word {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            line-height: 1.15;
+            word-break: break-word;
+        }
+
+        .front-hint {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .key-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.15rem 0.45rem;
+            background: var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        /* Back Face */
+        .card-back {
+            transform: rotateY(180deg);
+            background: var(--bg-card-back);
+            gap: 1.1rem;
+            justify-content: flex-start;
+        }
+
+        .back-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .back-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Word Context Image */
+        .card-image-wrap {
+            width: 100%;
+            height: 140px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            position: relative;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-fallback {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+        }
+
+        /* Back Content Sections */
+        .back-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            font-size: 0.95rem;
+            line-height: 1.55;
+            color: var(--text-primary);
+        }
+
+        .section-header-line {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .section-text {
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .example-block {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 3px solid var(--primary);
+            padding: 0.6rem 0.8rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .example-en {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .example-zh {
+            color: var(--text-secondary);
+        }
+
+        /* Action Buttons Grid */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.6rem;
+            width: 100%;
+        }
+
+        .srs-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 0.4rem;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .srs-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(0.97);
+        }
+
+        .srs-btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .btn-sub {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            margin-top: 0.1rem;
+        }
+
+        .btn-key {
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0.6;
+            margin-top: 0.25rem;
+        }
+
+        .btn-again {
+            background-color: var(--again-bg);
+            color: var(--again-color);
+            border-color: var(--again-border);
+        }
+
+        .btn-hard {
+            background-color: var(--hard-bg);
+            color: var(--hard-color);
+            border-color: var(--hard-border);
+        }
+
+        .btn-known {
+            background-color: var(--known-bg);
+            color: var(--known-color);
+            border-color: var(--known-border);
+        }
+
+        .btn-easy {
+            background-color: var(--easy-bg);
+            color: var(--easy-color);
+            border-color: var(--easy-border);
+        }
+
+        /* Completion View */
+        .completion-card {
+            display: none;
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .completion-icon {
+            font-size: 3.5rem;
+            line-height: 1;
+        }
+
+        .completion-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .stat-box {
+            padding: 0.85rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-top: 0.2rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 0.8rem;
+            width: 100%;
+            max-width: 360px;
+            margin-top: 0.5rem;
+        }
+
+        .primary-btn, .secondary-btn {
+            flex: 1;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            font-family: inherit;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .secondary-btn {
+            background: var(--bg-card);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #0f172a;
+            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Modal Dialog */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: var(--card-shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .shortcut-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Hidden File Input */
+        #csv-file-input {
+            display: none;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 600px) {
+            body {
+                padding: 0.75rem 0.5rem;
+            }
+            .card-stage {
+                min-height: 400px;
+            }
+            .card-face {
+                padding: 1.25rem 1rem;
+            }
+            .front-word {
+                font-size: 2.2rem;
+            }
+            .srs-btn {
+                padding: 0.6rem 0.2rem;
+            }
+            .btn-title {
+                font-size: 0.85rem;
+            }
+            .btn-sub {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- 頂部導航與功能按鈕 -->
+        <header class="app-header">
+            <div class="brand-title">
+                <span>🧠 SRS Flashcard</span>
+                <span class="brand-badge" id="vocab-count-badge">TOEIC</span>
+            </div>
+            <div class="header-actions">
+                <input type="file" id="csv-file-input" accept=".csv,text/csv">
+                <button class="icon-btn" id="upload-btn" title="匯入 CSV 單字檔案">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </button>
+                <button class="icon-btn" id="reset-btn" title="重設學習進度">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                </button>
+                <button class="icon-btn" id="theme-btn" title="切換深色/淺色主題">
+                    <svg id="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+                <button class="icon-btn" id="help-btn" title="快速鍵說明">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 進度指示條 -->
+        <section class="progress-section">
+            <div class="status-bar">
+                <span class="file-tag" id="file-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span id="current-filename">預設 TOEIC 題庫</span>
+                </span>
+                <span id="queue-counter">剩餘: 0 / 總計: 0</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+        </section>
+
+        <!-- 閃卡主體區域 -->
+        <main class="card-stage" id="card-stage">
+            <div class="card" id="flashcard">
+                <!-- 正面 -->
+                <div class="card-face card-front">
+                    <div class="front-top-toolbar">
+                        <button class="sound-btn" id="front-speech-btn" title="朗讀單字">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                            朗讀
+                        </button>
+                    </div>
+                    <div class="front-main">
+                        <h1 class="front-word" id="front-word-text">Loading...</h1>
+                    </div>
+                    <div class="front-hint">
+                        點擊卡片或按 <span class="key-badge">Space</span> 翻面
+                    </div>
+                </div>
+
+                <!-- 背面 -->
+                <div class="card-face card-back">
+                    <div class="back-header">
+                        <span class="back-title" id="back-word-title">ability</span>
+                        <button class="sound-btn" id="back-speech-btn" title="朗讀英文例句">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                            例句朗讀
+                        </button>
+                    </div>
+
+                    <!-- 相關圖片 -->
+                    <div class="card-image-wrap">
+                        <img class="card-image" id="card-dynamic-img" src="" alt="Word Illustration" onerror="this.style.display='none'; document.getElementById('img-fallback').style.display='flex';">
+                        <div class="image-fallback" id="img-fallback" style="display: none;">
+                            <span>🖼️ TOEIC Flashcard Context</span>
+                        </div>
+                    </div>
+
+                    <!-- 背面結構化內容 -->
+                    <div class="back-content" id="back-content-body">
+                        <!-- 動態渲染 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 完成結算畫面 -->
+            <div class="completion-card" id="completion-view">
+                <div class="completion-icon">🏆</div>
+                <h2 class="completion-title">恭喜完成本次學習！</h2>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">所有佇列單字皆已掌握完畢。</p>
+
+                <div class="stats-grid">
+                    <div class="stat-box" style="color: var(--again-color);">
+                        <div class="stat-num" id="stat-again">0</div>
+                        <div class="stat-label">Again 重來</div>
+                    </div>
+                    <div class="stat-box" style="color: var(--hard-color);">
+                        <div class="stat-num" id="stat-hard">0</div>
+                        <div class="stat-label">Hard 困難</div>
+                    </div>
+                    <div class="stat-box" style="color: var(--known-color);">
+                        <div class="stat-num" id="stat-known">0</div>
+                        <div class="stat-label">Known 已掌握</div>
+                    </div>
+                    <div class="stat-box" style="color: var(--easy-color);">
+                        <div class="stat-num" id="stat-easy">0</div>
+                        <div class="stat-label">Easy 簡單</div>
+                    </div>
+                </div>
+
+                <div class="completion-actions">
+                    <button class="primary-btn" id="restart-btn">重新開始</button>
+                    <button class="secondary-btn" id="import-new-btn">匯入新檔</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- 底部 SRS 4 鍵操作列 -->
+        <footer class="controls-grid" id="controls-toolbar">
+            <button class="srs-btn btn-again" id="btn-again" title="快速鍵: 1">
+                <span class="btn-title">Again</span>
+                <span class="btn-sub">重來</span>
+                <span class="btn-key">[1]</span>
+            </button>
+            <button class="srs-btn btn-hard" id="btn-hard" title="快速鍵: 2">
+                <span class="btn-title">Hard</span>
+                <span class="btn-sub">困難</span>
+                <span class="btn-key">[2]</span>
+            </button>
+            <button class="srs-btn btn-known" id="btn-known" title="快速鍵: 3">
+                <span class="btn-title">Known</span>
+                <span class="btn-sub">已掌握</span>
+                <span class="btn-key">[3]</span>
+            </button>
+            <button class="srs-btn btn-easy" id="btn-easy" title="快速鍵: 4">
+                <span class="btn-title">Easy</span>
+                <span class="btn-sub">簡單</span>
+                <span class="btn-key">[4]</span>
+            </button>
+        </footer>
+    </div>
+
+    <!-- 快速鍵說明 Modal -->
+    <div class="modal-backdrop" id="help-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">快捷鍵指南</h3>
+                <button class="modal-close" id="modal-close-btn">&times;</button>
+            </div>
+            <div class="shortcut-list">
+                <div class="shortcut-item">
+                    <span>翻轉卡片（正 / 背面）</span>
+                    <span class="key-badge">Space</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>朗讀目前畫面語音</span>
+                    <span class="key-badge">Enter</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Again（插入佇列第 2 位）</span>
+                    <span class="key-badge">1</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Hard（插入佇列中央）</span>
+                    <span class="key-badge">2</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Known（插入佇列尾端）</span>
+                    <span class="key-badge">3</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Easy（直接移出佇列）</span>
+                    <span class="key-badge">4</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 浮動提示 -->
+    <div class="toast" id="toast">提示訊息</div>
+
+    <!-- 預載資料與前端核心邏輯 -->
+    <script>
+        /**
+         * 預載之精選 TOEIC 單字資料庫
+         */
+        const DEFAULT_CARDS_DATA = __DEFAULT_CARDS_DATA__;
+
+        /**
+         * 語音朗讀服務類別 (AudioService)
+         * 遵循 Single Responsibility Principle (SRP)
+         */
+        class AudioService {
+            constructor() {
+                this.synth = window.speechSynthesis;
+                this.voice = null;
+                this.initVoice();
+            }
+
+            initVoice() {
+                if (!this.synth) return;
+                const updateVoice = () => {
+                    const voices = this.synth.getVoices();
+                    this.voice = voices.find(v => v.lang.includes('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
+                };
+                updateVoice();
+                if (speechSynthesis.onvoiceschanged !== undefined) {
+                    speechSynthesis.onvoiceschanged = updateVoice;
+                }
+            }
+
+            speak(text) {
+                if (!this.synth || !text) return;
+                this.synth.cancel(); // 停止目前播放
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.95;
+                if (this.voice) utterance.voice = this.voice;
+                this.synth.speak(utterance);
+            }
+
+            extractEnglishSentence(content) {
+                if (!content) return '';
+                // 解析【例句】區塊內的英文部分
+                const match = content.match(/【例句】\s*\n?([^\n(（]+)/);
+                if (match && match[1]) {
+                    return match[1].trim();
+                }
+                return '';
+            }
+        }
+
+        /**
+         * 本地持久化儲存服務 (StorageService)
+         * 封裝 IndexedDB 並在失敗時自動降級至 localStorage
+         */
+        class StorageService {
+            constructor() {
+                this.dbName = 'ToeicFlashcardDB';
+                this.storeName = 'app_state';
+                this.db = null;
+            }
+
+            async init() {
+                return new Promise((resolve) => {
+                    if (!window.indexedDB) {
+                        resolve(false);
+                        return;
+                    }
+                    const request = indexedDB.open(this.dbName, 1);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains(this.storeName)) {
+                            db.createObjectStore(this.storeName);
+                        }
+                    };
+                    request.onsuccess = (e) => {
+                        this.db = e.target.result;
+                        resolve(true);
+                    };
+                    request.onerror = () => {
+                        resolve(false);
+                    };
+                });
+            }
+
+            async save(key, value) {
+                if (this.db) {
+                    try {
+                        const tx = this.db.transaction([this.storeName], 'readwrite');
+                        const store = tx.objectStore(this.storeName);
+                        store.put(value, key);
+                        return;
+                    }} catch (e) {
+                        console.warn('IndexedDB write error, fallback to localStorage', e);
+                    }
+                }
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (e) {}
+            }
+
+            async load(key) {
+                if (this.db) {
+                    try {
+                        return new Promise((resolve) => {
+                            const tx = this.db.transaction([this.storeName], 'readonly');
+                            const store = tx.objectStore(this.storeName);
+                            const req = store.get(key);
+                            req.onsuccess = () => resolve(req.result);
+                            req.onerror = () => resolve(null);
+                        });
+                    }} catch (e) {}
+                }
+                try {
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            async clear() {
+                if (this.db) {
+                    try {
+                        const tx = this.db.transaction([this.storeName], 'readwrite');
+                        tx.objectStore(this.storeName).clear();
+                    }} catch (e) {}
+                }
+                localStorage.removeItem('srs_flashcard_state');
+            }
+        }
+
+        /**
+         * CSV 解析服務 (CsvParserService)
+         * 支援 RFC 4180 標準、雙引號跨行與雙欄對應
+         */
+        class CsvParserService {
+            static parse(csvText) {
+                if (!csvText || typeof csvText !== 'string' || !csvText.trim()) {
+                    throw new Error('CSV 檔案為空或內容無效');
+                }
+
+                const rows = [];
+                let currentRow = [];
+                let currentField = '';
+                let insideQuotes = false;
+                let i = 0;
+
+                let text = csvText.charCodeAt(0) === 0xFEFF ? csvText.slice(1) : csvText;
+
+                while (i < text.length) {
+                    const char = text[i];
+                    const nextChar = text[i + 1];
+
+                    if (char === '"') {
+                        if (insideQuotes && nextChar === '"') {
+                            currentField += '"';
+                            i += 2;
+                            continue;
+                        } else {
+                            insideQuotes = !insideQuotes;
+                            i++;
+                            continue;
+                        }
+                    }
+
+                    if (!insideQuotes && char === ',') {
+                        currentRow.push(currentField.trim());
+                        currentField = '';
+                        i++;
+                        continue;
+                    }
+
+                    if (!insideQuotes && (char === '\r' || char === '\n')) {
+                        if (char === '\r' && nextChar === '\n') {
+                            i++;
+                        }
+                        currentRow.push(currentField.trim());
+                        currentField = '';
+                        if (currentRow.some(f => f.length > 0)) {
+                            rows.push(currentRow);
+                        }
+                        currentRow = [];
+                        i++;
+                        continue;
+                    }
+
+                    currentField += char;
+                    i++;
+                }
+
+                if (currentField.length > 0 || currentRow.length > 0) {
+                    currentRow.push(currentField.trim());
+                    if (currentRow.some(f => f.length > 0)) {
+                        rows.push(currentRow);
+                    }
+                }
+
+                if (rows.length === 0) {
+                    throw new Error('未在 CSV 中偵測到有效資料列');
+                }
+
+                const cards = [];
+                for (let rIndex = 0; rIndex < rows.length; rIndex++) {
+                    const row = rows[rIndex];
+                    const word = row[0] || '';
+                    const content = row.slice(1).join('\n') || '';
+
+                    if (word && word !== '單字') {
+                        cards.push({
+                            id: rIndex + 1,
+                            word: word.trim(),
+                            content: content.trim()
+                        });
+                    }
+                }
+
+                if (cards.length === 0) {
+                    throw new Error('未能自 CSV 中成功解析出任何單字卡片');
+                }
+
+                return cards;
+            }
+        }
+
+        /**
+         * SRS 佇列與演算法引擎 (SrsEngine)
+         */
+        class SrsEngine {
+            constructor(cards = []) {
+                this.allCards = [...cards];
+                this.queue = [...cards];
+                this.stats = { again: 0, hard: 0, known: 0, easy: 0 };
+                this.initialTotal = cards.length;
+            }
+
+            loadState(state) {
+                if (!state) return;
+                this.allCards = state.allCards || [];
+                this.queue = state.queue || [];
+                this.stats = state.stats || { again: 0, hard: 0, known: 0, easy: 0 };
+                this.initialTotal = state.initialTotal || this.allCards.length;
+            }
+
+            getState() {
+                return {
+                    allCards: this.allCards,
+                    queue: this.queue,
+                    stats: this.stats,
+                    initialTotal: this.initialTotal
+                };
+            }
+
+            getCurrentCard() {
+                return this.queue.length > 0 ? this.queue[0] : null;
+            }
+
+            isFinished() {
+                return this.queue.length === 0;
+            }
+
+            processAnswer(action) {
+                if (this.queue.length === 0) return;
+                const current = this.queue.shift();
+
+                switch (action) {
+                    case 'again':
+                        this.stats.again++;
+                        // 插入佇列第 2 個位置 (index 1)
+                        if (this.queue.length >= 1) {
+                            this.queue.splice(1, 0, current);
+                        } else {
+                            this.queue.push(current);
+                        }
+                        break;
+
+                    case 'hard':
+                        this.stats.hard++;
+                        // 插入佇列剩餘長度的中間位置
+                        const mid = Math.floor(this.queue.length / 2);
+                        this.queue.splice(mid, 0, current);
+                        break;
+
+                    case 'known':
+                        this.stats.known++;
+                        // 插入佇列最尾端
+                        this.queue.push(current);
+                        break;
+
+                    case 'easy':
+                        this.stats.easy++;
+                        // 直接移出佇列
+                        break;
+                }
+            }
+
+            reset() {
+                this.queue = [...this.allCards];
+                this.stats = { again: 0, hard: 0, known: 0, easy: 0 };
+                this.initialTotal = this.allCards.length;
+            }
+        }
+
+        /**
+         * Flashcard 主應用控制器 (FlashcardApp)
+         */
+        class FlashcardApp {
+            constructor() {
+                this.audio = new AudioService();
+                this.storage = new StorageService();
+                this.srs = new SrsEngine(DEFAULT_CARDS_DATA);
+                this.currentFileName = '預設 TOEIC 題庫';
+                this.isFlipped = false;
+                this.theme = 'light';
+
+                this.dom = {
+                    flashcard: document.getElementById('flashcard'),
+                    cardStage: document.getElementById('card-stage'),
+                    frontWordText: document.getElementById('front-word-text'),
+                    backWordTitle: document.getElementById('back-word-title'),
+                    backContentBody: document.getElementById('back-content-body'),
+                    cardDynamicImg: document.getElementById('card-dynamic-img'),
+                    imgFallback: document.getElementById('img-fallback'),
+                    frontSpeechBtn: document.getElementById('front-speech-btn'),
+                    backSpeechBtn: document.getElementById('back-speech-btn'),
+                    controlsToolbar: document.getElementById('controls-toolbar'),
+                    queueCounter: document.getElementById('queue-counter'),
+                    progressBar: document.getElementById('progress-bar'),
+                    currentFilename: document.getElementById('current-filename'),
+                    vocabCountBadge: document.getElementById('vocab-count-badge'),
+                    completionView: document.getElementById('completion-view'),
+                    statAgain: document.getElementById('stat-again'),
+                    statHard: document.getElementById('stat-hard'),
+                    statKnown: document.getElementById('stat-known'),
+                    statEasy: document.getElementById('stat-easy'),
+                    restartBtn: document.getElementById('restart-btn'),
+                    importNewBtn: document.getElementById('import-new-btn'),
+                    uploadBtn: document.getElementById('upload-btn'),
+                    csvFileInput: document.getElementById('csv-file-input'),
+                    resetBtn: document.getElementById('reset-btn'),
+                    themeBtn: document.getElementById('theme-btn'),
+                    helpBtn: document.getElementById('help-btn'),
+                    helpModal: document.getElementById('help-modal'),
+                    modalCloseBtn: document.getElementById('modal-close-btn'),
+                    btnAgain: document.getElementById('btn-again'),
+                    btnHard: document.getElementById('btn-hard'),
+                    btnKnown: document.getElementById('btn-known'),
+                    btnEasy: document.getElementById('btn-easy'),
+                    toast: document.getElementById('toast')
+                };
+            }
+
+            async init() {
+                await this.storage.init();
+                await this.loadPersistedState();
+                this.bindEvents();
+                this.render();
+            }
+
+            async loadPersistedState() {
+                const savedState = await this.storage.load('srs_flashcard_state');
+                if (savedState) {
+                    this.srs.loadState(savedState.srs);
+                    this.currentFileName = savedState.fileName || '預設 TOEIC 題庫';
+                    this.theme = savedState.theme || 'light';
+                }
+                this.applyTheme(this.theme);
+            }
+
+            async persistState() {
+                const payload = {
+                    srs: this.srs.getState(),
+                    fileName: this.currentFileName,
+                    theme: this.theme
+                };
+                await this.storage.save('srs_flashcard_state', payload);
+            }
+
+            bindEvents() {
+                // 翻面
+                this.dom.flashcard.addEventListener('click', (e) => {
+                    // 若點擊的是發音按鈕則不翻面
+                    if (e.target.closest('.sound-btn')) return;
+                    this.toggleFlip();
+                });
+
+                // 發音按鈕
+                this.dom.frontSpeechBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const card = this.srs.getCurrentCard();
+                    if (card) this.audio.speak(card.word);
+                });
+
+                this.dom.backSpeechBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const card = this.srs.getCurrentCard();
+                    if (card) {
+                        const sentence = this.audio.extractEnglishSentence(card.content) || card.word;
+                        this.audio.speak(sentence);
+                    }
+                });
+
+                // SRS 按鈕
+                this.dom.btnAgain.addEventListener('click', () => this.handleSrsAction('again'));
+                this.dom.btnHard.addEventListener('click', () => this.handleSrsAction('hard'));
+                this.dom.btnKnown.addEventListener('click', () => this.handleSrsAction('known'));
+                this.dom.btnEasy.addEventListener('click', () => this.handleSrsAction('easy'));
+
+                // 結算畫面按鈕
+                this.dom.restartBtn.addEventListener('click', () => {
+                    this.srs.reset();
+                    this.isFlipped = false;
+                    this.persistState();
+                    this.render();
+                    this.showToast('已重新開始學習！');
+                });
+
+                this.dom.importNewBtn.addEventListener('click', () => {
+                    this.dom.csvFileInput.click();
+                });
+
+                // 頂部功能按鈕
+                this.dom.uploadBtn.addEventListener('click', () => this.dom.csvFileInput.click());
+                this.dom.csvFileInput.addEventListener('change', (e) => this.handleCsvUpload(e));
+
+                this.dom.resetBtn.addEventListener('click', () => {
+                    if (confirm('確定要重設當前學習進度嗎？')) {
+                        this.srs.reset();
+                        this.isFlipped = false;
+                        this.persistState();
+                        this.render();
+                        this.showToast('學習進度已重設');
+                    }
+                });
+
+                this.dom.themeBtn.addEventListener('click', () => {
+                    this.theme = this.theme === 'light' ? 'dark' : 'light';
+                    this.applyTheme(this.theme);
+                    this.persistState();
+                });
+
+                this.dom.helpBtn.addEventListener('click', () => {
+                    this.dom.helpModal.classList.add('active');
+                });
+
+                this.dom.modalCloseBtn.addEventListener('click', () => {
+                    this.dom.helpModal.classList.remove('active');
+                });
+
+                this.dom.helpModal.addEventListener('click', (e) => {
+                    if (e.target === this.dom.helpModal) {
+                        this.dom.helpModal.classList.remove('active');
+                    }
+                });
+
+                // 全域快捷鍵
+                window.addEventListener('keydown', (e) => this.handleKeyDown(e));
+            }
+
+            handleKeyDown(e) {
+                // 忽略文字輸入框中的鍵盤事件
+                if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    this.toggleFlip();
+                } else if (e.code === 'Enter') {
+                    e.preventDefault();
+                    this.playCurrentSpeech();
+                } else if (e.key === '1') {
+                    e.preventDefault();
+                    this.handleSrsAction('again');
+                } else if (e.key === '2') {
+                    e.preventDefault();
+                    this.handleSrsAction('hard');
+                } else if (e.key === '3') {
+                    e.preventDefault();
+                    this.handleSrsAction('known');
+                } else if (e.key === '4') {
+                    e.preventDefault();
+                    this.handleSrsAction('easy');
+                }
+            }
+
+            toggleFlip() {
+                if (this.srs.isFinished()) return;
+                this.isFlipped = !this.isFlipped;
+                this.updateCardFlipVisual();
+                this.playCurrentSpeech();
+            }
+
+            updateCardFlipVisual() {
+                if (this.isFlipped) {
+                    this.dom.flashcard.classList.add('is-flipped');
+                } else {
+                    this.dom.flashcard.classList.remove('is-flipped');
+                }
+            }
+
+            playCurrentSpeech() {
+                const card = this.srs.getCurrentCard();
+                if (!card) return;
+                if (!this.isFlipped) {
+                    this.audio.speak(card.word);
+                } else {
+                    const sentence = this.audio.extractEnglishSentence(card.content) || card.word;
+                    this.audio.speak(sentence);
+                }
+            }
+
+            handleSrsAction(action) {
+                if (this.srs.isFinished()) return;
+                this.srs.processAnswer(action);
+                this.isFlipped = false;
+                this.updateCardFlipVisual();
+                this.persistState();
+                this.render();
+                if (!this.srs.isFinished()) {
+                    this.playCurrentSpeech();
+                }
+            }
+
+            async handleCsvUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                try {
+                    const text = await file.text();
+                    const parsedCards = CsvParserService.parse(text);
+                    this.srs = new SrsEngine(parsedCards);
+                    this.currentFileName = file.name;
+                    this.isFlipped = false;
+                    await this.persistState();
+                    this.render();
+                    this.showToast(`成功匯入 ${parsedCards.length} 筆單字！`);
+                } catch (err) {
+                    alert(`CSV 匯入失敗：${err.message}`);
+                } finally {
+                    event.target.value = '';
+                }
+            }
+
+            applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+
+            showToast(msg) {
+                this.dom.toast.textContent = msg;
+                this.dom.toast.classList.add('show');
+                setTimeout(() => {
+                    this.dom.toast.classList.remove('show');
+                }, 2200);
+            }
+
+            render() {
+                this.dom.currentFilename.textContent = this.currentFileName;
+                this.dom.vocabCountBadge.textContent = `${this.srs.allCards.length} 字`;
+
+                if (this.srs.isFinished()) {
+                    // 顯示完成畫面
+                    this.dom.flashcard.style.display = 'none';
+                    this.dom.completionView.style.display = 'flex';
+                    this.dom.controlsToolbar.style.opacity = '0.4';
+                    this.dom.controlsToolbar.style.pointerEvents = 'none';
+
+                    this.dom.statAgain.textContent = this.srs.stats.again;
+                    this.dom.statHard.textContent = this.srs.stats.hard;
+                    this.dom.statKnown.textContent = this.srs.stats.known;
+                    this.dom.statEasy.textContent = this.srs.stats.easy;
+
+                    this.dom.queueCounter.textContent = '學習完畢';
+                    this.dom.progressBar.style.width = '100%';
+                    return;
+                }
+
+                // 正常渲染卡片
+                this.dom.flashcard.style.display = 'block';
+                this.dom.completionView.style.display = 'none';
+                this.dom.controlsToolbar.style.opacity = '1';
+                this.dom.controlsToolbar.style.pointerEvents = 'auto';
+
+                const card = this.srs.getCurrentCard();
+                if (!card) return;
+
+                // 正面
+                this.dom.frontWordText.textContent = card.word;
+
+                // 背面
+                this.dom.backWordTitle.textContent = card.word;
+                this.renderBackContent(card.content);
+
+                // 更新示意圖片 (免費免 Key 圖庫)
+                this.updateCardImage(card.word);
+
+                // 進度計算
+                const remaining = this.srs.queue.length;
+                const total = this.srs.initialTotal || this.srs.allCards.length;
+                const done = Math.max(0, total - remaining);
+                const percent = Math.min(100, Math.round((done / total) * 100));
+
+                this.dom.queueCounter.textContent = `剩餘: ${remaining} / 總計: ${total}`;
+                this.dom.progressBar.style.width = `${percent}%`;
+
+                this.updateCardFlipVisual();
+            }
+
+            updateCardImage(word) {
+                const cleanWord = encodeURIComponent(word.toLowerCase().replace(/[^a-z0-9]/g, ''));
+                // 使用免費且免 Key 的 Loremflickr / Picsum 服務
+                const imgUrl = `https://loremflickr.com/600/280/${cleanWord}?lock=${cleanWord.length * 17}`;
+                
+                this.dom.cardDynamicImg.style.display = 'block';
+                this.dom.imgFallback.style.display = 'none';
+                this.dom.cardDynamicImg.src = imgUrl;
+            }
+
+            renderBackContent(rawContent) {
+                if (!rawContent) {
+                    this.dom.backContentBody.innerHTML = '<p style="color: var(--text-muted);">無詳細內容</p>';
+                    return;
+                }
+
+                const lines = rawContent.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                const htmlParts = [];
+
+                let currentSection = '';
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+
+                    if (line.startsWith('【詞性變化】')) {
+                        currentSection = 'forms';
+                        htmlParts.push('<span class="section-tag">【詞性變化】</span>');
+                    } else if (line.startsWith('【搭配詞】')) {
+                        currentSection = 'colloc';
+                        htmlParts.push('<span class="section-tag">【搭配詞】</span>');
+                    } else if (line.startsWith('【例句】')) {
+                        currentSection = 'example';
+                        htmlParts.push('<span class="section-tag">【例句】</span>');
+                    } else {
+                        if (i === 0 && !line.startsWith('【')) {
+                            // 第一行標題：ability (n.) 能力、才幹
+                            htmlParts.push(`<div class="section-header-line">${this.escapeHtml(line)}</div>`);
+                        } else if (currentSection === 'example') {
+                            // 例句拆解
+                            const enMatch = line.match(/^([^()（）]+)(?:[\(（](.+)[\\)）])?/);
+                            if (enMatch) {
+                                const enText = enMatch[1].trim();
+                                const zhText = enMatch[2] ? enMatch[2].trim() : '';
+                                htmlParts.push(`
+                                    <div class="example-block">
+                                        <span class="example-en">${this.escapeHtml(enText)}</span>
+                                        ${zhText ? `<span class="example-zh">(${this.escapeHtml(zhText)})</span>` : ''}
+                                    </div>
+                                `);
+                            } else {
+                                htmlParts.push(`<div class="section-text">${this.escapeHtml(line)}</div>`);
+                            }
+                        } else {
+                            htmlParts.push(`<div class="section-text">${this.escapeHtml(line)}</div>`);
+                        }
+                    }
+                }
+
+                this.dom.backContentBody.innerHTML = htmlParts.join('');
+            }
+
+            escapeHtml(str) {
+                return str
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+        }
+
+        // 初始化 App
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new FlashcardApp();
+            window.app.init();
+        });
+    </script>
+</body>
+</html>
