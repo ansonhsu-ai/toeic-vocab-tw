@@ -346,22 +346,27 @@
             color: var(--text-primary);
         }
 
-        /* 示意圖片縮圖 */
+        /* 示意圖片縮圖（完整呈現不裁切） */
         .card-image-wrap {
             width: 100%;
-            height: 110px;
+            height: 175px;
+            max-height: 190px;
             border-radius: var(--radius-md);
             overflow: hidden;
-            background: #1e293b;
+            background: #0f172a;
             position: relative;
             flex-shrink: 0;
             border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .card-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* 完整呈現整張圖片，絕不裁切頂部或邊緣 */
+            display: block;
         }
 
         .image-fallback {
@@ -1562,7 +1567,7 @@
             updateCardImage(word) {
                 if (!this.dom.cardDynamicImg) return;
                 const cleanWord = encodeURIComponent(word.toLowerCase().replace(/[^a-z0-9]/g, ''));
-                const imgUrl = `https://loremflickr.com/600/280/${cleanWord}?lock=${cleanWord.length * 17}`;
+                const imgUrl = `https://loremflickr.com/600/380/${cleanWord}?lock=${cleanWord.length * 17}`;
                 
                 this.dom.cardDynamicImg.style.display = 'block';
                 if (this.dom.imgFallback) this.dom.imgFallback.style.display = 'none';
