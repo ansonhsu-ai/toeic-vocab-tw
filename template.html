@@ -128,18 +128,33 @@
             width: 38px;
             height: 38px;
             border-radius: var(--radius-md);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            user-select: none;
         }
 
         .icon-btn:hover {
             color: var(--text-primary);
             border-color: var(--primary);
             transform: translateY(-1px);
+        }
+
+        /* Hidden File Input */
+        .visually-hidden-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+            opacity: 0;
         }
 
         /* Status & Progress Bar */
@@ -550,6 +565,10 @@
             transition: var(--transition);
             border: 1px solid transparent;
             font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
         }
 
         .primary-btn {
@@ -658,9 +677,11 @@
             align-items: center;
         }
 
-        /* Hidden File Input */
-        #csv-file-input {
-            display: none;
+        /* Drag & Drop Highlight */
+        body.drag-over .card-stage {
+            outline: 3px dashed var(--primary);
+            outline-offset: 8px;
+            border-radius: var(--radius-lg);
         }
 
         /* Mobile Optimization */
@@ -699,10 +720,11 @@
                 <span class="brand-badge" id="vocab-count-badge">TOEIC</span>
             </div>
             <div class="header-actions">
-                <input type="file" id="csv-file-input" accept=".csv,text/csv">
-                <button class="icon-btn" id="upload-btn" title="匯入 CSV 單字檔案">
+                <!-- 原生 label 觸發檔案選擇器，100% 可靠 -->
+                <input type="file" id="csv-file-input" class="visually-hidden-input" accept=".csv,text/csv">
+                <label for="csv-file-input" class="icon-btn" id="upload-btn" title="匯入 CSV 單字檔案">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                </button>
+                </label>
                 <button class="icon-btn" id="reset-btn" title="重設學習進度">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                 </button>
@@ -800,7 +822,7 @@
 
                 <div class="completion-actions">
                     <button class="primary-btn" id="restart-btn">重新開始</button>
-                    <button class="secondary-btn" id="import-new-btn">匯入新檔</button>
+                    <label for="csv-file-input" class="secondary-btn" id="import-new-btn">匯入新檔</label>
                 </div>
             </div>
         </main>
@@ -882,36 +904,43 @@
          */
         class AudioService {
             constructor() {
-                this.synth = window.speechSynthesis;
+                this.synth = window.speechSynthesis || null;
                 this.voice = null;
                 this.initVoice();
             }
 
             initVoice() {
                 if (!this.synth) return;
-                const updateVoice = () => {
-                    const voices = this.synth.getVoices();
-                    this.voice = voices.find(v => v.lang.includes('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
-                };
-                updateVoice();
-                if (speechSynthesis.onvoiceschanged !== undefined) {
-                    speechSynthesis.onvoiceschanged = updateVoice;
+                try {
+                    const updateVoice = () => {
+                        const voices = this.synth.getVoices();
+                        this.voice = voices.find(v => v.lang.includes('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
+                    };
+                    updateVoice();
+                    if (this.synth.onvoiceschanged !== undefined) {
+                        this.synth.onvoiceschanged = updateVoice;
+                    }
+                } catch (e) {
+                    console.warn('Speech synthesis voice init error', e);
                 }
             }
 
             speak(text) {
                 if (!this.synth || !text) return;
-                this.synth.cancel(); // 停止目前播放
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.95;
-                if (this.voice) utterance.voice = this.voice;
-                this.synth.speak(utterance);
+                try {
+                    this.synth.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.95;
+                    if (this.voice) utterance.voice = this.voice;
+                    this.synth.speak(utterance);
+                } catch (e) {
+                    console.warn('Speak error', e);
+                }
             }
 
             extractEnglishSentence(content) {
                 if (!content) return '';
-                // 解析【例句】區塊內的英文部分
                 const match = content.match(/【例句】\s*\n?([^\n(（]+)/);
                 if (match && match[1]) {
                     return match[1].trim();
@@ -922,11 +951,11 @@
 
         /**
          * 本地持久化儲存服務 (StorageService)
-         * 封裝 IndexedDB 並在失敗時自動降級至 localStorage
+         * 封裝 IndexedDB 並在超時或異常時平滑降級至 localStorage
          */
         class StorageService {
             constructor() {
-                this.dbName = 'ToeicFlashcardDB';
+                this.dbName = 'ToeicFlashcardDB_v2';
                 this.storeName = 'app_state';
                 this.db = null;
             }
@@ -937,20 +966,44 @@
                         resolve(false);
                         return;
                     }
-                    const request = indexedDB.open(this.dbName, 1);
-                    request.onupgradeneeded = (e) => {
-                        const db = e.target.result;
-                        if (!db.objectStoreNames.contains(this.storeName)) {
-                            db.createObjectStore(this.storeName);
+                    let resolved = false;
+                    const timer = setTimeout(() => {
+                        if (!resolved) {
+                            resolved = true;
+                            resolve(false);
                         }
-                    };
-                    request.onsuccess = (e) => {
-                        this.db = e.target.result;
-                        resolve(true);
-                    };
-                    request.onerror = () => {
-                        resolve(false);
-                    };
+                    }, 400);
+
+                    try {
+                        const request = indexedDB.open(this.dbName, 1);
+                        request.onupgradeneeded = (e) => {
+                            const db = e.target.result;
+                            if (!db.objectStoreNames.contains(this.storeName)) {
+                                db.createObjectStore(this.storeName);
+                            }
+                        };
+                        request.onsuccess = (e) => {
+                            if (!resolved) {
+                                resolved = true;
+                                clearTimeout(timer);
+                                this.db = e.target.result;
+                                resolve(true);
+                            }
+                        };
+                        request.onerror = () => {
+                            if (!resolved) {
+                                resolved = true;
+                                clearTimeout(timer);
+                                resolve(false);
+                            }
+                        };
+                    } catch (e) {
+                        if (!resolved) {
+                            resolved = true;
+                            clearTimeout(timer);
+                            resolve(false);
+                        }
+                    }
                 });
             }
 
@@ -961,9 +1014,7 @@
                         const store = tx.objectStore(this.storeName);
                         store.put(value, key);
                         return;
-                    }} catch (e) {
-                        console.warn('IndexedDB write error, fallback to localStorage', e);
-                    }
+                    } catch (e) {}
                 }
                 try {
                     localStorage.setItem(key, JSON.stringify(value));
@@ -973,14 +1024,14 @@
             async load(key) {
                 if (this.db) {
                     try {
-                        return new Promise((resolve) => {
+                        return await new Promise((resolve) => {
                             const tx = this.db.transaction([this.storeName], 'readonly');
                             const store = tx.objectStore(this.storeName);
                             const req = store.get(key);
                             req.onsuccess = () => resolve(req.result);
                             req.onerror = () => resolve(null);
                         });
-                    }} catch (e) {}
+                    } catch (e) {}
                 }
                 try {
                     const raw = localStorage.getItem(key);
@@ -995,9 +1046,11 @@
                     try {
                         const tx = this.db.transaction([this.storeName], 'readwrite');
                         tx.objectStore(this.storeName).clear();
-                    }} catch (e) {}
+                    } catch (e) {}
                 }
-                localStorage.removeItem('srs_flashcard_state');
+                try {
+                    localStorage.removeItem('srs_flashcard_state');
+                } catch (e) {}
             }
         }
 
@@ -1137,7 +1190,6 @@
                 switch (action) {
                     case 'again':
                         this.stats.again++;
-                        // 插入佇列第 2 個位置 (index 1)
                         if (this.queue.length >= 1) {
                             this.queue.splice(1, 0, current);
                         } else {
@@ -1147,20 +1199,17 @@
 
                     case 'hard':
                         this.stats.hard++;
-                        // 插入佇列剩餘長度的中間位置
                         const mid = Math.floor(this.queue.length / 2);
                         this.queue.splice(mid, 0, current);
                         break;
 
                     case 'known':
                         this.stats.known++;
-                        // 插入佇列最尾端
                         this.queue.push(current);
                         break;
 
                     case 'easy':
                         this.stats.easy++;
-                        // 直接移出佇列
                         break;
                 }
             }
@@ -1179,7 +1228,7 @@
             constructor() {
                 this.audio = new AudioService();
                 this.storage = new StorageService();
-                this.srs = new SrsEngine(DEFAULT_CARDS_DATA);
+                this.srs = new SrsEngine(DEFAULT_CARDS_DATA || []);
                 this.currentFileName = '預設 TOEIC 題庫';
                 this.isFlipped = false;
                 this.theme = 'light';
@@ -1221,21 +1270,31 @@
                 };
             }
 
-            async init() {
-                await this.storage.init();
-                await this.loadPersistedState();
+            init() {
+                // 1. 先立即綁定所有 DOM 事件與渲染，確保點擊立即響應
                 this.bindEvents();
                 this.render();
+
+                // 2. 背景非同步載入持久化儲存狀態
+                this.storage.init().then(() => {
+                    this.loadPersistedState().then(() => {
+                        this.render();
+                    });
+                });
             }
 
             async loadPersistedState() {
-                const savedState = await this.storage.load('srs_flashcard_state');
-                if (savedState) {
-                    this.srs.loadState(savedState.srs);
-                    this.currentFileName = savedState.fileName || '預設 TOEIC 題庫';
-                    this.theme = savedState.theme || 'light';
+                try {
+                    const savedState = await this.storage.load('srs_flashcard_state');
+                    if (savedState && savedState.srs && savedState.srs.allCards && savedState.srs.allCards.length > 0) {
+                        this.srs.loadState(savedState.srs);
+                        this.currentFileName = savedState.fileName || '預設 TOEIC 題庫';
+                        this.theme = savedState.theme || 'light';
+                    }
+                    this.applyTheme(this.theme);
+                } catch (e) {
+                    console.warn('Load state error', e);
                 }
-                this.applyTheme(this.theme);
             }
 
             async persistState() {
@@ -1249,87 +1308,123 @@
 
             bindEvents() {
                 // 翻面
-                this.dom.flashcard.addEventListener('click', (e) => {
-                    // 若點擊的是發音按鈕則不翻面
-                    if (e.target.closest('.sound-btn')) return;
-                    this.toggleFlip();
-                });
+                if (this.dom.flashcard) {
+                    this.dom.flashcard.addEventListener('click', (e) => {
+                        if (e.target.closest('.sound-btn')) return;
+                        this.toggleFlip();
+                    });
+                }
 
                 // 發音按鈕
-                this.dom.frontSpeechBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const card = this.srs.getCurrentCard();
-                    if (card) this.audio.speak(card.word);
-                });
+                if (this.dom.frontSpeechBtn) {
+                    this.dom.frontSpeechBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const card = this.srs.getCurrentCard();
+                        if (card) this.audio.speak(card.word);
+                    });
+                }
 
-                this.dom.backSpeechBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const card = this.srs.getCurrentCard();
-                    if (card) {
-                        const sentence = this.audio.extractEnglishSentence(card.content) || card.word;
-                        this.audio.speak(sentence);
-                    }
-                });
+                if (this.dom.backSpeechBtn) {
+                    this.dom.backSpeechBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const card = this.srs.getCurrentCard();
+                        if (card) {
+                            const sentence = this.audio.extractEnglishSentence(card.content) || card.word;
+                            this.audio.speak(sentence);
+                        }
+                    });
+                }
 
                 // SRS 按鈕
-                this.dom.btnAgain.addEventListener('click', () => this.handleSrsAction('again'));
-                this.dom.btnHard.addEventListener('click', () => this.handleSrsAction('hard'));
-                this.dom.btnKnown.addEventListener('click', () => this.handleSrsAction('known'));
-                this.dom.btnEasy.addEventListener('click', () => this.handleSrsAction('easy'));
+                if (this.dom.btnAgain) this.dom.btnAgain.addEventListener('click', () => this.handleSrsAction('again'));
+                if (this.dom.btnHard) this.dom.btnHard.addEventListener('click', () => this.handleSrsAction('hard'));
+                if (this.dom.btnKnown) this.dom.btnKnown.addEventListener('click', () => this.handleSrsAction('known'));
+                if (this.dom.btnEasy) this.dom.btnEasy.addEventListener('click', () => this.handleSrsAction('easy'));
 
                 // 結算畫面按鈕
-                this.dom.restartBtn.addEventListener('click', () => {
-                    this.srs.reset();
-                    this.isFlipped = false;
-                    this.persistState();
-                    this.render();
-                    this.showToast('已重新開始學習！');
-                });
-
-                this.dom.importNewBtn.addEventListener('click', () => {
-                    this.dom.csvFileInput.click();
-                });
-
-                // 頂部功能按鈕
-                this.dom.uploadBtn.addEventListener('click', () => this.dom.csvFileInput.click());
-                this.dom.csvFileInput.addEventListener('change', (e) => this.handleCsvUpload(e));
-
-                this.dom.resetBtn.addEventListener('click', () => {
-                    if (confirm('確定要重設當前學習進度嗎？')) {
+                if (this.dom.restartBtn) {
+                    this.dom.restartBtn.addEventListener('click', () => {
                         this.srs.reset();
                         this.isFlipped = false;
                         this.persistState();
                         this.render();
-                        this.showToast('學習進度已重設');
+                        this.showToast('已重新開始學習！');
+                    });
+                }
+
+                // 檔案上傳事件 (支援點擊與變更)
+                if (this.dom.csvFileInput) {
+                    this.dom.csvFileInput.addEventListener('change', (e) => this.handleCsvUpload(e));
+                }
+
+                // 支援整個視窗拖曳上傳 CSV
+                window.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    document.body.classList.add('drag-over');
+                });
+
+                window.addEventListener('dragleave', (e) => {
+                    if (e.clientX === 0 || e.clientY === 0) {
+                        document.body.classList.remove('drag-over');
                     }
                 });
 
-                this.dom.themeBtn.addEventListener('click', () => {
-                    this.theme = this.theme === 'light' ? 'dark' : 'light';
-                    this.applyTheme(this.theme);
-                    this.persistState();
+                window.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    document.body.classList.remove('drag-over');
+                    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                        this.handleDroppedFile(e.dataTransfer.files[0]);
+                    }
                 });
 
-                this.dom.helpBtn.addEventListener('click', () => {
-                    this.dom.helpModal.classList.add('active');
-                });
+                // 重設進度按鈕
+                if (this.dom.resetBtn) {
+                    this.dom.resetBtn.addEventListener('click', () => {
+                        if (confirm('確定要重設當前學習進度嗎？')) {
+                            this.srs.reset();
+                            this.isFlipped = false;
+                            this.persistState();
+                            this.render();
+                            this.showToast('學習進度已重設');
+                        }
+                    });
+                }
 
-                this.dom.modalCloseBtn.addEventListener('click', () => {
-                    this.dom.helpModal.classList.remove('active');
-                });
+                // 主題切換按鈕
+                if (this.dom.themeBtn) {
+                    this.dom.themeBtn.addEventListener('click', () => {
+                        this.theme = this.theme === 'light' ? 'dark' : 'light';
+                        this.applyTheme(this.theme);
+                        this.persistState();
+                    });
+                }
 
-                this.dom.helpModal.addEventListener('click', (e) => {
-                    if (e.target === this.dom.helpModal) {
+                // 說明 Modal
+                if (this.dom.helpBtn) {
+                    this.dom.helpBtn.addEventListener('click', () => {
+                        this.dom.helpModal.classList.add('active');
+                    });
+                }
+
+                if (this.dom.modalCloseBtn) {
+                    this.dom.modalCloseBtn.addEventListener('click', () => {
                         this.dom.helpModal.classList.remove('active');
-                    }
-                });
+                    });
+                }
+
+                if (this.dom.helpModal) {
+                    this.dom.helpModal.addEventListener('click', (e) => {
+                        if (e.target === this.dom.helpModal) {
+                            this.dom.helpModal.classList.remove('active');
+                        }
+                    });
+                }
 
                 // 全域快捷鍵
                 window.addEventListener('keydown', (e) => this.handleKeyDown(e));
             }
 
             handleKeyDown(e) {
-                // 忽略文字輸入框中的鍵盤事件
                 if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
                 if (e.code === 'Space') {
@@ -1361,6 +1456,7 @@
             }
 
             updateCardFlipVisual() {
+                if (!this.dom.flashcard) return;
                 if (this.isFlipped) {
                     this.dom.flashcard.classList.add('is-flipped');
                 } else {
@@ -1394,7 +1490,12 @@
             async handleCsvUpload(event) {
                 const file = event.target.files[0];
                 if (!file) return;
+                await this.handleDroppedFile(file);
+                event.target.value = '';
+            }
 
+            async handleDroppedFile(file) {
+                if (!file) return;
                 try {
                     const text = await file.text();
                     const parsedCards = CsvParserService.parse(text);
@@ -1406,8 +1507,6 @@
                     this.showToast(`成功匯入 ${parsedCards.length} 筆單字！`);
                 } catch (err) {
                     alert(`CSV 匯入失敗：${err.message}`);
-                } finally {
-                    event.target.value = '';
                 }
             }
 
@@ -1416,6 +1515,7 @@
             }
 
             showToast(msg) {
+                if (!this.dom.toast) return;
                 this.dom.toast.textContent = msg;
                 this.dom.toast.classList.add('show');
                 setTimeout(() => {
@@ -1424,68 +1524,66 @@
             }
 
             render() {
+                if (!this.dom.currentFilename) return;
                 this.dom.currentFilename.textContent = this.currentFileName;
                 this.dom.vocabCountBadge.textContent = `${this.srs.allCards.length} 字`;
 
                 if (this.srs.isFinished()) {
-                    // 顯示完成畫面
-                    this.dom.flashcard.style.display = 'none';
-                    this.dom.completionView.style.display = 'flex';
-                    this.dom.controlsToolbar.style.opacity = '0.4';
-                    this.dom.controlsToolbar.style.pointerEvents = 'none';
+                    if (this.dom.flashcard) this.dom.flashcard.style.display = 'none';
+                    if (this.dom.completionView) this.dom.completionView.style.display = 'flex';
+                    if (this.dom.controlsToolbar) {
+                        this.dom.controlsToolbar.style.opacity = '0.4';
+                        this.dom.controlsToolbar.style.pointerEvents = 'none';
+                    }
 
-                    this.dom.statAgain.textContent = this.srs.stats.again;
-                    this.dom.statHard.textContent = this.srs.stats.hard;
-                    this.dom.statKnown.textContent = this.srs.stats.known;
-                    this.dom.statEasy.textContent = this.srs.stats.easy;
+                    if (this.dom.statAgain) this.dom.statAgain.textContent = this.srs.stats.again;
+                    if (this.dom.statHard) this.dom.statHard.textContent = this.srs.stats.hard;
+                    if (this.dom.statKnown) this.dom.statKnown.textContent = this.srs.stats.known;
+                    if (this.dom.statEasy) this.dom.statEasy.textContent = this.srs.stats.easy;
 
-                    this.dom.queueCounter.textContent = '學習完畢';
-                    this.dom.progressBar.style.width = '100%';
+                    if (this.dom.queueCounter) this.dom.queueCounter.textContent = '學習完畢';
+                    if (this.dom.progressBar) this.dom.progressBar.style.width = '100%';
                     return;
                 }
 
-                // 正常渲染卡片
-                this.dom.flashcard.style.display = 'block';
-                this.dom.completionView.style.display = 'none';
-                this.dom.controlsToolbar.style.opacity = '1';
-                this.dom.controlsToolbar.style.pointerEvents = 'auto';
+                if (this.dom.flashcard) this.dom.flashcard.style.display = 'block';
+                if (this.dom.completionView) this.dom.completionView.style.display = 'none';
+                if (this.dom.controlsToolbar) {
+                    this.dom.controlsToolbar.style.opacity = '1';
+                    this.dom.controlsToolbar.style.pointerEvents = 'auto';
+                }
 
                 const card = this.srs.getCurrentCard();
                 if (!card) return;
 
-                // 正面
-                this.dom.frontWordText.textContent = card.word;
-
-                // 背面
-                this.dom.backWordTitle.textContent = card.word;
+                if (this.dom.frontWordText) this.dom.frontWordText.textContent = card.word;
+                if (this.dom.backWordTitle) this.dom.backWordTitle.textContent = card.word;
                 this.renderBackContent(card.content);
-
-                // 更新示意圖片 (免費免 Key 圖庫)
                 this.updateCardImage(card.word);
 
-                // 進度計算
                 const remaining = this.srs.queue.length;
                 const total = this.srs.initialTotal || this.srs.allCards.length;
                 const done = Math.max(0, total - remaining);
                 const percent = Math.min(100, Math.round((done / total) * 100));
 
-                this.dom.queueCounter.textContent = `剩餘: ${remaining} / 總計: ${total}`;
-                this.dom.progressBar.style.width = `${percent}%`;
+                if (this.dom.queueCounter) this.dom.queueCounter.textContent = `剩餘: ${remaining} / 總計: ${total}`;
+                if (this.dom.progressBar) this.dom.progressBar.style.width = `${percent}%`;
 
                 this.updateCardFlipVisual();
             }
 
             updateCardImage(word) {
+                if (!this.dom.cardDynamicImg) return;
                 const cleanWord = encodeURIComponent(word.toLowerCase().replace(/[^a-z0-9]/g, ''));
-                // 使用免費且免 Key 的 Loremflickr / Picsum 服務
                 const imgUrl = `https://loremflickr.com/600/280/${cleanWord}?lock=${cleanWord.length * 17}`;
                 
                 this.dom.cardDynamicImg.style.display = 'block';
-                this.dom.imgFallback.style.display = 'none';
+                if (this.dom.imgFallback) this.dom.imgFallback.style.display = 'none';
                 this.dom.cardDynamicImg.src = imgUrl;
             }
 
             renderBackContent(rawContent) {
+                if (!this.dom.backContentBody) return;
                 if (!rawContent) {
                     this.dom.backContentBody.innerHTML = '<p style="color: var(--text-muted);">無詳細內容</p>';
                     return;
@@ -1509,10 +1607,8 @@
                         htmlParts.push('<span class="section-tag">【例句】</span>');
                     } else {
                         if (i === 0 && !line.startsWith('【')) {
-                            // 第一行標題：ability (n.) 能力、才幹
                             htmlParts.push(`<div class="section-header-line">${this.escapeHtml(line)}</div>`);
                         } else if (currentSection === 'example') {
-                            // 例句拆解
                             const enMatch = line.match(/^([^()（）]+)(?:[\(（](.+)[\\)）])?/);
                             if (enMatch) {
                                 const enText = enMatch[1].trim();
@@ -1547,8 +1643,12 @@
 
         // 初始化 App
         document.addEventListener('DOMContentLoaded', () => {
-            window.app = new FlashcardApp();
-            window.app.init();
+            try {
+                window.app = new FlashcardApp();
+                window.app.init();
+            } catch (e) {
+                console.error('App init error:', e);
+            }
         });
     </script>
 </body>
