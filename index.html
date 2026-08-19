@@ -20,6 +20,9 @@
             --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
+            --streak-color: #f97316;
+            --streak-bg: #fff7ed;
+            --streak-border: #ffedd5;
             --again-color: #dc2626;
             --again-bg: #fef2f2;
             --again-border: #fecaca;
@@ -46,6 +49,8 @@
             --text-muted: #94a3b8;
             --border-color: #222f49;
             --card-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.6);
+            --streak-bg: #321d0d;
+            --streak-border: #7c2d12;
             --again-bg: #2b1417;
             --again-border: #7f1d1d;
             --hard-bg: #2b2111;
@@ -103,7 +108,7 @@
         }
 
         .brand-title {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             display: flex;
@@ -112,14 +117,24 @@
             color: var(--text-primary);
         }
 
-        .brand-badge {
-            font-size: 0.72rem;
+        /* 打卡徽章 */
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.78rem;
             font-weight: 700;
-            padding: 0.18rem 0.45rem;
+            padding: 0.2rem 0.55rem;
             border-radius: 9999px;
-            background: rgba(37, 99, 235, 0.1);
-            color: var(--primary);
-            border: 1px solid rgba(37, 99, 235, 0.2);
+            background: var(--streak-bg);
+            color: var(--streak-color);
+            border: 1px solid var(--streak-border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .streak-badge:hover {
+            transform: scale(1.04);
         }
 
         .header-actions {
@@ -181,14 +196,12 @@
             color: var(--text-muted);
         }
 
-        .file-tag {
+        .session-tag {
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
-            max-width: 220px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-weight: 700;
+            color: var(--text-secondary);
         }
 
         .progress-track {
@@ -259,8 +272,15 @@
         .front-top-toolbar {
             width: 100%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
+        }
+
+        .card-index-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .sound-btn {
@@ -321,7 +341,7 @@
             font-weight: 700;
         }
 
-        /* 卡片背面：結構化排版（與圖片完全一致） */
+        /* 卡片背面：結構化排版 */
         .card-back {
             transform: rotateY(180deg);
             background: var(--bg-card-back);
@@ -365,7 +385,7 @@
         .card-image {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* 完整呈現整張圖片，絕不裁切頂部或邊緣 */
+            object-fit: contain;
             display: block;
         }
 
@@ -513,34 +533,47 @@
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
             box-shadow: var(--card-shadow);
-            padding: 2rem 1.5rem;
+            padding: 1.75rem 1.25rem;
             text-align: center;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1.25rem;
+            gap: 1rem;
+        }
+
+        .checkin-banner {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(234, 88, 12, 0.05));
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: var(--radius-md);
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--streak-color);
+            font-weight: 700;
+            font-size: 0.92rem;
         }
 
         .completion-icon {
-            font-size: 3rem;
+            font-size: 2.8rem;
             line-height: 1;
         }
 
         .completion-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 0.6rem;
+            gap: 0.5rem;
             width: 100%;
             max-width: 320px;
         }
 
         .stat-box {
-            padding: 0.75rem;
+            padding: 0.65rem;
             border-radius: var(--radius-md);
             border: 1px solid var(--border-color);
             display: flex;
@@ -549,7 +582,7 @@
         }
 
         .stat-num {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 800;
             font-family: 'JetBrains Mono', monospace;
         }
@@ -558,22 +591,29 @@
             font-size: 0.72rem;
             color: var(--text-secondary);
             font-weight: 600;
-            margin-top: 0.15rem;
+            margin-top: 0.1rem;
         }
 
         .completion-actions {
             display: flex;
-            gap: 0.75rem;
+            flex-direction: column;
+            gap: 0.5rem;
             width: 100%;
             max-width: 320px;
-            margin-top: 0.25rem;
+            margin-top: 0.2rem;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
         }
 
         .primary-btn, .secondary-btn {
             flex: 1;
-            padding: 0.75rem 1rem;
+            padding: 0.7rem 0.8rem;
             border-radius: var(--radius-md);
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 700;
             cursor: pointer;
             transition: var(--transition);
@@ -651,9 +691,11 @@
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
             padding: 1.5rem;
-            max-width: 400px;
+            max-width: 420px;
             width: 100%;
             box-shadow: var(--card-shadow);
+            max-height: 85vh;
+            overflow-y: auto;
         }
 
         .modal-header {
@@ -676,6 +718,58 @@
             color: var(--text-secondary);
         }
 
+        /* 打卡歷史視窗樣式 */
+        .checkin-stats-card {
+            display: flex;
+            justify-content: space-around;
+            background: var(--bg-main);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+
+        .checkin-stat-val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--streak-color);
+        }
+
+        .checkin-stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+            font-weight: 600;
+        }
+
+        .checkin-history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .checkin-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-main);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+        }
+
+        .checkin-badge-done {
+            color: var(--easy-color);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* 快捷鍵列表 */
         .shortcut-list {
             display: flex;
             flex-direction: column;
@@ -726,8 +820,12 @@
         <!-- 頂部導航列 -->
         <header class="app-header">
             <div class="brand-title">
-                <span>🧠 SRS Flashcard</span>
-                <span class="brand-badge" id="vocab-count-badge">TOEIC</span>
+                <span>🧠 Flashcard</span>
+                <!-- 打卡徽章 -->
+                <button class="streak-badge" id="streak-badge" title="點擊查看打卡歷史紀錄">
+                    <span>🔥</span>
+                    <span id="streak-text">0 天</span>
+                </button>
             </div>
             <div class="header-actions">
                 <!-- 原生 label 觸發檔案選擇器 -->
@@ -735,13 +833,13 @@
                 <label for="csv-file-input" class="icon-btn" id="upload-btn" title="匯入 CSV 單字檔案">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </label>
-                <button class="icon-btn" id="reset-btn" title="重設學習進度">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                <button class="icon-btn" id="next-session-btn" title="隨機換一組新單字 (10字)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
                 </button>
                 <button class="icon-btn" id="theme-btn" title="切換深色/淺色主題">
                     <svg id="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                 </button>
-                <button class="icon-btn" id="help-btn" title="快速鍵說明">
+                <button class="icon-btn" id="help-btn" title="快速鍵與使用說明">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 </button>
             </div>
@@ -750,11 +848,10 @@
         <!-- 進度指示條 -->
         <section class="progress-section">
             <div class="status-bar">
-                <span class="file-tag" id="file-label">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <span id="current-filename">預設 TOEIC 題庫</span>
+                <span class="session-tag" id="session-tag">
+                    <span>📅 今日 Session</span>
                 </span>
-                <span id="queue-counter">剩餘: 0 / 總計: 0</span>
+                <span id="queue-counter">剩餘: 10 / 本次 10 字</span>
             </div>
             <div class="progress-track">
                 <div class="progress-fill" id="progress-bar"></div>
@@ -767,6 +864,7 @@
                 <!-- 正面 -->
                 <div class="card-face card-front">
                     <div class="front-top-toolbar">
+                        <span class="card-index-badge" id="card-index-badge">WORD 1/10</span>
                         <button class="sound-btn" id="front-speech-btn" title="朗讀單字">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
                             朗讀
@@ -807,9 +905,12 @@
 
             <!-- 完成結算畫面 -->
             <div class="completion-card" id="completion-view">
+                <div class="checkin-banner" id="checkin-banner">
+                    <span>🎉</span>
+                    <span id="checkin-banner-text">今日打卡已達成！連續打卡 1 天</span>
+                </div>
                 <div class="completion-icon">🏆</div>
-                <h2 class="completion-title">恭喜完成本次學習！</h2>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">所有佇列單字皆已掌握完畢。</p>
+                <h2 class="completion-title">本組學習完成！</h2>
 
                 <div class="stats-grid">
                     <div class="stat-box" style="color: var(--again-color);">
@@ -831,8 +932,11 @@
                 </div>
 
                 <div class="completion-actions">
-                    <button class="primary-btn" id="restart-btn">重新開始</button>
-                    <label for="csv-file-input" class="secondary-btn" id="import-new-btn">匯入新檔</label>
+                    <button class="primary-btn" id="next-set-btn">✨ 再學一組隨機單字 (10字)</button>
+                    <div class="action-row">
+                        <button class="secondary-btn" id="restart-btn">重新複習本組</button>
+                        <button class="secondary-btn" id="view-history-btn">查看打卡紀錄</button>
+                    </div>
                 </div>
             </div>
         </main>
@@ -862,14 +966,50 @@
         </footer>
     </div>
 
+    <!-- 打卡紀錄 Modal -->
+    <div class="modal-backdrop" id="checkin-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">📅 學習與打卡記錄</h3>
+                <button class="modal-close" id="checkin-close-btn">&times;</button>
+            </div>
+            <div class="checkin-stats-card">
+                <div>
+                    <div class="checkin-stat-val" id="modal-streak-val">0</div>
+                    <div class="checkin-stat-lbl">連續打卡 (天)</div>
+                </div>
+                <div>
+                    <div class="checkin-stat-val" id="modal-total-days">0</div>
+                    <div class="checkin-stat-lbl">累積打卡 (天)</div>
+                </div>
+                <div>
+                    <div class="checkin-stat-val" id="modal-mastered-words">0</div>
+                    <div class="checkin-stat-lbl">掌握單字 (個)</div>
+                </div>
+            </div>
+            <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-secondary);">最近打卡日期</h4>
+            <div class="checkin-history-list" id="checkin-history-list">
+                <!-- 動態注入 -->
+            </div>
+        </div>
+    </div>
+
     <!-- 快速鍵說明 Modal -->
     <div class="modal-backdrop" id="help-modal">
         <div class="modal-box">
             <div class="modal-header">
-                <h3 class="modal-title">快捷鍵指南</h3>
+                <h3 class="modal-title">快捷鍵與規則說明</h3>
                 <button class="modal-close" id="modal-close-btn">&times;</button>
             </div>
             <div class="shortcut-list">
+                <div class="shortcut-item">
+                    <span>每日 Session 機制</span>
+                    <span style="font-weight: 700; color: var(--primary);">每次 10 個隨機單字</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>每日打卡機制</span>
+                    <span style="font-weight: 700; color: var(--streak-color);">每天完成 1 組即打卡</span>
+                </div>
                 <div class="shortcut-item">
                     <span>翻轉卡片（正 / 背面）</span>
                     <span class="key-badge">Space</span>
@@ -904,6 +1044,66 @@
     <!-- 預載資料與前端核心邏輯 -->
     <script>
         const DEFAULT_CARDS_DATA = [{"id": 1, "word": "abandon", "content": "abandon (v.) 拋棄、遺棄、放棄（計畫、責任等）\n【搭配詞】\nabandon a project 放棄專案\nabandon a plan 放棄計畫\n【例句】\nThe company decided to abandon the project due to budget constraints. (由於預算限制，公司決定放棄這個專案。)"}, {"id": 2, "word": "abandoned", "content": "abandoned (adj.) 被遺棄的、廢棄的、（計畫、項目等）被擱置的\n【搭配詞】\nabandoned building 廢棄建築\nabandoned vehicle 廢棄車輛\n【例句】\nThe project was abandoned due to budget cuts and lack of resources. (由於預算削減和資源不足，該項目被擱置。)"}, {"id": 3, "word": "abate", "content": "abate (v.) （風、雨、疼痛等）減弱，緩和\n【例句】\nThe storm is expected to abate by tomorrow morning. (預計明天早上風暴會減弱。)"}, {"id": 4, "word": "abbreviate", "content": "abbreviate (v.) 縮寫、簡略化（表達方式）\n【例句】\nTo save space, we often abbreviate company names in internal memos. (為了節省空間，我們經常在內部備忘錄中縮寫公司名稱。)"}, {"id": 5, "word": "abdomen", "content": "abdomen (n.) 腹部、肚子\n【搭配詞】\nabdominal pain 腹部疼痛\nabdominal examination 腹部檢查\n【例句】\nThe doctor pressed lightly on the patient's abdomen. (醫生輕輕按壓了病人的腹部。)"}, {"id": 6, "word": "abdominal", "content": "abdominal (adj.) 腹部的、與腹部相關的\n【詞性變化】\nabdomen (n.) 腹部\n【搭配詞】\nabdominal pain 腹痛\nabdominal muscles 腹肌，簡稱 abs\n【例句】\nThe employee reported experiencing abdominal discomfort and requested a medical leave. (這位員工報告稱腹部不適，並要求病假。)"}, {"id": 7, "word": "abductor", "content": "abductor (n.) 綁架者、誘拐者\n【詞性變化】\nabduct (v.) 綁架/使外展\n【搭配詞】\nalleged abductor 涉嫌綁架者\nidentify the abductor 確認綁架者身分\n【例句】\nPolice are searching for the abductor of the missing child. (警方正在搜尋失蹤兒童的綁架者。)"}, {"id": 8, "word": "abide", "content": "abide (v.) 忍受、遵守（規則、協議等）\n【例句】\nAll employees must abide by the company's code of conduct. (所有員工都必須遵守公司的行為準則。)"}, {"id": 9, "word": "abilities", "content": "abilities (n.) 能力、技能\n【搭配詞】\ndemonstrate abilities 展現能力\ntechnical abilities 技術能力\n【例句】\nThe company is looking for candidates with strong communication abilities. (公司正在尋找具備良好溝通能力的候選人。)"}, {"id": 10, "word": "ability", "content": "ability (n.) 能力、才能\n【搭配詞】\ndemonstrate/show ability 展現能力\nexceptional ability 卓越的能力\n【例句】\nThe candidate's ability to manage projects effectively impressed the hiring manager. (這位候選人有效管理專案的能力讓招聘經理印象深刻。)"}, {"id": 11, "word": "able", "content": "able (adj., adv.) 有能力、能夠、勝任\n【詞性變化】\nenable (v.) 使...能夠\nability (n.) 能力\n【例句】\nThe candidate is able to manage multiple projects simultaneously. (這位候選人能夠同時管理多個專案。)"}, {"id": 12, "word": "aboard", "content": "aboard (adv., prep.) 登上（船、飛機、火車等）、在船、飛機、火車等上面\n【搭配詞】\ngo aboard 上船/飛機\nall aboard 請大家上船/車\n【例句】\nAll passengers are requested to board the flight immediately. (請所有乘客立即登上飛機。)"}, {"id": 13, "word": "abolish", "content": "abolish (v.) 廢除、取消（法律、制度等）\n【搭配詞】\nabolish a law 廢除法律\nabolish a system 廢除制度\n【例句】\nThe company decided to abolish the outdated policy to improve efficiency. (為了提高效率，公司決定廢除過時的政策。)"}, {"id": 14, "word": "abort", "content": "abort (v.) 中止、取消（計畫、程序等）\n【例句】\nThe project was aborted due to unforeseen budget cuts. (由於預算削減，該專案被中止。)"}, {"id": 15, "word": "abortion", "content": "abortion (n.) 墮胎、中止、流產\n【搭配詞】\nperform an abortion 施行墮胎\nabortion rights 墮胎權\n【例句】\nThe debate over abortion rights is a complex social and ethical issue. (關於墮胎權的辯論是一個複雜的社會與倫理議題。)"}, {"id": 16, "word": "about", "content": "about (prep., adv.) 關於、大約、在…周圍、即將\n【例句】\nThe meeting is about the new marketing strategy. (這次會議是關於新的行銷策略。)"}, {"id": 17, "word": "above", "content": "above (prep., adv., adj., n.) 在...上方、高於、超過（數量、程度）、優於、上述的、在上方\n【例句】\nThe temperature is expected to rise above 30 degrees Celsius today. (今天氣溫預計會升至攝氏30度以上。)"}, {"id": 18, "word": "abramson", "content": "abramson (n.) 艾布拉姆森 (Abramson) 通常指一家律師事務所或其合夥人，在商務情境中，可能涉及法律諮詢、合同審閱等服務\n【例句】\nOur company retained Abramson & Associates to review the merger agreement. (我們聘請了艾布拉姆森律師事務所來審閱併購協議。)"}, {"id": 19, "word": "abridgment", "content": "abridgment (n.) 簡略版、縮寫版（通常指書籍、文件等內容被縮短後的版本）\n【搭配詞】\nan abridgment of the original contract 原始合約的節本\n【例句】\nThe editor provided an abridgment of the lengthy report for the executive summary. (編輯為執行摘要提供了這份冗長報告的簡略版。)"}, {"id": 20, "word": "abroad", "content": "abroad (adv., prep.) 在國外、在海外\n【搭配詞】\nproducts imported from abroad 從國外進口的產品\n【例句】\nThe company is expanding its operations abroad. (該公司正在海外擴展業務。)"}, {"id": 21, "word": "abruptly", "content": "abruptly (adv.) 突然地、驟然地\n【搭配詞】\nend abruptly 突然結束\nchange abruptly 突然改變\n【例句】\nThe meeting was abruptly canceled due to unforeseen circumstances. (由於突發狀況，會議突然被取消。)"}, {"id": 22, "word": "abs", "content": "abs (n.) 絕對值、總數\n【搭配詞】\ntone your abs 鍛鍊腹肌\nabs routine 腹肌訓練程序\n【例句】\nThe company reported a significant increase in absolute sales figures for the quarter. (該公司報告了本季的絕對銷售額顯著增加。)"}, {"id": 23, "word": "absence", "content": "absence (n.) 缺席、不在場\n【例句】\nDue to his absence from the meeting, Mr. Lee missed the crucial decision. (由於李先生缺席會議，他錯過了重要的決策。)"}, {"id": 24, "word": "absent", "content": "absent (adj., adv.) 缺席的、不在場的、缺勤的\n【詞性變化】\nabsence (n.) ：缺席\n【搭配詞】\npresent 出席\nmissing 失蹤、遺失\n【例句】\nThe employee was absent from the meeting due to a family emergency. (這位員工因家裡突發狀況缺席會議。)"}, {"id": 25, "word": "absolute", "content": "absolute (adj., adv.) 絕對的、完全的、無可爭議的\n【搭配詞】\nabsolute necessity 絕對必要\nabsolute minimum/maximum 絕對最小值/最大值\n【例句】\nThe company has an absolute commitment to providing high-quality products. (公司對提供高品質產品有絕對的承諾。)"}, {"id": 26, "word": "absolutely", "content": "absolutely (adv.) 完全地、絕對地\n【搭配詞】\nabsolutely necessary 絕對必要\nabsolutely essential 絕對關鍵\n【例句】\nI absolutely agree with your proposal to streamline the workflow. (我完全同意你簡化工作流程的建議。)"}, {"id": 27, "word": "absorb", "content": "absorb (v.) 吸收、接收（資訊、知識、衝擊等）、（材料）吸收（液體、熱量等）\n【搭配詞】\nbe absorbed in 全神貫注於...\n【例句】\nThe company needs to absorb the new regulations into its operational procedures. (公司需要將新的法規納入其營運程序。)"}, {"id": 28, "word": "absorbing", "content": "absorbing (adj.) 引人入勝的、吸引人的、吸收的\n【搭配詞】\nabsorbing task 引人入勝的任務\nabsorbing book 令人著迷的書\n【例句】\nThe training seminar was so absorbing that many participants stayed late to continue learning. (這項訓練課程非常引人入勝，許多參與者為了繼續學習而留到很晚。)"}, {"id": 29, "word": "absorption", "content": "absorption (n.) 吸收、全神貫注、併購\n【詞性變化】\nabsorb (v.)\nabsorbent (adj.)\n【例句】\nThe absorption of the smaller company into the large corporation boosted their market share. (較小的公司被大企業併購後，提升了他們的市場佔有率。)"}, {"id": 30, "word": "abstract", "content": "abstract (adj., n.) 抽象的、概括的、不具體的、概念性的\n【例句】\nThe report contains some abstract ideas that require further clarification. (這份報告包含一些需要進一步澄清的抽象概念。)"}, {"id": 31, "word": "abundant", "content": "abundant (adj.) 豐富的、大量的、充沛的\n【搭配詞】\nabundant supply 供應充足\nabundant evidence 證據確鑿\n【例句】\nThe company has abundant resources to invest in new technologies. (公司擁有充足的資源來投資新技術。)"}, {"id": 32, "word": "abundantly", "content": "abundantly (adv.) 充裕地、大量地、豐富地\n【搭配詞】\nmake it abundantly clear 使其非常清楚/顯而易見\n【例句】\nThe company has resources abundantly available to support the new project. (公司擁有大量資源來支持新專案。)"}, {"id": 33, "word": "abuse", "content": "abuse (v., n.) 濫用、不當利用、虐待（權力、資源等）\n【搭配詞】\nsubstance abuse 藥物/成癮物質濫用\nabuse of authority/power 濫用職權\n【例句】\nThe company has a strict policy against the abuse of company resources. (公司對公司資源的濫用有嚴格的政策。)"}, {"id": 34, "word": "abused", "content": "abused (v., adj.) 遭受虐待或不當對待、被濫用（資源、權力等）\n【搭配詞】\nsubstance abuse 物質濫用/藥物濫用\n【例句】\nThe company is investigating allegations that employees were abused by a supervisor. (公司正在調查關於員工被主管虐待的指控。)"}, {"id": 35, "word": "abusing", "content": "abusing (v.) 濫用、不當利用（資源、權力等）\n【搭配詞】\nabuse of power 濫用權力\nabusing company resources 濫用公司資源\n【例句】\nThe company has a strict policy against employees abusing their expense accounts. (公司對員工濫用費用報銷帳戶有嚴格的政策。)"}, {"id": 36, "word": "academic", "content": "academic (adj.) 與學術相關的、學術性的\n【詞性變化】\nacademy (n.) ：學院\n【搭配詞】\nacademic background 學術背景\nacademic credentials 學位證明/資歷\n【例句】\nThe conference focused on academic research in the field of artificial intelligence. (這次會議的重點是人工智慧領域的學術研究。)"}, {"id": 37, "word": "accelerate", "content": "accelerate (v.) 加速、加快（速度、進度等）\n【搭配詞】\naccelerate growth 加速增長\naccelerate the process 加速過程\n【例句】\nThe company needs to accelerate its product development to stay competitive. (為了保持競爭力，公司需要加速其產品開發進度。)"}, {"id": 38, "word": "acceleration", "content": "acceleration (n.) 加速、促進\n【搭配詞】\nacceleration in economic growth 經濟成長加速\nacceleration of the schedule 進度提前\n【例句】\nThe department implemented innovative acceleration procedures to improve operational efficiency. (部門實施創新的acceleration程序以提高營運效率。)"}, {"id": 39, "word": "accent", "content": "accent (n.) 口音、語調\n【搭配詞】\nstrong accent 口音很重\nslight accent 輕微口音\n【例句】\nDespite his slight American accent, he speaks fluent Mandarin. (儘管他帶有一點美國口音，但他講流利的普通話。)"}, {"id": 40, "word": "accept", "content": "accept (v.) 接受、同意、答允\n【搭配詞】\naccept an offer 接受提議/錄取\naccept responsibility 承擔責任\n【例句】\nThe company will accept credit card payments from now on. (從現在開始，公司將接受信用卡付款。)"}, {"id": 41, "word": "acceptable", "content": "acceptable (adj.) 可接受的、令人滿意的（通常指符合標準或期望）\n【例句】\nThe project proposal was deemed acceptable by the board of directors. (該專案提案已獲得董事會的批准。)"}, {"id": 42, "word": "acceptance", "content": "acceptance (n.) 接受、同意、批准\n【搭配詞】\nletter of acceptance 錄取通知書/接受函\nacceptance of an offer 接受提議\n【例句】\nWe are awaiting formal acceptance of the contract from the vendor. (我們正在等待供應商正式接受合約。)"}, {"id": 43, "word": "accepted", "content": "accepted (adj.) 被接受、同意、批准\n【搭配詞】\nwidely accepted 廣泛被接受的\nbe accepted into/by 被某組織或人接受\n【例句】\nThe proposal was accepted by the board of directors. (該提案已獲得董事會的批准。)"}, {"id": 44, "word": "accepting", "content": "accepting (adj., v.) 接受、同意、容納\n【搭配詞】\nNow accepting applications 現正接受申請\naccepting entries 接受參賽作品\n【例句】\nThe company is accepting applications for the marketing manager position until the end of the month. (公司將接受市場經理職位的申請，截止日期為本月底。)"}, {"id": 45, "word": "access", "content": "access (n., v.) 存取、接近權限、進入權限\n【搭配詞】\ngain access to 獲得權限\nunauthorized access 未經授權的存取\n【例句】\nEmployees need to access the company's database to retrieve sales figures. (員工需要存取公司資料庫以取得銷售數據。)"}, {"id": 46, "word": "accessibility", "content": "accessibility (n.) 可及性\n【搭配詞】\naccessibility to public transport 大眾運輸的便利性\nimprove 改善\n【例句】\nThe company is committed to improving the accessibility of its website for users with disabilities. (公司致力於提升其網站的可及性，以方便身心障礙人士使用。)"}, {"id": 47, "word": "accessible", "content": "accessible (adj.) 易於取得或使用的、可進入的、可負擔的\n【例句】\nThe company website is designed to be accessible to users with disabilities. (該公司網站的設計旨在方便身心障礙人士使用。)"}, {"id": 48, "word": "accessories", "content": "accessories (n.) 配飾、附加品（通常指服裝、包袋等用於裝飾或搭配的物品）\n【搭配詞】\ncomputer accessories 電腦配件\nfashion accessories 時尚飾品\n【例句】\nThe boutique offers a wide range of accessories, including scarves, belts, and jewelry. (這家精品店提供各式各樣的配飾，包括圍巾、皮帶和珠寶。)"}, {"id": 49, "word": "accessory", "content": "accessory (n., adj.) 配件、附件、從犯、附屬的、輔助的\n【搭配詞】\ncomputer accessories 電腦配件\nfashion accessories 時尚配件\n【例句】\nThe store offers a wide range of car accessories, from seat covers to navigation systems. (這家商店提供各種汽車配件，從座套到導航系統一應俱全。)"}, {"id": 50, "word": "accident", "content": "accident (n.) 意外事故、意外事件\n【詞性變化】\naccidental (adj.) 意外的\naccidentally (adv.) 不小心地\n【搭配詞】\nby accident 偶然地\nindustrial accident 工安意外\n【例句】\nThe company is investigating the accident to determine the cause and prevent future incidents. (公司正在調查這起意外事故，以確定原因並防止未來發生類似事件。)"}, {"id": 51, "word": "accidentally", "content": "accidentally (adv.) 不小心地、意外地（指因疏忽或未經意間發生的事情）\n【搭配詞】\naccidentally deleted 意外刪除文件\naccidentally omitted 不小心遺漏內容\n【例句】\nI accidentally deleted the important file; I'm so sorry. (我不小心刪除了重要的檔案，我非常抱歉。)"}, {"id": 52, "word": "acclaim", "content": "acclaim (v., n.) 讚譽、好評、盛讚\n【搭配詞】\ncritically acclaimed 深受好評的\ninternational/universal acclaim 國際/一致好評\n【例句】\nThe new product received widespread acclaim from industry experts. (這款新產品獲得了業界專家們的廣泛讚譽。)"}, {"id": 53, "word": "accommodate", "content": "accommodate (v.) 容納、適應、滿足（需求或要求）\n【搭配詞】\naccommodate the growing demand 滿足日益增長的需求\naccommodate a busy schedule 配合繁忙的日程\n【例句】\nThe hotel can accommodate up to 200 guests for the conference. (這家飯店可以容納最多 200 位嘉賓參加會議。)"}, {"id": 54, "word": "accommodation", "content": "accommodation (n.) 住宿、膳宿安排、（公司提供的）住宿福利\n【例句】\nThe company provides accommodation and meals for all overseas employees. (公司為所有海外員工提供住宿和膳食。)"}, {"id": 55, "word": "accommodations", "content": "accommodations (n.) 住宿設施或提供的住宿服務，常指旅館、酒店或其他供應客人暫住的場所\n【搭配詞】\nprovide accommodations 提供住宿\nseek accommodations 尋找住宿\n【例句】\nThe conference organizer arranged accommodations at a nearby hotel for all attendees. (會議主辦單位為所有與會者安排了附近飯店的住宿。)"}, {"id": 56, "word": "accompanied", "content": "accompanied (v.) 伴隨、隨同、與...同時發生\n【搭配詞】\naccompanied 被動語態/過去分詞\nthe accompanying manual 隨附的手冊\n【例句】\nThe sales representative was accompanied by a technical expert during the client meeting. (銷售代表在客戶會議期間與一位技術專家一同出席。)"}, {"id": 57, "word": "accompany", "content": "accompany (v.) 陪伴、隨同、伴隨\n【例句】\nThe marketing team will accompany the CEO on the business trip to Tokyo. (行銷團隊將陪同 CEO 前往東京進行商務旅行。)"}, {"id": 58, "word": "accomplish", "content": "accomplish (v.) 完成、達成（目標、任務等）\n【搭配詞】\naccomplish a task 完成任務\naccomplish a goal 達成目標\n【例句】\nThe project team managed to accomplish all the objectives within the deadline. (專案團隊成功在期限內完成了所有目標。)"}, {"id": 59, "word": "accomplished", "content": "accomplished (adj.) （尤指在某方面）有成就的、技藝精湛的\n【詞性變化】\naccomplishment (n.) 成就\naccomplish (v.) 完成\n【例句】\nThe company is proud to have an accomplished sales team that consistently exceeds targets. (公司很自豪擁有一支技藝精湛的銷售團隊，他們始終能超越目標。)"}, {"id": 60, "word": "accomplishment", "content": "accomplishment (n.) 成就、完成\n【詞性變化】\naccomplished (adj.) 形容人有才華的或精通的\n【搭配詞】\nremarkable accomplishment 卓越的成就\nsense of accomplishment 成就感\n【例句】\nThe department implemented innovative accomplishment procedures to improve operational efficiency. (部門實施創新的accomplishment程序以提高營運效率。)"}, {"id": 61, "word": "accord", "content": "accord (n., v., adj.) 一致、協調、達成協議\n【搭配詞】\naccord 協議/一致\naccording to 根據\n【例句】\nThe two companies reached an accord on the terms of the merger. (這兩家公司就合併條款達成一致。)"}, {"id": 62, "word": "accordance", "content": "accordance (prep., adv.) 依照、符合、根據\n【例句】\nThe company operates in accordance with all relevant regulations. (公司依照所有相關法規運作。)"}, {"id": 63, "word": "according", "content": "according (adv., prep.) 根據、依照、根據…的\n【詞性變化】\naccordingly (adv.)\n【搭配詞】\naccording to the revised schedule 根據修改後的進度表\naccording to 介係詞片語\n【例句】\nThe project timeline is according to the client's specifications. (專案時間表依照客戶的規格。)"}, {"id": 64, "word": "accordingly", "content": "accordingly (adv.) 相應地、根據地、適當地\n【搭配詞】\nplan accordingly 相應地計畫\nact accordingly 採取相應行動\n【例句】\nThe meeting was postponed until next week, and the project timeline was adjusted accordingly. (會議延遲至下週舉行，專案時程也相應地調整。)"}, {"id": 65, "word": "account", "content": "account (n., v.) 帳戶、紀錄、說明、負責人\n【詞性變化】\naccountable (adj.) 應負責任的\n【搭配詞】\ntake something into account 將某事考慮在內\non account of 因為，等同於 because of\n【例句】\nThe company needs to reconcile its bank accounts monthly. (公司需要每月對帳戶進行核對。)"}, {"id": 66, "word": "accountability", "content": "accountability (n.) 責任制\n【搭配詞】\nhold someone accountable for something 要求某人對某事負責\npersonal accountability 個人當責\n【例句】\nThe company's new accountability initiative exceeded expectations in the first quarter. (公司的新accountability計畫在第一季度超出了預期。)"}, {"id": 67, "word": "accountable", "content": "accountable (adj., v.) 負責、對...負責、可追溯的\n【搭配詞】\nbe held accountable for 為某事負責\n【例句】\nEach department is accountable for meeting its quarterly sales targets. (每個部門都需對達成季度銷售目標負責。)"}, {"id": 68, "word": "accountant", "content": "accountant (n.) 會計師、負責公司財務帳務處理的人員\n【搭配詞】\nhire an accountant 聘請會計師\nsenior accountant 資深會計師\n【例句】\nThe company hired an accountant to manage their financial records. (公司聘請了一位會計師來管理他們的財務記錄。)"}, {"id": 69, "word": "accounting", "content": "accounting (n.) 會計\n【搭配詞】\naccounting firm 會計師事務所\naccounting department 會計部門\n【例句】\nThe accounting department will finalize the quarterly financial statements by Friday. (會計部門將於週五完成本季財務報表的最終整理。)"}, {"id": 70, "word": "accounts", "content": "accounts (n.) 帳戶、會計記錄、客戶群\n【搭配詞】\nAccounts Payable 應付帳款\nAccounts Receivable 應收帳款\n【例句】\nThe auditor will review the company's accounts to ensure accuracy. (審計師將審查公司的帳戶，以確保準確性。)"}, {"id": 71, "word": "accredit", "content": "accredit (v.) 認證、核可（某機構或組織符合特定標準）\n【搭配詞】\naccredited institution 認可機構\naccredited program 經鑑定合格的課程\n【例句】\nThe university is seeking accreditation from a recognized international body. (這所大學正在尋求從國際認可機構獲得認證。)"}, {"id": 72, "word": "accrual", "content": "accrual (n.) 應計、應計項目、權責發生制\n【詞性變化】\naccrue (v.)\n【搭配詞】\naccrual basis 應計基礎/應計制\naccrual accounting 應計會計\n【例句】\nThe company reported a significant accrual for future warranty claims. (該公司報告了一筆用於未來保固索賠的巨額應計款項。)"}, {"id": 73, "word": "accrue", "content": "accrue (v.) 累積、逐漸增加（通常指金額、利息、權益等）\n【搭配詞】\naccrue interest 累積利息\naccrued expenses 應計費用\n【例句】\nInterest will accrue on the outstanding balance if payment is not received by the due date. (如果未在到期日之前收到付款，未償餘額將產生利息。)"}, {"id": 74, "word": "accumulate", "content": "accumulate (v.) 累積、積累、逐漸增加\n【搭配詞】\naccumulate wealth 累積財富\naccumulate debt 累積債務\n【例句】\nThe company is trying to accumulate more capital to fund its expansion. (該公司正試圖累積更多資本以資擴張。)"}, {"id": 75, "word": "accumulated", "content": "accumulated (adj.) 累積的、積累的、(費用、債務等) 累積的\n【搭配詞】\naccumulated debt 累計債務\naccumulated experience 累積的經驗\n【例句】\nThe company has accumulated a significant amount of debt over the past year. (過去一年，該公司累積了相當多的債務。)"}, {"id": 76, "word": "accumulation", "content": "accumulation (n.) 累積、積累、堆積\n【搭配詞】\nwealth accumulation 財富累積\ncapital accumulation 資本累積\n【例句】\nThe company is experiencing a significant accumulation of inventory due to decreased sales. (由於銷售額下降，公司正經歷大量庫存積累。)"}, {"id": 77, "word": "accuracy", "content": "accuracy (n., adj.) 精確度、準確性\n【搭配詞】\nensure accuracy 確保準確性\nimprove accuracy 提高準確度\n【例句】\nThe report needs to be checked for accuracy before it's submitted to the board. (報告在提交給董事會之前，需要檢查其準確性。)"}, {"id": 78, "word": "accurate", "content": "accurate (adj.) 精確的、準確的、無誤的，符合事實的\n【搭配詞】\naccurate information 正確的資訊\naccurate data 精確的數據\n【例句】\nThe report needs to be reviewed to ensure the data is accurate. (需要審閱報告以確保數據的準確性。)"}, {"id": 79, "word": "accurately", "content": "accurately (adv.) 精確地、準確地，尤其指在數據、報告或資訊方面\n【搭配詞】\naccurately reflect the current market trends 準確反映當前市場趨勢\n【例句】\nThe report needs to be updated to accurately reflect the current market trends. (報告需要更新，以準確反映目前的市場趨勢。)"}, {"id": 80, "word": "accusation", "content": "accusation (n.) 控告\n【詞性變化】\naccuse (v.)\naccusatory (adj.)\n【搭配詞】\nmake an accusation against 對某人提出指控\ndeny an accusation 否認指控\n【例句】\nThe manager faced an accusation of unethical behavior. (經理面臨不道德行為的指控。)"}, {"id": 81, "word": "accuse", "content": "accuse (v.) 指控\n【例句】\nThe company accused the supplier of delivering substandard materials. (該公司指控供應商交付了品質不佳的材料。)"}, {"id": 82, "word": "accused", "content": "accused (adj., v.) 被指控、被控告\n【搭配詞】\nbe accused of + N/V-ing 被指控某事\n【例句】\nThe former employee was accused of leaking confidential company data. (這位前員工被指控洩漏了公司的機密數據。)"}, {"id": 83, "word": "accustom", "content": "accustom (v., adj.) 使習慣於、使適應\n【詞性變化】\ncustom (n.) ：習俗/海關\ncustomer (n.) ：顧客\n【搭配詞】\naccommodate 提供住宿/調整\n【例句】\nIt takes time to accustom yourself to a new working environment. (習慣新的工作環境需要時間。)"}, {"id": 84, "word": "accustomed", "content": "accustomed (adj.) 習慣於、適應於\n【詞性變化】\ncustom (n.) 習俗\n【例句】\nOur team is accustomed to working long hours during peak season. (我們的團隊習慣在旺季工作長時間。)"}, {"id": 85, "word": "achievable", "content": "achievable (adj.) 可實現的、可達成的\n【搭配詞】\nachievable goals 可達成的目標\n【例句】\nThe company set an achievable sales target for the new quarter. (公司為新季度設定了一個可實現的銷售目標。)"}, {"id": 86, "word": "achieve", "content": "achieve (v.) 達成、實現（目標、成就）\n【搭配詞】\nachieve a goal 達成目標\nachieve a target 達到指標\n【例句】\nThe company aims to achieve a 15% increase in sales this quarter. (本公司本季目標達成 15% 的銷售額增長。)"}, {"id": 87, "word": "achievement", "content": "achievement (n.) 成就\n【搭配詞】\noutstanding achievement 傑出成就\na sense of achievement 成就感\n【例句】\nThe company's new achievement initiative exceeded expectations in the first quarter. (公司的新achievement計畫在第一季度超出了預期。)"}, {"id": 88, "word": "achiever", "content": "achiever (n.) 績效達成者、有成就者\n【詞性變化】\nachieve (v.)\nachievement (n.) -成就/事蹟\n【搭配詞】\nhigh achiever 成就卓越的人\n【例句】\nOur company seeks to identify and recruit high-potential achievers. (我們公司致力於識別並招募具有高潛力的績效達成者。)"}, {"id": 89, "word": "achieving", "content": "achieving (v., adj.) 達成、實現、完成（目標、成就等）\n【搭配詞】\nachieving goals 達成目標\nachieving sales targets 達成銷售指標\n【例句】\nThe company is focused on achieving its sales targets for the quarter. (公司專注於實現本季的銷售目標。)"}, {"id": 90, "word": "acid", "content": "acid (n., adj.) 酸、酸性的\n【詞性變化】\nacidity (n.) 酸度\n【例句】\nThe chemical solution turned blue litmus paper red, indicating it was an acid. (化學溶液使藍色石蕊試紙變紅，表示它是一種酸。)"}, {"id": 91, "word": "acidic", "content": "acidic (adj.) 酸性的、酸的\n【詞性變化】\nacid (n.) 酸\nacidity (n.) 酸度\n【搭配詞】\nacidic soil 酸性土壤\nacidic solution 酸性溶液\n【例句】\nLemon juice is highly acidic and can be used to clean some surfaces. (檸檬汁的酸性很強，可以用來清潔一些表面。)"}, {"id": 92, "word": "ackerman", "content": "ackerman (n.) 阿克曼法（Ackerman method）是一種用於計算齒輪傳動比的公式，主要應用於工程設計\n【搭配詞】\nAckerman steering 阿克曼轉向\n【例句】\nThe engineer used the Ackerman formula to determine the optimal gear ratio for the new machinery. (這位工程師使用阿克曼法來確定新機器所需的最佳齒輪傳動比。)"}, {"id": 93, "word": "acknowledge", "content": "acknowledge (v.) 承認、認可\n【例句】\nThe manager acknowledged the team's hard work and dedication to the project. (經理肯定了團隊為專案付出的辛勤工作和奉獻精神。)"}, {"id": 94, "word": "acknowledging", "content": "acknowledging (v.) 表示理解、同意或接受某事、認可\n【搭配詞】\nacknowledging the receipt of something\n【例句】\nThe company acknowledged the customer's complaint and offered a full refund. (公司已承認客戶的投訴，並提供全額退款。)"}, {"id": 95, "word": "acquaint", "content": "acquaint (v.) 使…熟悉、使…認識（某人或某事）\n【搭配詞】\nacquaint someone with something 使某人熟悉某事\n【例句】\nThe new employee needs to be acquainted with the company's policies and procedures. (這位新進員工需要熟悉公司的政策和流程。)"}, {"id": 96, "word": "acquaintance", "content": "acquaintance (n.) 認識的人，熟人（但不深交）\n【搭配詞】\nmake the acquaintance of someone 初次結識某人\na business acquaintance 生意上的熟人\n【例句】\nI have a few acquaintances in the marketing department, but I don't know them very well. (我在行銷部門有一些熟人，但我不認識他們很熟。)"}, {"id": 97, "word": "acquire", "content": "acquire (v.) 獲得、取得（通常指透過努力或購買）\n【搭配詞】\nacquire skills 習得技能\nacquire knowledge 獲得知識\n【例句】\nThe company aims to acquire a new software license to improve operational efficiency. (公司計畫購買新的軟體授權，以提高營運效率。)"}, {"id": 98, "word": "acquired", "content": "acquired (adj.) 獲得的、後天學得的、取得的\n【搭配詞】\nacquired company 被收購的公司\nnewly acquired assets 新購得的資產\n【例句】\nThe company has acquired a reputation for excellent customer service. (該公司已獲得良好的客戶服務聲譽。)"}, {"id": 99, "word": "acquisition", "content": "acquisition (n.) 收購、取得、獲得（通常指企業或資產）\n【例句】\nThe company announced the acquisition of a smaller competitor to expand its market share. (該公司宣布收購一家規模較小的競爭對手，以擴大其市場份額。)"}, {"id": 100, "word": "acre", "content": "acre (n.) 英畝（土地面積單位）\n【搭配詞】\nacreage 總英畝數、面積\nper acre 每英畝\n【例句】\nThe farm spans over 100 acres of land. (這農場佔地超過100英畝。)"}, {"id": 101, "word": "across", "content": "across (prep., adv.) 橫跨、穿過、在...的另一邊\n【例句】\nThe new bridge will allow employees to walk across the street to the office building. (新的橋樑將允許員工橫過馬路前往辦公大樓。)"}, {"id": 102, "word": "act", "content": "act (n., v.) 行動、行為、扮演（角色）\n【搭配詞】\nact as 擔任/充當\nact as a liaison 擔任聯絡人\n【例句】\nThe company is taking swift action to address the recent data breach. (公司正迅速採取行動以應對最近發生的資料外洩事件。)"}, {"id": 103, "word": "acting", "content": "acting (n., v.) 表演、演出（通常指戲劇、電影等）\n【例句】\nThe company hired an acting coach to improve the team's presentation skills. (公司聘請了一位表演老師來提升團隊的簡報技巧。)"}, {"id": 104, "word": "action", "content": "action (n., v.) 行動、為解決問題或達成目標而採取的具體措施或步驟，常用於商務環境中\n【搭配詞】\ntake action 採取行動\ncorrective action 矯正措施\n【例句】\nThe project manager outlined the next actions required to meet the deadline. (專案經理說明了為了趕上截止日期所需採取的下一步行動。)"}, {"id": 105, "word": "activate", "content": "activate (v.) 啟動、啟用、使生效\n【搭配詞】\nactivate an account 開通帳戶\nactivate a credit card 開卡\n【例句】\nPlease activate your account by clicking the link in the confirmation email. (請點擊確認郵件中的連結以啟用您的帳戶。)"}, {"id": 106, "word": "activated", "content": "activated (v., adj.) 啟動、啟用、使生效\n【詞性變化】\nactive (adj.) 強調持續有效的狀態\n【搭配詞】\nactivated account 已啟用的帳戶\nactivated credit card 已開通的信用卡\n【例句】\nThe security system was activated by the motion sensor. (運動感應器啟動了安全系統。)"}, {"id": 107, "word": "activation", "content": "activation (n.) 啟動、激活、觸發\n【詞性變化】\nactivate (v.)\n【搭配詞】\naccount activation 帳戶啟用\nsoftware activation 軟體啟動\n【例句】\nPlease follow the instructions for product activation after installation. (請按照說明在安裝後完成產品啟動。)"}, {"id": 108, "word": "active", "content": "active (adj., v.) 積極的、活躍的、正在運作的\n【搭配詞】\ntake an active role in something 在某事中扮演積極角色\nbe an active participant 作為積極參與者\n【例句】\nThe company is actively seeking new markets to expand its business. (該公司正積極尋找新的市場以擴展其業務。)"}, {"id": 109, "word": "actively", "content": "actively (adv.) 積極地、活躍地、主動地\n【詞性變化】\nactive (adj.)\nact (v.)\n【搭配詞】\nactively seeking 積極尋找\nactively involved in 積極參與\n【例句】\nThe company is actively seeking new talent to join its team. (該公司正積極尋找新人才加入其團隊。)"}, {"id": 110, "word": "activist", "content": "activist (n.) 社運人士、行動主義者\n【搭配詞】\nenvironmental activist 環保人士\npolitical activist 政治活動家\n【例句】\nThe environmental activist campaigned for stricter pollution controls. (這位環保社運人士呼籲實施更嚴格的污染控制。)"}, {"id": 111, "word": "activities", "content": "activities (n.) 活動、事務、業務\n【搭配詞】\noutdoor activities 戶外活動\nbusiness activities 商務活動\n【例句】\nThe company organizes team-building activities to improve employee morale. (公司組織團隊建設活動以提升員工士氣。)"}, {"id": 112, "word": "activity", "content": "activity (n.) 活動、事務、業務\n【搭配詞】\noutdoor activities 戶外活動\neconomic activity 經濟活動\n【例句】\nThe company organized a team-building activity to improve employee morale. (公司組織了一項團隊建設活動以提升員工士氣。)"}, {"id": 113, "word": "actor", "content": "actor (n.) 演員、表演者（通常指電影、電視或舞台上的）\n【搭配詞】\nvoice actor 配音員\nlead actor 主角\n【例句】\nThe company hired a well-known actor to endorse their new product. (該公司聘請了一位知名的演員來代言他們的新產品。)"}, {"id": 114, "word": "actress", "content": "actress (n.) 女演員、表演電影、電視或舞台的女性\n【搭配詞】\naward-winning actress 獲獎女演員\nlead actress 女主角\n【例句】\nThe company hired a famous actress to endorse their new product line. (該公司聘請了一位知名女演員來代言他們的新產品線。)"}, {"id": 115, "word": "acts", "content": "acts (n., v.) 行為、作為、行動\n【例句】\nThe company's actions demonstrated a commitment to environmental sustainability. (該公司的行為展現了對環境永續發展的承諾。)"}, {"id": 116, "word": "actual", "content": "actual (adj.) 實際的、真實的、現實的\n【搭配詞】\nactual cost 實際成本\nactual sales figures 實際銷售數字\n【例句】\nThe actual cost of the project exceeded the initial budget by 15%. (專案的實際成本比最初預算高出 15%。)"}, {"id": 117, "word": "actually", "content": "actually (adv.) 實際上、原來、事實上（用於強調或修正之前的說法）\n【搭配詞】\nactually need 真的需要\nactually mean 實際意思是\n【例句】\nActually, the project deadline has been extended to next Friday. (實際上，這個專案的截止日期已經延遲到下週五。)"}, {"id": 118, "word": "acute", "content": "acute (adj.) 急性的、嚴重的、敏銳的（指疼痛、問題或情況）\n【搭配詞】\nan acute shortage of skilled labor 技術勞工嚴重短缺\n【例句】\nThe company is facing an acute shortage of skilled labor. (公司正面臨嚴重的技術人才短缺。)"}, {"id": 119, "word": "ad", "content": "ad (n.) 廣告（advertisement 的縮寫）\n【詞性變化】\nadd (v.) 增加/加總\n【搭配詞】\nplace an ad 刊登廣告\nrun an ad 執行/刊登廣告\n【例句】\nWe need to run an ad in the local newspaper to promote our new product. (我們需要在當地報紙上刊登一則廣告來推廣我們的新產品。)"}, {"id": 120, "word": "adapt", "content": "adapt (v.) 適應、調整、使符合\n【例句】\nThe company needs to adapt its marketing strategy to the changing market trends. (公司需要調整其行銷策略以適應不斷變化的市場趨勢。)"}, {"id": 121, "word": "adaptability", "content": "adaptability (n.) 適應性、變通能力\n【搭配詞】\ndemonstrate adaptability 展現適應力\n【例句】\nThe company values employees with a high degree of adaptability to handle unexpected changes in the market. (公司重視具備高度適應性的員工，以應對市場上突發的變化。)"}, {"id": 122, "word": "adaptable", "content": "adaptable (adj.) 適應性強的、能適應變化的\n【搭配詞】\nhighly adaptable 高度適應力的\n【例句】\nThe company needs employees who are adaptable to changing market conditions. (公司需要能夠適應市場變化的人才。)"}, {"id": 123, "word": "adaptation", "content": "adaptation (n.) 適應、改編\n【詞性變化】\nadaptable (adj.) 具適應力的\n【搭配詞】\nadaptation to new regulations 適應新法規\nmarket adaptation 市場適應\n【例句】\nThe company's adaptation approach needs to be updated. (公司的適應方法需要更新。)"}, {"id": 124, "word": "adapted", "content": "adapted (v., adj.) 調整、適應（以符合新的條件或需求）\n【例句】\nThe company has adapted its marketing strategy to appeal to a younger demographic. (公司已調整其行銷策略，以吸引年輕族群。)"}, {"id": 125, "word": "adapter", "content": "adapter (n.) 轉接器、轉換器、適配器\n【詞性變化】\nadapt (v.) 適應\n【搭配詞】\npower adapter 電源轉接器\ntravel adapter 旅行轉接頭\n【例句】\nI need an adapter to connect my old monitor to the new laptop. (我需要一個轉接器才能把我的舊螢幕接到新筆電上。)"}, {"id": 126, "word": "adapting", "content": "adapting (v., adj.) 適應、調整以符合新的條件或情況\n【例句】\nThe company is adapting its marketing strategy to reach a younger demographic. (公司正在調整其行銷策略，以接觸年輕族群。)"}, {"id": 127, "word": "adaptive", "content": "adaptive (adj.) 適應性的、能適應的\n【詞性變化】\nadopt (v.) 採用\nadapt (v.)\n【搭配詞】\nadaptive technology 自適應技術\nadaptive leadership 適應型領導\n【例句】\nThe company needs an adaptive strategy to respond to rapid market changes. (公司需要一個適應性策略來應對快速的市場變化。)"}, {"id": 128, "word": "add", "content": "add (v.) 增加、加上、添加\n【搭配詞】\nin addition to 除了...之外\n【例句】\nCould you please add this item to the purchase order? (您能請將此項目加入購買訂單嗎？)"}, {"id": 129, "word": "added", "content": "added (v., adj.) 新增、附加、增加\n【搭配詞】\nadded value 附加價值\nadded benefit 額外好處\n【例句】\nThe marketing team added a new feature to the product to attract more customers. (行銷團隊為產品新增了一個功能，以吸引更多客戶。)"}, {"id": 130, "word": "addicted", "content": "addicted (adj., v.) 對某事物產生強烈成癮，無法自拔、沉迷於某事物\n【例句】\nThe company is concerned that some employees are addicted to social media during work hours. (公司擔心有些員工在工作時間沉迷於社群媒體。)"}, {"id": 131, "word": "adding", "content": "adding (v., adj.) 增加、附加、增添\n【詞性變化】\nadditional (adj.) 額外的\naddition (n.) 增加物\n【搭配詞】\nadding value to 為...增值\nadding an item to the agenda 將項目加入議程\n【例句】\nThe company is adding new features to its software to improve user experience. (該公司正在為其軟體新增功能，以改善使用者體驗。)"}, {"id": 132, "word": "addition", "content": "addition (n.) 加法、額外增加、附加物\n【搭配詞】\nIn addition to + N/Ving 除了...之外\n【例句】\nThe project budget requires an addition of $5,000 for unexpected expenses. (專案預算需要額外增加 5,000 美元以應付 непредвиденные расходы。)"}, {"id": 133, "word": "additional", "content": "additional (adj., adv.) 額外的、附加的、補充的\n【搭配詞】\nadditional information 額外資訊\nadditional costs/charges 額外費用\n【例句】\nThe company is offering an additional 10% discount for loyal customers. (公司為忠誠客戶提供額外 10% 的折扣。)"}, {"id": 134, "word": "additionally", "content": "additionally (adv.) 此外、另外、額外地\n【詞性變化】\nadditional (adj.) 例如：additional information\naddition (n.)\n【例句】\nThe project budget has increased; additionally, the deadline has been extended. (專案預算已增加；此外，截止日期也已延長。)"}, {"id": 135, "word": "address", "content": "address (n., v.) 地址、（正式）稱謂、處理（問題、信件等）\n【搭配詞】\naddress an issue 處理議題\naddress concerns 處理疑慮\n【例句】\nPlease send the invoice to the following address. (請將發票寄至以下地址。)"}, {"id": 136, "word": "addressed", "content": "addressed (v.) （正式地）處理、解決、（信件、包裹等）寄達\n【搭配詞】\naddressed the issue 處理問題\naddressed the concern 回應擔憂\n【例句】\nThe manager addressed the team's concerns about the new project timeline. (經理解決了團隊對新項目時間表的擔憂。)"}, {"id": 137, "word": "addressing", "content": "addressing (v., adj.) 處理、解決、（信件、包裹等）寄送至、（問題、議題等）探討\n【例句】\nThe IT department is addressing the network outage as a top priority. (資訊部門正將網路中斷視為首要任務來處理。)"}, {"id": 138, "word": "adds", "content": "adds (v.) 增加、附加、添加\n【詞性變化】\nads (n.) ：廣告\n【搭配詞】\nadds value to 為...增加價值\nadds a feature 增加功能\n【例句】\nThe software update adds several new features to improve user experience. (這項軟體更新增加了幾個新功能，以提升使用者體驗。)"}, {"id": 139, "word": "adductor", "content": "adductor (n.) 內收肌 (指使肢體靠近身體中線的肌肉)\n【搭配詞】\nadductor muscle 收肌\nhip adductors 髖收肌群\n【例句】\nThe adductor muscles in the thigh are crucial for activities like walking and running. (大腿的內收肌對於走路和跑步等活動至關重要。)"}, {"id": 140, "word": "adept", "content": "adept (adj.) 擅長、精通、熟練\n【搭配詞】\nbe adept at negotiating 擅長談判\n【例句】\nShe is adept at using various software programs, making her a valuable asset to the team. (她擅長使用各種軟體程式，使她成為團隊中寶貴的資產。)"}, {"id": 141, "word": "adequate", "content": "adequate (adj.) 足夠的、適當的、滿足需求的\n【搭配詞】\nadequate funding 充足資金\nadequate inventory 足夠庫存\n【例句】\nThe company's current resources are adequate to handle the project's initial phase. (目前公司的資源足以應付專案的初步階段。)"}, {"id": 142, "word": "adequately", "content": "adequately (adv.) 充份地、適當地、足以\n【搭配詞】\nadequately prepared 準備充足\nadequately funded 資金充足\n【例句】\nThe company ensured that all employees were adequately trained before taking on new responsibilities. (公司確保所有員工在承擔新職責之前都得到了充分的培訓。)"}, {"id": 143, "word": "adhere", "content": "adhere (v.) 遵守、堅持、黏附\n【例句】\nAll employees are required to adhere to the company's code of conduct. (所有員工都必須遵守公司的行為準則。)"}, {"id": 144, "word": "adisa", "content": "adisa (n.) （電腦）管理系統、系統管理員\n【搭配詞】\nadvise someone to do something 建議某人做某事\n【例句】\nThe IT department relies on the system administrator to maintain network security. (IT 部門依靠系統管理員來維護網路安全。)"}, {"id": 145, "word": "adjacent", "content": "adjacent (adj.) 緊鄰的、相鄰的\n【例句】\nThe conference room is adjacent to the cafeteria, making it convenient for attendees to grab lunch. (會議室緊鄰餐廳，讓與會者方便用餐。)"}, {"id": 146, "word": "adjourn", "content": "adjourn (v.) 暫緩、延期（會議、審判等）\n【搭配詞】\nadjourn a meeting 休會/結束會議\n【例句】\nDue to unforeseen circumstances, the meeting will be adjourned until next week. (由於突發狀況，會議將延期至下週舉行。)"}, {"id": 147, "word": "adjournment", "content": "adjournment (n., v.) （會議、辯論等）休會、延會\n【搭配詞】\nmove for adjournment 提議休會\ngrant an adjournment 准許延期或休會\n【例句】\nDue to unforeseen circumstances, the meeting was adjourned until further notice. (由於突發狀況，會議已延會，暫停至另行通知。)"}, {"id": 148, "word": "adjust", "content": "adjust (v.) 調整、適應、修改\n【搭配詞】\nadjust the settings 調整設定\nadjust to the new environment 適應新環境\n【例句】\nPlease adjust the font size to 12 points for better readability. (請將字體大小調整為 12 點，以提高可讀性。)"}, {"id": 149, "word": "adjusted", "content": "adjusted (adj., v.) 調整、修改（以符合特定標準或需求）\n【搭配詞】\nseasonally adjusted 季節性調整後的\nadjusted budget 調整後的預算\n【例句】\nThe project timeline was adjusted to accommodate the unexpected delay. (專案時程因突發延遲而被調整。)"}, {"id": 150, "word": "adjustment", "content": "adjustment (n.) 調整、適應\n【搭配詞】\nmake an adjustment 進行調整\nprice adjustment 價格調整\n【例句】\nThe department implemented innovative adjustment procedures to improve operational efficiency. (部門實施創新的adjustment程序以提高營運效率。)"}, {"id": 151, "word": "adjustments", "content": "adjustments (n.) 調整、修改（以適應新情況或需求）\n【搭配詞】\nmake adjustments to 對...進行調整\nminor adjustments 微調\n【例句】\nThe company is making adjustments to its marketing strategy to better reach its target audience. (公司正在調整其營銷策略，以更好地接觸目標受眾。)"}, {"id": 152, "word": "admin", "content": "admin (n.) 管理者、管理員、系統管理員\n【搭配詞】\nadmin assistant 行政助理\nadmin staff 行政人員\n【例句】\nThe IT admin is responsible for maintaining the company's network security. (IT 管理員負責維護公司的網路安全。)"}, {"id": 153, "word": "administer", "content": "administer (v.) 管理、執行、提供（測試、藥物等）\n【搭配詞】\nadminister a test 舉行考試\nadminister a project 管理專案\n【例句】\nThe HR department will administer the employee performance review process. (人力資源部門將管理員工績效考核流程。)"}, {"id": 154, "word": "administration", "content": "administration (n.) 行政管理、管理層、行政部門\n【搭配詞】\nadministration office 行政辦公室\nbusiness administration 工商管理\n【例句】\nThe company's administration is responsible for handling employee benefits and payroll. (公司的行政部門負責處理員工福利和薪資。)"}, {"id": 155, "word": "administrative", "content": "administrative (adj.) 與行政管理相關的、行政上的\n【詞性變化】\nadministration (n.) 行政/管理\n【搭配詞】\nadministrative assistant 行政助理\nadministrative duties 行政職責\n【例句】\nThe administrative assistant is responsible for scheduling meetings and managing correspondence. (行政助理負責安排會議和管理郵件。)"}, {"id": 156, "word": "administrator", "content": "administrator (n.) 管理者、行政人員\n【搭配詞】\nsystem administrator 系統管理員\ndatabase administrator 資料庫管理員\n【例句】\nThe administrator is responsible for managing the company's IT infrastructure. (行政人員負責管理公司的 IT 基礎設施。)"}, {"id": 157, "word": "admire", "content": "admire (v.) 欽佩、讚賞、欣賞\n【搭配詞】\nadmire her for her professional dedication 因專業敬業而欽佩她\n【例句】\nI really admire her dedication to her work. (我真的很欣賞她對工作的奉獻。)"}, {"id": 158, "word": "admired", "content": "admired (adj.) 受到讚賞、尊敬、被推崇\n【搭配詞】\nwidely admired 深受推崇\n【例句】\nThe company's commitment to sustainability is widely admired by its stakeholders. (公司對可持續發展的承諾廣受其利害關係人的讚賞。)"}, {"id": 159, "word": "admiringly", "content": "admiringly (adv.) 表示讚賞或欽佩的語氣、以讚賞的態度\n【搭配詞】\nspeak admiringly of someone 讚賞地談論某人\nlook admiringly at something 讚賞地看著某物\n【例句】\nThe manager listened to her proposal admiringly, impressed by her innovative ideas. (經理對她的提案傾聽，並以欽佩的態度，因為她有創新的想法。)"}, {"id": 160, "word": "admission", "content": "admission (n., v.) 入學許可、入場費、（對某事）承認、同意\n【搭配詞】\nadmission fee 入場費\nfree admission 免費入場\n【例句】\nThe university requires an admission fee of $50 for the application process. (大學要求申請流程的入學費為 50 美元。)"}, {"id": 161, "word": "admit", "content": "admit (v.) 承認、坦白、允許進入\n【例句】\nThe company admitted a slight delay in the project's completion. (公司承認專案完成略有延遲。)"}, {"id": 162, "word": "admitted", "content": "admitted (v.) 承認、允許進入、接納（某事）\n【搭配詞】\nadmitted making a mistake 承認犯錯\n【例句】\nThe company admitted a mistake in the report and issued a public apology. (公司承認報告中存在錯誤，並發布了公開道歉。)"}, {"id": 163, "word": "admittedly", "content": "admittedly (adv.) 坦率地說、不得不承認\n【搭配詞】\nadmittedy difficult 確實困難\nadmittedly small 確實很小\n【例句】\nAdmittedly, the project faced some unexpected challenges, but the team worked diligently to overcome them. (坦率地說，這個專案面臨了一些意想不到的挑戰，但團隊努力克服了它們。)"}, {"id": 164, "word": "adolescent", "content": "adolescent (n., adj.) 青少年、青春期的\n【搭配詞】\nadolescent development 青少年發展\nadolescent behavior 青少年行為\n【例句】\nThe program aims to support adolescents struggling with academic pressure. (該計畫旨在幫助面臨學業壓力的青少年。)"}, {"id": 165, "word": "adopt", "content": "adopt (v.) 採用、收養、實施、執行\n【搭配詞】\nadopt a policy 採取政策\nadopt a strategy 採用策略\n【例句】\nThe company decided to adopt a new performance evaluation system to improve employee productivity. (公司決定採用新的績效評估系統以提高員工生產力。)"}, {"id": 166, "word": "adoption", "content": "adoption (n.) 領養、採納、採用、接受\n【詞性變化】\nadopt (v.)\nadoptive (adj.)\n【搭配詞】\nadoption of new technology 採用新技術\nwidespread adoption 廣泛採用\n【例句】\nThe company announced the adoption of a new privacy policy. (公司宣布採用新的隱私政策。)"}, {"id": 167, "word": "ads", "content": "ads (n.) 廣告、廣告宣傳\n【搭配詞】\nplace an ad 刊登廣告\nrun an ad 投放/執行廣告\n【例句】\nThe company launched a series of online ads to promote its new product. (該公司推出一系列線上廣告以推廣其新產品。)"}, {"id": 168, "word": "adult", "content": "adult (n.) 成年人、成人（指已達到法定成年年齡的人）\n【詞性變化】\nadulterate (v.) 摻雜、變質\n【搭配詞】\nadult supervision 成人監督\nadult fare 成人票價\n【例句】\nThe company offers a comprehensive benefits package for all adult employees. (公司為所有成年員工提供全面的福利方案。)"}, {"id": 169, "word": "advance", "content": "advance (v., n., adj.) 提前、預先、晉升、提高\n【搭配詞】\nin advance 事先\nadvance notice 事先通知\n【例句】\nThe company decided to advance the project deadline by a week. (公司決定將專案截止日期提前一週。)"}, {"id": 170, "word": "advanced", "content": "advanced (adj.) 高級的、進階的、高階的（指程度、技能或知識等達到較高的水平）\n【詞性變化】\nadvance (adj.) /名詞，指預先的、前進\n【搭配詞】\nadvanced technology 先進技術\nadvanced degree 高等學位\n【例句】\nThe company is looking for candidates with advanced Excel skills. (公司正在尋找具備進階 Excel 技能的候選人。)"}, {"id": 171, "word": "advancement", "content": "advancement (n.) 進步、提前\n【搭配詞】\ncareer advancement 職業晉升\ntechnological advancement 技術進步\n【例句】\nThe department implemented innovative advancement procedures to improve operational efficiency. (部門實施創新的advancement程序以提高營運效率。)"}, {"id": 172, "word": "advantage", "content": "advantage (n., v., adj.) 優勢、有利條件、利益\n【搭配詞】\ntake advantage of 利用、趁機\ncompetitive advantage 競爭優勢\n【例句】\nHaving a strong network can be a significant advantage in the job market. (擁有強大的社交網絡在就業市場上可能是一個顯著的優勢。)"}, {"id": 173, "word": "advantages", "content": "advantages (n.) 優勢、好處、利益\n【搭配詞】\ntake advantage of 利用、趁機\ncompetitive advantage 競爭優勢\n【例句】\nOur company's main advantage is our commitment to providing high-quality products. (我們公司的主要優勢是我們致力於提供高品質的產品。)"}, {"id": 174, "word": "adventure", "content": "adventure (n., v.) 冒險、刺激的經歷\n【詞性變化】\nadventurous (adj.) 愛冒險的\n【搭配詞】\nsense of adventure 冒險精神\noutdoor adventure 戶外冒險\n【例句】\nThe company is planning a team-building adventure trip to promote collaboration. (公司正在計劃一次團隊建設冒險旅行，以促進合作。)"}, {"id": 175, "word": "adverse", "content": "adverse (adj., adv.) 不利的、負面的、相反的\n【搭配詞】\nadverse weather conditions 惡劣天氣\nadverse effect/impact on 對...的不利影響\n【例句】\nThe company faced adverse market conditions after the economic downturn. (在經濟衰退後，該公司面臨不利的市場環境。)"}, {"id": 176, "word": "adversely", "content": "adversely (adv.) 不利地、負面地、相反地\n【例句】\nThe company's reputation was adversely affected by the negative publicity. (負面新聞對公司的聲譽產生了不利影響。)"}, {"id": 177, "word": "adversity", "content": "adversity (n.) 逆境、困境、不利情況\n【詞性變化】\novercome (v.) 克服\nadversary (n.) 指對手、敵手\n【搭配詞】\novercome 克服\nface 面對\n【例句】\nThe company faced significant adversity due to the global economic downturn. (由於全球經濟衰退，該公司面臨著嚴重的逆境。)"}, {"id": 178, "word": "advertise", "content": "advertise (v.) （透過媒體等）宣傳、廣告、推銷\n【搭配詞】\nadvertise for a position\nadvertise on/in platform\n【例句】\nThe company plans to advertise its new product on social media platforms. (該公司計畫在社交媒體平台上宣傳其新產品。)"}, {"id": 179, "word": "advertised", "content": "advertised (adj.) （商品、服務等）已做廣告的、宣傳過的\n【搭配詞】\nas advertised 如廣告所說的\n【例句】\nThe company's new product was heavily advertised on television and online. (該公司的最新產品在電視和線上大力宣傳。)"}, {"id": 180, "word": "advertisement", "content": "advertisement (n.) 廣告、宣傳（通常指付費的訊息，用於推廣產品或服務）\n【例句】\nThe company launched a new advertisement campaign to boost sales. (該公司推出了一項新的廣告活動以提高銷售額。)"}, {"id": 181, "word": "advertisements", "content": "advertisements (n.) 廣告、廣告宣傳\n【搭配詞】\nplace an advertisement 刊登廣告\nclassified advertisements 分類廣告\n【例句】\nThe company launched a series of advertisements to promote its new product line. (該公司推出一系列廣告，以推廣其新產品線。)"}, {"id": 182, "word": "advertiser", "content": "advertiser (n.) 廣告商、刊登廣告者、登廣告的公司\n【搭配詞】\npotential advertisers 潛在廣告商\nlocal advertisers 在地廣告商\n【例句】\nThe advertiser launched a new campaign to reach a younger audience. (該廣告商推出了一項新活動，以接觸更年輕的受眾。)"}, {"id": 183, "word": "advertising", "content": "advertising (n.) 廣告、廣告活動、（公司）宣傳推廣\n【搭配詞】\nadvertising campaign 廣告活動\nadvertising agency 廣告代理商\n【例句】\nThe company invested heavily in advertising to boost sales during the holiday season. (為了在節假日期間提高銷售額，該公司投入了大量資金進行廣告宣傳。)"}, {"id": 184, "word": "advice", "content": "advice (n., v.) 建議、忠告（通常基於經驗或專業知識）\n【搭配詞】\nseek/ask for advice 尋求建議\nfollow/take someone's advice 聽從建議\n【例句】\nI would appreciate your advice on how to negotiate a better deal with the supplier. (我會很感激您能給我一些關於如何與供應商談判更好協議的建議。)"}, {"id": 185, "word": "advisable", "content": "advisable (adj.) 建議的、可取的、明智的\n【詞性變化】\nadvisory (adj.) /名詞，指顧問的或警報公告，如 travel advisory\n【搭配詞】\nIt is advisable for someone\nhighly advisable 非常明智的\n【例句】\nIt's advisable to review the contract carefully before signing. (簽署合約前仔細審閱是明智的。)"}, {"id": 186, "word": "advise", "content": "advise (v.) 建議、勸告（通常基於專業知識或經驗）\n【搭配詞】\nadvise someone to do something 建議某人做某事\nstrongly advise 強烈建議\n【例句】\nThe consultant advised the company to invest in new technology to improve efficiency. (顧問建議公司投資新技術以提高效率。)"}, {"id": 187, "word": "advised", "content": "advised (v., adj.) 建議、忠告（過去式或形容詞\n【搭配詞】\nill-advised 不明智的\nwell-advised 明智的\n【例句】\nThe manager advised the team to submit the report by Friday. (經理建議團隊在星期五前提交報告。)"}, {"id": 188, "word": "adviser", "content": "adviser (n.) 顧問、建議人\n【搭配詞】\nfinancial adviser 財務顧問\nlegal adviser 法律顧問\n【例句】\nBefore making a significant investment, it's wise to consult a financial adviser. (在做出重大投資之前，最好諮詢財務顧問。)"}, {"id": 189, "word": "advises", "content": "advises (v.) 建議、勸告\n【搭配詞】\nadvise someone to do something 建議某人做某事\nstrongly advise 強烈建議\n【例句】\nThe consultant advises the company to invest in renewable energy. (顧問建議公司投資再生能源。)"}, {"id": 190, "word": "advisor", "content": "advisor (n.) 顧問、建議人（通常指在特定領域提供專業意見的人）\n【詞性變化】\nadvice (n.) 不可數且指建議內容\n【搭配詞】\nfinancial advisor 財務顧問\nlegal advisor 法律顧問\n【例句】\nBefore making any investment decisions, it's wise to consult a financial advisor. (在做出任何投資決策之前，最好諮詢財務顧問。)"}, {"id": 191, "word": "advisory", "content": "advisory (adj.) 諮詢的、建議性的、提供建議的\n【搭配詞】\ntravel advisory 旅遊警示\nadvisory board 顧問委員會\n【例句】\nThe company released an advisory notice regarding the potential risks of the new product. (公司發布了一份諮詢公告，說明了新產品潛在的風險。)"}, {"id": 192, "word": "advocate", "content": "advocate (v., n.) 支持、倡導、為...辯護\n【例句】\nThe company advocates for sustainable practices throughout its supply chain. (該公司在其供應鏈的各個環節倡導可持續發展的措施。)"}, {"id": 193, "word": "aerial", "content": "aerial (adj., adv.) 高空的、空中傳輸的\n【詞性變化】\narea (n.) 區域\n【搭配詞】\naerial view 鳥瞰圖\naerial photography 航拍\n【例句】\nThe company is investing in aerial photography to showcase its new resort. (該公司正在投資空中攝影，以展示其新的度假村。)"}, {"id": 194, "word": "aerobic", "content": "aerobic (adj.) 有氧的、需氧的\n【詞性變化】\naerobically (adv.)\n【搭配詞】\naerobic exercise 有氧運動\naerobic classes 有氧課程\n【例句】\nAerobic exercise helps improve cardiovascular health. (有氧運動有助於改善心血管健康。)"}, {"id": 195, "word": "aerosol", "content": "aerosol (n., adj.) 氣膠、噴霧劑\n【搭配詞】\naerosol spray 噴霧劑\naerosol can 噴霧罐\n【例句】\nPlease ensure the room is well-ventilated when using aerosol products. (使用噴霧產品時，請確保房間通風良好。)"}, {"id": 196, "word": "aesthetic", "content": "aesthetic (adj., n.) 美學的、美感的、審美的、美學，美感\n【搭配詞】\naesthetic appeal 美感吸引力\naesthetic value 美學價值\n【例句】\nThe interior designer has a keen eye for aesthetic details. (這位室內設計師對美學細節有敏銳的洞察力。)"}, {"id": 197, "word": "affair", "content": "affair (n.) （通常指不公開的）婚外情、（公司內部）事務、事件\n【搭配詞】\ncurrent affairs 時事\nforeign affairs 外交事務\n【例句】\nThe company is investigating an affair of interest involving a senior manager. (公司正在調查一位高階經理的不當利益衝突事件。)"}, {"id": 198, "word": "affect", "content": "affect (v.) 影響、左右、改變（某事物）\n【搭配詞】\nadversely affect 不利地影響\ndirectly affect 直接影響\n【例句】\nThe recent economic downturn has significantly affected the company's profits. (最近的經濟衰退對公司的利潤產生了顯著影響。)"}, {"id": 199, "word": "affected", "content": "affected (adj., v.) 受到…影響、受…所及\n【搭配詞】\nadversely affected 受不利影響\ndirectly affected 受直接影響\n【例句】\nThe company's profits were significantly affected by the recent economic downturn. (近期經濟衰退對公司的利潤產生了顯著影響。)"}, {"id": 200, "word": "affecting", "content": "affecting (adj., v.) 影響、左右、產生影響\n【搭配詞】\npolicies affecting small businesses 影響小企業的政策\nchanges affecting the workflow 影響工作流程的變動\n【例句】\nThe recent economic downturn is significantly affecting the company's sales figures. (最近的經濟衰退正在顯著影響公司的銷售數據。)"}, {"id": 201, "word": "affiliate", "content": "affiliate (v.) 關聯公司\n【例句】\nOur marketing affiliate program generates 30% of total online revenue. (我們的行銷affiliate計畫產生了線上總收入的30%。)"}, {"id": 202, "word": "affiliation", "content": "affiliation (n.) 隸屬關係、關聯、會員資格\n【搭配詞】\naffiliation with a professional organization 與專業組織的隸屬關係\npolitical affiliation 政治傾向\n【例句】\nThe company values employee affiliations with professional organizations. (公司重視員工與專業組織的隸屬關係。)"}, {"id": 203, "word": "affirm", "content": "affirm (v.) 肯定、斷言、證實、重申（承諾、立場等）、申明（在法庭上不宣誓而作證）\n【搭配詞】\naffirm a commitment 重申承諾\naffirm a decision 確認決定\n【例句】\nThe company affirmed its commitment to environmental protection. (該公司重申其對環境保護的承諾。)"}, {"id": 204, "word": "affirmation", "content": "affirmation (n.) 肯定、證實、宣言、（對信仰、感受的）申明\n【搭配詞】\nwords of affirmation 肯定與讚美的話語\nsolemn affirmation 莊嚴宣告\n【例句】\nHis daily affirmations help him maintain a positive mindset. (他的每日肯定語幫助他保持積極的心態。)"}, {"id": 205, "word": "affirmative", "content": "affirmative (adj., adv.) 肯定的\n【詞性變化】\naffirm (v.) ：確認、斷言\n【例句】\nThe manager gave an affirmative response to the proposal. (經理對該提案給出了肯定的回覆。)"}, {"id": 206, "word": "affix", "content": "affix (v., n.) 附加、黏貼、（語言學上）前綴或後綴\n【搭配詞】\naffix a signature to the contract 在合約上簽名\naffix a label to the crate 在貨箱上貼標籤\n【例句】\nThe company decided to affix a new logo to all marketing materials. (公司決定將新標誌附加到所有行銷材料上。)"}, {"id": 207, "word": "afford", "content": "afford (v.) 負擔得起、經得起（費用、開銷）\n【例句】\nThe company can afford to invest in new technology to improve efficiency. (公司有能力投資新技術來提高效率。)"}, {"id": 208, "word": "affordability", "content": "affordability (n.) 可負擔性、價格合理性\n【搭配詞】\nhousing affordability 房屋負擔能力\nprice affordability 價格承受度\n【例句】\nThe company is focusing on developing more affordable housing options for its employees. (公司正致力於為員工開發更多可負擔的住房選項。)"}, {"id": 209, "word": "affordable", "content": "affordable (adj.) 價格實惠的、負擔得起的\n【例句】\nWe're looking for an affordable supplier of raw materials to reduce production costs. (我們正在尋找一家價格實惠的原材料供應商，以降低生產成本。)"}, {"id": 210, "word": "afraid", "content": "afraid (adj., adv.) 害怕、擔心\n【例句】\nI'm afraid I won't be able to meet the deadline due to unforeseen circumstances. (恐怕由於一些不可預見的情況，我無法按時完成任務。)"}, {"id": 211, "word": "africa", "content": "africa (n.) 非洲\n【搭配詞】\nthe African market 非洲市場\nexpansion into Africa 進軍非洲\n【例句】\nOur company is exploring opportunities to expand its market share in Africa. (我們公司正在探索在非洲擴大市場份額的機會。)"}, {"id": 212, "word": "african", "content": "african (adj.) 與非洲相關的、非洲的、非洲人的\n【搭配詞】\nAfrican trade relations 非洲貿易關係\nAfrican branch office 非洲分公司\n【例句】\nThe company is launching a new line of African-inspired clothing. (該公司正在推出一系列受非洲文化啟發的服裝。)"}, {"id": 213, "word": "after", "content": "after (prep., adv., conj.) 在...之後、以後、然後\n【搭配詞】\nafter-sales service 售後服務\nimmediately after 在...之後不久\n【例句】\nLet's discuss this after the meeting. (我們在會議結束後討論這件事吧。)"}, {"id": 214, "word": "afternoon", "content": "afternoon (n.) 下午\n【搭配詞】\nafternoon shift 下午班次\nafternoon break 下午休息時間\n【例句】\nI have a meeting scheduled for this afternoon. (我今天下午有一個會議。)"}, {"id": 215, "word": "afterward", "content": "afterward (adv.) 其後、事後、之後\n【搭配詞】\nshortly afterward 不久之後\n【例句】\nAfterward, please submit your expense report to the accounting department. (事後，請將您的費用報表提交給會計部門。)"}, {"id": 216, "word": "again", "content": "again (adv.) 再次、又、再一次\n【例句】\nCould you please repeat that again? (你可以再重複一次嗎？)"}, {"id": 217, "word": "against", "content": "against (prep., adv.) 對抗、反對、與...相對、根據\n【搭配詞】\nvote against 投票反對\ndecide against 決定不...\n【例句】\nThe company is taking legal action against the supplier for breach of contract. (該公司因違反合約而對供應商採取法律行動。)"}, {"id": 218, "word": "age", "content": "age (n.) 年齡、年歲\n【搭配詞】\nage group 年齡層\ntarget age 目標年齡\n【例句】\nThe company has a policy of not discriminating based on age. (公司有不因年齡而歧視的政策。)"}, {"id": 219, "word": "agencies", "content": "agencies (n.) 機構、代理商（通常指政府或公司設立的執行特定任務的組織）\n【搭配詞】\nadvertising agencies 廣告代理商\ntravel agencies 旅行社\n【例句】\nThe recruitment agencies are assisting the company in finding qualified candidates. (招聘機構正在協助公司尋找合格的候選人。)"}, {"id": 220, "word": "agency", "content": "agency (n.) 經紀公司、代理商、機構\n【搭配詞】\ntravel agency 旅行社\nemployment agency 人力仲介\n【例句】\nOur company uses a recruitment agency to find qualified candidates for the marketing position. (我們公司使用招聘機構來為行銷職位尋找合格的候選人。)"}, {"id": 221, "word": "agenda", "content": "agenda (n.) 議程、待辦事項清單\n【搭配詞】\non the agenda 在議程上\nset the agenda 制定議程\n【例句】\nPlease review the agenda for tomorrow's meeting and come prepared to discuss your team's progress. (請檢閱明天會議的議程，並準備好討論您團隊的進展。)"}, {"id": 222, "word": "agent", "content": "agent (n.) 代表、代理人、經紀人（通常指處理特定事務的人員）\n【搭配詞】\ntravel agent 旅遊代辦\nreal estate agent 房產經紀人\n【例句】\nOur travel agent booked our flights and hotel. (我們的旅行社代理人幫我們預訂了機票和酒店。)"}, {"id": 223, "word": "agents", "content": "agents (n.) 代理人、經紀人、代表\n【搭配詞】\ntravel agents 旅遊代辦\nreal estate agents 房地產經紀人\n【例句】\nOur travel agents can assist you with booking flights and hotels. (我們的旅行社代理人可以協助您預訂機票和酒店。)"}, {"id": 224, "word": "ages", "content": "ages (n.) 年代、時期（通常指較長的時間段，尤其在商業語境中指公司、產品或服務的生命週期）\n【搭配詞】\nage 年齡、時代\nan age 長久之時，較少見於多益\n【例句】\nThis software has stood the test of ages and remains a vital tool for our operations. (這款軟體經受住了歲月的考驗，仍然是我們營運的重要工具。)"}, {"id": 225, "word": "aggravate", "content": "aggravate (v.) 使惡化、加重（問題、情況等）\n【搭配詞】\naggravate a situation 使情況惡化\naggravate an injury 使傷勢加重\n【例句】\nThe project delays will only aggravate the company's financial situation. (專案延遲只會加劇公司的財務狀況。)"}, {"id": 226, "word": "aggregate", "content": "aggregate (v., n., adj.) （動詞）聚集、合計、（名詞）總計、總數、集合體、（形容詞）合計的、總計的\n【搭配詞】\naggregate data 總計數據\naggregate demand 總需求\n【例句】\nWe need to aggregate the sales figures from all branches to get a complete picture. (我們需要匯集所有分公司的銷售數據才能了解全貌。)"}, {"id": 227, "word": "aggression", "content": "aggression (n., v.) 侵略性行為、冒犯性言行\n【搭配詞】\ndisplay aggression 表現出攻擊性\nunprovoked aggression 無端攻擊\n【例句】\nThe manager addressed the employee's aggression during the team meeting. (經理在團隊會議中處理了這位員工的侵略性行為。)"}, {"id": 228, "word": "aggressive", "content": "aggressive (adj.) 具有攻擊性或冒進的\n【搭配詞】\naggressive marketing campaign 積極的行銷活動\naggressive expansion plan 積極的擴張計畫\n【例句】\nThe salesperson's aggressive sales tactics alienated several potential clients. (這位銷售人員的強硬銷售策略讓幾位潛在客戶感到疏遠。)"}, {"id": 229, "word": "aggressively", "content": "aggressively (adv.) 強勢地、激進地（通常指以不妥協或具有侵略性的方式）\n【搭配詞】\naggressively market 積極推廣\naggressively expand 積極擴張\n【例句】\nThe company aggressively pursued new markets to increase its revenue. (該公司積極開拓新市場以增加收入。)"}, {"id": 230, "word": "agile", "content": "agile (adj.) 靈活的、適應性強的，能快速應變的\n【搭配詞】\nagile methodology 敏捷開發法\nagile team 敏捷團隊\n【例句】\nOur company needs to be more agile to respond quickly to changing market conditions. (為了快速應對不斷變化的市場狀況，我們公司需要更具靈活性。)"}, {"id": 231, "word": "aging", "content": "aging (adj., n.) 老化、逐漸變老（尤指人口結構中老年人口比例增加的趨勢）\n【詞性變化】\nolder (adj.)\noldest (adj.)\n【搭配詞】\naging population 高齡化人口\naging workforce 勞動力高齡化\n【例句】\nThe company is developing new products to appeal to the aging population. (該公司正在開發新產品，以吸引逐漸老化的消費族群。)"}, {"id": 232, "word": "ago", "content": "ago (adv.) …以前、…之前 (表示時間距離)\n【搭配詞】\nfor 持續多久\n【例句】\nThe project was completed three months ago. (這個專案是三個月前完成的。)"}, {"id": 233, "word": "agree", "content": "agree (v.) 同意、在討論或協商中達成一致意見\n【例句】\nAfter reviewing the contract terms, both parties agreed to proceed with the partnership. (在審閱合約條款後，雙方同意繼續合作。)"}, {"id": 234, "word": "agreeable", "content": "agreeable (adj.) （對某人或某事）欣然同意的、友善的、好相處的\n【搭配詞】\nbe agreeable to something 欣然同意某事、願意接受某提案\nan agreeable personality 宜人的性格\n【例句】\nThe client found the proposal agreeable and requested a follow-up meeting. (客戶認為提案內容可接受，並要求安排後續會議。)"}, {"id": 235, "word": "agreeably", "content": "agreeably (adv.) 令人滿意地、愉悅地、順從地\n【搭配詞】\nagreeably surprised 感到驚喜地愉快\nagreeably situated 地理位置宜人/環境優美\n【例句】\nThe project manager accepted the changes to the schedule agreeably. (專案經理順從地接受了對排程的變更。)"}, {"id": 236, "word": "agreed", "content": "agreed (v., adj.) 同意、贊同\n【搭配詞】\nagreed price 協議價格\nagreed terms 協定條款\n【例句】\nThe board of directors agreed to the proposed merger. (董事會同意了這項擬定的合併案。)"}, {"id": 237, "word": "agreeing", "content": "agreeing (adj., v.) 表示贊同或同意的狀態或動作\n【例句】\nThe board members were generally agreeing with the proposed merger. (董事會成員普遍對擬議的合併表示贊同。)"}, {"id": 238, "word": "agreement", "content": "agreement (n.) 協議、合約、一致的意見\n【搭配詞】\nreach an agreement 達成協議\nsign an agreement 簽署協議\n【例句】\nBoth parties signed the agreement to finalize the deal. (雙方簽署協議以完成交易。)"}, {"id": 239, "word": "agreements", "content": "agreements (n.) 協議、合約、諒解\n【搭配詞】\nreach an agreement 達成協議\nsign an agreement 簽署協議\n【例句】\nBoth parties must sign the agreements before the project can begin. (專案開始前，雙方必須簽署協議。)"}, {"id": 240, "word": "agrees", "content": "agrees (v.) 同意、贊同\n【搭配詞】\nagrees with 同意某人或觀點\nagrees to 同意某項計畫或提議\n【例句】\nThe board of directors agrees with the proposed merger. (董事會同意這項擬定的合併案。)"}, {"id": 241, "word": "agricultural", "content": "agricultural (adj.) 與農業相關的、農業的\n【搭配詞】\nagricultural products 農產品\nagricultural sector 農業部門\n【例句】\nThe company is investing heavily in agricultural technology to improve crop yields. (該公司正在大力投資農業技術以提高作物產量。)"}, {"id": 242, "word": "agriculture", "content": "agriculture (n.) 農業、農產品生產業\n【搭配詞】\nsustainable agriculture 永續農業\nagricultural sector 農業部門\n【例句】\nThe company is investing heavily in sustainable agriculture to reduce its environmental impact. (該公司正大力投資永續農業，以減少其對環境的影響。)"}, {"id": 243, "word": "aguilar", "content": "aguilar (n.) 阿吉拉 (Aguilar) 是一家專注於提供員工體驗和人力資源科技解決方案的公司\n【例句】\nOur HR department is evaluating Aguilar's platform to improve employee engagement. (我們的人力資源部門正在評估 Aguilar 的平台以提高員工參與度。)"}, {"id": 244, "word": "ahead", "content": "ahead (adv., prep.) 在...之前、領先、提前\n【搭配詞】\nahead of schedule 進度超前\n【例句】\nThe project is currently ahead of schedule and we expect to complete it by next week. (該專案目前進度領先，我們預計下週完成。)"}, {"id": 245, "word": "aid", "content": "aid (n.) 援助、幫助\n【搭配詞】\nfinancial aid 財務援助\nhumanitarian aid 人道援助\n【例句】\nThe department implemented innovative aid procedures to improve operational efficiency. (部門實施創新的aid程序以提高營運效率。)"}, {"id": 246, "word": "ailing", "content": "ailing (adj.) 患病的、虛弱的（指身體狀況不佳\n【詞性變化】\nailinger (adj.)\nailiest (adj.)\n【搭配詞】\nailing company 衰退的公司\nailing economy 疲軟的經濟\n【例句】\nThe employee has been granted sick leave due to an ailing condition. (該員工因身體狀況不佳已被批准休病假。)"}, {"id": 247, "word": "aim", "content": "aim (n.) 目標、瞄準\n【搭配詞】\nprimary aim 主要目標\nachieve one's aim 達成目標\n【例句】\nThe department implemented innovative aim procedures to improve operational efficiency. (部門實施創新的aim程序以提高營運效率。)"}, {"id": 248, "word": "aimed", "content": "aimed (v.) 針對...而定、以...為目標\n【例句】\nThe marketing campaign was aimed at young professionals. (這項行銷活動的目標是針對年輕專業人士。)"}, {"id": 249, "word": "aims", "content": "aims (v.) 目標、旨在\n【例句】\nOur company aims to increase market share by 10% this year. (我們公司今年的目標是將市場佔有率提高 10%。)"}, {"id": 250, "word": "air", "content": "air (n., v.) 空氣、氣流、（廣播）空中傳輸\n【搭配詞】\non the air 正在廣播中\nairfare 機票價格，常見於商務出差安排\n【例句】\nThe company is investing in air purification systems to improve indoor air quality. (公司正在投資空氣淨化系統以改善室內空氣品質。)"}, {"id": 251, "word": "aircraft", "content": "aircraft (n.) 飛機、航空器（通常指大型客機或貨機）\n【搭配詞】\naircraft maintenance 飛機維修\ncommercial aircraft 民航機\n【例句】\nThe airline announced a delay due to adverse weather conditions affecting aircraft operations. (航空公司宣布延誤，原因是惡劣天氣狀況影響飛機運營。)"}, {"id": 252, "word": "airfare", "content": "airfare (n.) 機票費用、航空票價\n【搭配詞】\nround-trip airfare 來回機票費\none-way airfare 單程機票費\n【例句】\nThe company will reimburse employees for their airfare and accommodation expenses. (公司將會退償員工的機票費用和住宿費用。)"}, {"id": 253, "word": "airline", "content": "airline (n.) 航空公司、航空運輸公司\n【搭配詞】\nairline industry 航空業\nmajor airline 大型航空公司\n【例句】\nOur company has a partnership with several major airlines to offer discounted travel packages. (我們公司與多家主要航空公司合作，提供折扣旅遊套裝。)"}, {"id": 254, "word": "airlines", "content": "airlines (n.) 航空公司、航空業\n【例句】\nSeveral airlines have announced fare reductions for the upcoming holiday season. (多家航空公司已宣布即將到來的假期期間的票價降低。)"}, {"id": 255, "word": "airplane", "content": "airplane (n.) 飛機，一種用於空中運輸人員或貨物的交通工具\n【搭配詞】\nboarding pass 登機證\noverhead compartment 頭頂置物櫃\n【例句】\nThe company is considering purchasing a new airplane to expand its international routes. (公司正在考慮購買一架新飛機以擴展其國際航線。)"}, {"id": 256, "word": "airport", "content": "airport (n.) 機場，是飛機起降及旅客搭乘的設施\n【搭配詞】\nairport terminal 機場航廈\nairport shuttle 機場接駁車\n【例句】\nThe flight is scheduled to depart from Narita Airport at 10:00 AM. (這趟航班預計在上午 10:00 從成田機場起飛。)"}, {"id": 257, "word": "airports", "content": "airports (n.) 機場\n【搭配詞】\nairport security 機場安檢\nairport shuttle 機場接駁車\n【例句】\nThe company is expanding its operations to several major airports worldwide. (公司正在擴展其業務到世界幾個主要的機場。)"}, {"id": 258, "word": "airsickness", "content": "airsickness (n.) 暈機症，飛行時因身體不適而產生的噁心或不舒服的感覺\n【搭配詞】\nsuffer from airsickness 患暈機症\nprevent/relieve airsickness 預防/緩解暈機\n【例句】\nThe airline offers complimentary ginger ale to passengers suffering from airsickness. (為了緩解乘客的暈機症狀，航空公司提供免費的薑汁汽水。)"}, {"id": 259, "word": "aisle", "content": "aisle (n.) （商店、飛機等）走道、通道\n【例句】\nThe manager asked the staff to keep the aisles clear of boxes for safety reasons. (經理要求員工為了安全起見，保持走道上沒有任何箱子。)"}, {"id": 260, "word": "alarm", "content": "alarm (n., v.) 警報、警鈴、引起注意的信號\n【搭配詞】\nfire alarm 火警警報器\nsecurity alarm 保全警報器\n【例句】\nThe security system will alarm if there's any unauthorized access. (如果有人未經授權進入，安全系統會發出警報。)"}, {"id": 261, "word": "alarming", "content": "alarming (adj.) 令人擔憂的、引起恐懼的、警訊的\n【搭配詞】\nan alarming rate 以令人擔憂的速度\n【例句】\nThe sudden drop in sales figures is an alarming trend that needs immediate attention. (銷售數字的突然下降是一個令人擔憂的趨勢，需要立即關注。)"}, {"id": 262, "word": "alas", "content": "alas (interj.) 唉、嗚呼、可惜 (表示悲傷、遺憾或憐憫的感嘆詞)\n【例句】\nAlas, the deadline for the project was missed due to unforeseen circumstances. (唉，由於不可預見的情況，專案的截止日期錯過了。)"}, {"id": 263, "word": "albeit", "content": "albeit (conj.) 儘管、雖然\n【搭配詞】\nalbeit briefly 儘管短暫\nalbeit slowly 儘管進步緩慢\n【例句】\nThe project was completed on time, albeit with some budget overruns. (這個專案儘管有一些預算超支，但仍按時完成了。)"}, {"id": 264, "word": "alberta", "content": "alberta (n.) 亞伯達省 (加拿大西部省份)\n【例句】\nOur company is expanding its operations into Alberta to tap into the region's growing energy market. (我們公司正在擴展業務至亞伯達省，以利用該地區不斷增長的能源市場。)"}, {"id": 265, "word": "album", "content": "album (n.) 專輯、相簿、集郵冊\n【搭配詞】\nrelease an album 發行專輯\nphoto album 相簿\n【例句】\nThe band released their new album last month, and it quickly topped the charts. (樂團上個月發行了他們的新專輯，並迅速登上排行榜榜首。)"}, {"id": 266, "word": "alcohol", "content": "alcohol (n.) 酒精、酒類（在商業情境中通常指飲料中的酒精成分，或與酒精相關的產品）\n【詞性變化】\nalcoholic (adj.)\n【例句】\nThe hotel policy prohibits guests from bringing alcohol into the rooms. (飯店政策禁止住客將酒精飲料帶入房間。)"}, {"id": 267, "word": "aldritch", "content": "aldritch (n.) 阿爾德里奇（Aldrich）是一家全球知名的化工試劑和精細化學品供應商，主要為科研、製藥、以及其他工業應用提供產品\n【例句】\nOur lab ordered several reagents from Aldrich for the ongoing research project. (我們的實驗室為正在進行的研究項目從阿爾德里奇訂購了幾種試劑。)"}, {"id": 268, "word": "alert", "content": "alert (adj., v., n.) 警戒、警醒、注意、提醒\n【搭配詞】\nsecurity alert 安全警報\nweather alert 天氣預警\n【例句】\nThe security system is designed to alert personnel to any unauthorized access. (安全系統旨在提醒人員注意任何未經授權的訪問。)"}, {"id": 269, "word": "algebra", "content": "algebra (n.) 代數\n【搭配詞】\nalgebraic equation 代數方程式\nlinear algebra 線性代數\n【例句】\nShe is studying advanced algebra at university. (她正在大學學習高等代數。)"}, {"id": 270, "word": "algorithm", "content": "algorithm (n.) 演算法、計算程式、運算步驟\n【搭配詞】\nsearch algorithm 搜尋演算法\nrecommendation algorithm 推薦演算法\n【例句】\nThe search engine uses a complex algorithm to rank web pages. (這個搜尋引擎使用複雜的演算法來對網頁進行排名。)"}, {"id": 271, "word": "alien", "content": "alien (n.) 外星人、（引申）與公司或團隊格格不入的人\n【搭配詞】\nresident alien 外籍居民\nalien registration card 外僑居留證\n【例句】\nThe new employee felt like an alien in the established team. (這位新進員工覺得自己融入不了這個已經建立好的團隊。)"}, {"id": 272, "word": "align", "content": "align (v.) 使一致、對準、校準\n【搭配詞】\nalign A with B 使 A 與 B 一致\nalign strategy with goals 使策略與目標一致\n【例句】\nPlease align the documents along the left margin. (請將文件沿著左邊界對齊。)"}, {"id": 273, "word": "alignment", "content": "alignment (n.) 對齊、校準、一致、結盟\n【詞性變化】\nalign (v.)\n【搭配詞】\nin alignment with 與...一致/符合\n【例句】\nEnsure proper alignment of text and images in the document. (請確保文件中文字和圖片的正確對齊。)"}, {"id": 274, "word": "alike", "content": "alike (adj., adv.) 相似的、相同的\n【例句】\nThe two companies' business strategies are remarkably alike. (這兩家公司的商業策略非常相似。)"}, {"id": 275, "word": "alive", "content": "alive (adj.) 活著的，活的、有活力的，活躍的、仍然存在的\n【搭配詞】\nstay alive 維持生命/持續\ncome alive 變得活絡/生動\n【例句】\nIs your grandfather still alive? (你的祖父還活著嗎？)"}, {"id": 276, "word": "all", "content": "all (determiner, pron., adv.) 所有、全部\n【例句】\nAll the employees are required to attend the mandatory training session. (所有員工都必須參加強制性的培訓課程。)"}, {"id": 277, "word": "all-out", "content": "all-out (adv., adj.) 全力以赴、全心全意\n【搭配詞】\nall-out effort 全力以赴\nall-out support 全力支持\n【例句】\nThe company is going all-out to launch the new product before the end of the quarter. (公司正全力以赴，力求在季度結束前推出新產品。)"}, {"id": 278, "word": "allegation", "content": "allegation (n.) （未經證實的）指控、說法、斷言\n【詞性變化】\nallege (v.)\n【例句】\nThe company denied the allegations of financial misconduct. (該公司否認了財務不當行為的指控。)"}, {"id": 279, "word": "allegations", "content": "allegations (n.) 指控、聲稱（通常指未經證實的指控）\n【詞性變化】\nalleged (adj.) 據稱的\n【搭配詞】\ndeny allegations 否認指控\nrefute allegations 反駁指控\n【例句】\nThe company is facing serious allegations of financial misconduct. (該公司正面臨嚴重的財務違規指控。)"}, {"id": 280, "word": "allege", "content": "allege (v.) （未經證實地）聲稱\n【例句】\nThe company is alleged to have violated environmental regulations. (該公司被指控違反了環境法規。)"}, {"id": 281, "word": "alleged", "content": "alleged (adj.) 據稱的、被指控的（通常指尚未被證實的說法）\n【搭配詞】\nalleged misconduct 涉嫌不當行為\nalleged violation 涉嫌違規\n【例句】\nThe company is facing an alleged breach of contract. (該公司正面臨據稱違反合約的情況。)"}, {"id": 282, "word": "allegedly", "content": "allegedly (adv.) 據稱、據說、 purportedly\n【搭配詞】\nallegedly involved in 涉嫌參與\nallegedly committed 據稱犯下\n【例句】\nThe company is facing allegations of unfair labor practices. (該公司正面臨不公平勞工慣例的指控。)"}, {"id": 283, "word": "allergic", "content": "allergic (adj.) 對特定物質過敏，產生不良反應\n【例句】\nI'm allergic to peanuts, so I can't have any snacks containing them. (我對花生過敏，所以不能吃含有花生的任何零食。)"}, {"id": 284, "word": "allergies", "content": "allergies (n.) 過敏症、對特定物質的異常免疫反應，可能導致健康問題\n【詞性變化】\nallergic (adj.) I am allergic to...\n【搭配詞】\nhave an allergy to 對...過敏\nallergic reaction 過敏反應\n【例句】\nPlease inform HR of any allergies you may have so we can ensure a safe and comfortable working environment. (請告知人力資源部門您可能有的任何過敏症，以便我們確保安全舒適的工作環境。)"}, {"id": 285, "word": "allergy", "content": "allergy (n.) 過敏反應、對特定物質的異常免疫反應，可能導致不適或健康問題\n【搭配詞】\nhave an allergy to 對...過敏\nfood allergy 食物過敏\n【例句】\nThe company policy requires employees to disclose any allergies that may affect their ability to perform their duties safely. (公司政策要求員工告知任何可能影響其安全執行職責的過敏反應。)"}, {"id": 286, "word": "alleviate", "content": "alleviate (v.) 減輕（痛苦、壓力等）、舒緩\n【搭配詞】\nalleviate traffic congestion 減緩交通擁塞\nalleviate the financial burden 減輕財務負擔\n【例句】\nThe company is offering stress management workshops to alleviate employee burnout. (公司提供壓力管理工作坊，以減輕員工的倦怠。)"}, {"id": 287, "word": "alley", "content": "alley (n.) 小巷、狹窄的通道\n【搭配詞】\nback alley 後巷\nbowling alley 保齡球館\n【例句】\nThe delivery truck had difficulty navigating the narrow alley to reach the building's rear entrance. (送貨車難以駛入狹窄的小巷，以抵達大樓的後門。)"}, {"id": 288, "word": "alliance", "content": "alliance (n.) 聯盟、結盟\n【搭配詞】\nstrategic alliance 戰略聯盟\nglobal alliance 全球聯盟\n【例句】\nThe strategic alliance between airlines has improved customer service and route coverage. (航空公司之間的戰略alliance改善了客戶服務和航線覆蓋。)"}, {"id": 289, "word": "allies", "content": "allies (n.) 盟友、合作夥伴（指在特定目標或行動中互相支持的團體或國家）\n【搭配詞】\nstrategic allies 戰略盟友\nclose allies 親密盟友\n【例句】\nOur company is seeking strategic allies to expand into the Asian market. (我們公司正在尋找戰略盟友，以擴展到亞洲市場。)"}, {"id": 290, "word": "allocate", "content": "allocate (v.) 分配\n【搭配詞】\nallocate time for training 分配時間進行培訓\n【例句】\nThe company needs to allocate more resources to the marketing department to boost sales. (公司需要將更多資源分配給行銷部門以提升銷售業績。)"}, {"id": 291, "word": "allocated", "content": "allocated (v.) （資源、時間、空間等）被分配、指定給、撥遣給\n【例句】\nThe company has allocated a budget of $10,000 for employee training. (公司已撥款 10,000 美元用於員工培訓。)"}, {"id": 292, "word": "allocation", "content": "allocation (n.) 分配\n【例句】\nThe company's new allocation initiative exceeded expectations in the first quarter. (公司的新allocation計畫在第一季度超出了預期。)"}, {"id": 293, "word": "allot", "content": "allot (v.) 分配\n【搭配詞】\nallot time 分配時間\nallot funds 分配資金\n【例句】\nThe manager decided to allot each team member a specific project. (經理決定將特定專案分配給每位團隊成員。)"}, {"id": 294, "word": "allotment", "content": "allotment (n.) （公司、政府等）分配、配額、（土地）地塊\n【例句】\nThe company made an allotment of 100 shares to each employee as a bonus. (公司將每位員工的獎金分配為 100 股。)"}, {"id": 295, "word": "allow", "content": "allow (v.) 允許、容許（在商務或工作環境中指允許某人或某事發生）\n【搭配詞】\nallow access 允許進入/存取資料\nallow a discount 給予折扣\n【例句】\nThe manager will allow employees to work from home on Fridays. (經理將允許員工在星期五在家工作。)"}, {"id": 296, "word": "allowance", "content": "allowance (n.) 津貼、生活費（通常指給予員工或家屬的固定金額，用於支付日常開銷）\n【搭配詞】\nbaggage allowance 行李限額\nhousing allowance 住房補貼\n【例句】\nThe company provides a generous housing allowance for expatriate employees. (公司為外派員工提供豐厚的住房津貼。)"}, {"id": 297, "word": "allowed", "content": "allowed (v., adj.) 被允許的、符合公司政策或法規的\n【例句】\nAll employees are allowed to work remotely on Fridays, provided they meet the security requirements. (只要符合安全要求，所有員工在星期五都被允許遠端工作。)"}, {"id": 298, "word": "allowing", "content": "allowing (v.) 允許、容許、使...可以\n【搭配詞】\nallowing for unexpected delays 考慮到非預期的延遲\n【例句】\nThe company policy allows employees to work remotely up to three days a week. (公司政策允許員工每週最多遠端工作三天。)"}, {"id": 299, "word": "allows", "content": "allows (v.) 允許、容許、使...可以\n【搭配詞】\nallow access to 允許進入/存取\nallow time for 為...預留時間\n【例句】\nThe company's policy allows employees to work remotely two days a week. (公司的政策允許員工每週在家工作兩天。)"}, {"id": 300, "word": "alluring", "content": "alluring (adj.) 具有吸引力，引人入勝，使人產生強烈興趣\n【例句】\nThe company's new marketing campaign features an alluring visual design to attract potential customers. (該公司的全新行銷活動採用引人注目的視覺設計，以吸引潛在客戶。)"}, {"id": 301, "word": "ally", "content": "ally (n., v.) 盟友、同盟國、夥伴、與…結盟\n【搭配詞】\nstrategic ally 戰略盟友\nclose ally 親密盟友\n【例句】\nThe two companies decided to ally themselves to develop a new product. (這兩家公司決定結盟以開發新產品。)"}, {"id": 302, "word": "almond", "content": "almond (n.) 杏仁\n【搭配詞】\nalmond milk 杏仁奶\nroasted almonds 烤杏仁\n【例句】\nShe added sliced almonds to her morning oatmeal for extra crunch. (她將杏仁片加入她的早餐燕麥片中，增加酥脆口感。)"}, {"id": 303, "word": "almost", "content": "almost (adv.) 幾乎、近乎\n【搭配詞】\nalmost every month 幾乎每個月\nalmost never 幾乎從不\n【例句】\nThe project is almost complete, and we expect to launch it next week. (這個專案幾乎完成了，我們預計下週將會推出。)"}, {"id": 304, "word": "alone", "content": "alone (adj., adv.) 獨自一人、孤單的\n【搭配詞】\nall alone 完全獨自一人\nlet alone 更不用說\n【例句】\nThe manager felt alone in his decision to restructure the department. (經理在重組部門的決定中感到孤單。)"}, {"id": 305, "word": "along", "content": "along (prep., adv.) 沿著、依照、隨著\n【搭配詞】\nalong with 與...一起\nget along with 與...相處\n【例句】\nThe project timeline will be adjusted along with the market trends. (專案時程將會隨著市場趨勢進行調整。)"}, {"id": 306, "word": "alongside", "content": "alongside (prep., adv.) 在...旁邊、與...一起、和...同時\n【搭配詞】\nwork alongside someone 與某人並肩工作\nsit alongside 位於...旁邊\n【例句】\nThe new intern will work alongside the marketing team to learn the ropes. (新實習生將與行銷團隊一起工作以學習基本知識。)"}, {"id": 307, "word": "alpha", "content": "alpha (n., adj.) 阿爾法（希臘字母第一字）、初步測試版、居首位的、主導者\n【搭配詞】\nbeta testing 外部公開測試\n【例句】\nThe company released the alpha version of its new software to a small group of testers. (公司向一小群測試人員發布了其新軟體的初始測試版。)"}, {"id": 308, "word": "already", "content": "already (adv.) 表示動作或情況已經發生\n【例句】\nThe report is already submitted, so please do not send a reminder. (報告已經提交，請不要發送提醒。)"}, {"id": 309, "word": "alright", "content": "alright (adj., adv.) 好的、沒問題的、可以的、安然無恙的\n【搭配詞】\nall ready 全部準備就緒\nalready 已經\n【例句】\nIs everything alright with you? (你一切都還好嗎？)"}, {"id": 310, "word": "also", "content": "also (adv.) 也、此外、又\n【例句】\nShe is a talented singer, and she also plays the piano. (她是一位才華洋溢的歌手，她也彈鋼琴。)"}, {"id": 311, "word": "alter", "content": "alter (v.) 更改、改變、修改\n【搭配詞】\nalter a schedule 修改行程\nalter the terms of a contract 修改合約條款\n【例句】\nThe company decided to alter the project timeline due to unforeseen delays. (由於 непредвиденные задержки，公司決定更改專案時間表。)"}, {"id": 312, "word": "alteration", "content": "alteration (n.) 改變、變更\n【搭配詞】\nmake alterations to 對...進行修改\n【例句】\nThe department implemented innovative alteration procedures to improve operational efficiency. (部門實施創新的alteration程序以提高營運效率。)"}, {"id": 313, "word": "altered", "content": "altered (adj., v.) 更改、修改（原樣貌或狀態）\n【詞性變化】\naltar (n.) 祭壇\nalter (v.) 改變\n【搭配詞】\nslightly altered 稍微修改\naltered plans 改變後的計畫\n【例句】\nThe contract has been altered to reflect the latest negotiations. (合約已根據最新的談判進行修改。)"}, {"id": 314, "word": "alternate", "content": "alternate (v., adj.) 作為替代方案、輪流、交替\n【搭配詞】\nalternate days 每隔一天\nalternate between A and B 在 A 與 B 之間交替\n【例句】\nWe can alternate between two shifts to ensure 24-hour coverage. (我們可以輪流工作兩個班次，以確保全天候服務。)"}, {"id": 315, "word": "alternative", "content": "alternative (n., adj.) 替代方案、其他的選擇\n【搭配詞】\nan alternative to the current proposal 目前提案的替代方案\n【例句】\nWe need to explore alternative solutions to reduce costs. (我們需要探索降低成本的其他方案。)"}, {"id": 316, "word": "alternatively", "content": "alternatively (adv.) 作為替代方案、另外地\n【例句】\nWe can ship the product via FedEx or, alternatively, UPS. (我們可以透過 FedEx 或另外透過 UPS 運送產品。)"}, {"id": 317, "word": "although", "content": "although (conj.) 雖然、儘管、即使\n【例句】\nAlthough the project faced some delays, the team managed to deliver it on time. (雖然專案遇到了一些延遲，但團隊還是成功地按時交付了它。)"}, {"id": 318, "word": "altitude", "content": "altitude (n.) 海拔、高度\n【例句】\nThe aircraft is flying at an altitude of 35,000 feet. (該飛機正以35,000英尺的高度飛行。)"}, {"id": 319, "word": "altogether", "content": "altogether (adv.) 總共、完全、全部（表示數量、程度或狀態的總和）\n【搭配詞】\naltogether different 截然不同\naltogether inappropriate 完全不適當\n【例句】\nThe project cost altogether $50,000. (這個專案總成本為 5 萬美元。)"}, {"id": 320, "word": "aluminum", "content": "aluminum (n.) 鋁 (一種輕質、銀白色的金屬元素，廣泛用於製造飛機、罐頭、廚具、建築材料等)\n【搭配詞】\naluminum foil 鋁箔\naluminum cans 鋁罐\n【例句】\nMany modern cars use aluminum parts to reduce weight and improve fuel efficiency. (許多現代汽車使用鋁製零件以減輕重量並提高燃油效率。)"}, {"id": 321, "word": "alumni", "content": "alumni (n.) 校友、畢業生（泛指）\n【搭配詞】\nalumni association 校友會\nalumni reunion 校友聚會\n【例句】\nThe university actively engages with its alumni network to foster career opportunities for current students. (大學積極與其校友網絡互動，以促進在校生的職業發展機會。)"}, {"id": 322, "word": "always", "content": "always (adv.) 總是、一直、永遠、始終、一向\n【例句】\nShe always double-checks her reports before submitting them. (她提交報告前總是會再三檢查。)"}, {"id": 323, "word": "amanda", "content": "amanda (n.) 安曼達 (Amanda) 是常見的女性名字，在商務情境中通常指代某位員工或客戶\n【例句】\nAmanda from the marketing department will be leading the presentation. (行銷部經理安曼達將負責主持簡報。)"}, {"id": 324, "word": "amateur", "content": "amateur (n., adj.) 業餘愛好者、外行、業餘的\n【搭配詞】\namateur photographer 業餘攝影師\namateur athlete 業餘運動員\n【例句】\nHe's an amateur photographer, but his work is very professional. (他是一名業餘攝影師，但他的作品非常專業。)"}, {"id": 325, "word": "amaze", "content": "amaze (v.) 使驚訝、令人印象深刻\n【例句】\nThe innovative design of the new product amazed our potential investors. (這款新產品的創新設計令我們的潛在投資人感到驚艷。)"}, {"id": 326, "word": "amazed", "content": "amazed (adj.) 驚訝、讚賞\n【例句】\nThe team was amazed by the innovative design of the new product. (團隊對新產品的創新設計感到驚訝。)"}, {"id": 327, "word": "amazement", "content": "amazement (n.) 驚訝、震驚\n【搭配詞】\nTo one's amazement 令某人驚訝的是\nin amazement 驚訝地\n【例句】\nThe team's innovative solution to the project's challenges was met with widespread amazement. (團隊對專案挑戰的創新解決方案受到了廣泛的讚賞和驚訝。)"}, {"id": 328, "word": "amazing", "content": "amazing (adj.) 令人驚嘆的、非凡的、極好的（通常指超出預期或令人印象深刻的品質或表現）\n【搭配詞】\namazing results 驚人的結果\namazing performance 卓越的表現\n【例句】\nThe presentation was truly amazing; the data clearly demonstrated the project's success. (簡報非常令人驚嘆；數據清楚地展現了專案的成功。)"}, {"id": 329, "word": "ambassador", "content": "ambassador (n.) 大使、代表\n【搭配詞】\nbrand ambassador 品牌大使\ngoodwill ambassador 親善大使\n【例句】\nThe department implemented innovative ambassador procedures to improve operational efficiency. (部門實施創新的ambassador程序以提高營運效率。)"}, {"id": 330, "word": "ambiguous", "content": "ambiguous (adj.) 模棱兩可的、含糊不清的，容易引起誤解的\n【搭配詞】\nambiguous response 模稜兩可的回答\nambiguous statement 含糊其辭的陳述\n【例句】\nThe contract's wording was ambiguous, leading to a dispute between the parties. (合約的措辭含糊不清，導致雙方產生爭執。)"}, {"id": 331, "word": "ambition", "content": "ambition (n.) 抱負、 雄心、 野心、 志向、 志氣\n【詞性變化】\nambitiously (adv.)\n【搭配詞】\nfuel one's ambition 實現或激發抱負\n【例句】\nHer ambition is to become a successful entrepreneur. (她的抱負是成為一名成功的企業家。)"}, {"id": 332, "word": "ambitious", "content": "ambitious (adj.) 抱有雄心壯志的、渴望成功的\n【詞性變化】\nambition (n.) 抱負/野心\n【搭配詞】\nambitious plan 雄心勃勃的計畫\nambitious goal 宏大的目標\n【例句】\nShe is an ambitious employee who is always looking for opportunities to advance her career. (她是一位抱有雄心壯志的員工，總是尋找晉升的機會。)"}, {"id": 333, "word": "amend", "content": "amend (v.) 修改、修正、增補\n【搭配詞】\namend a contract 修改合約\namend a proposal 修正提案\n【例句】\nThe contract needs to be amended to reflect the recent changes in regulations. (合約需要修改以反映近期法規的變動。)"}, {"id": 334, "word": "amendment", "content": "amendment (n.) 修正案\n【搭配詞】\nmake an amendment to the contract 對合約進行修正\n【例句】\nThe company's new amendment initiative exceeded expectations in the first quarter. (公司的新amendment計畫在第一季度超出了預期。)"}, {"id": 335, "word": "amenities", "content": "amenities (n.) 便利設施、俱樂部設施（指飯店、公寓等提供的附加服務或設備，例如健身房、游泳池等）\n【搭配詞】\nmodern amenities 現代化設施\nbasic amenities 基本設施\n【例句】\nThe hotel boasts a wide range of amenities, including a spa, a fitness center, and a rooftop pool. (這家飯店提供豐富的便利設施，包括水療中心、健身中心和屋頂游泳池。)"}, {"id": 336, "word": "amenity", "content": "amenity (n.) 便利設施、俱樂部設施、舒適的服務或設備（通常指飯店、度假村等提供的）\n【搭配詞】\nmodern amenities 現代化設施\nbasic amenities 基本設施\n【例句】\nThe hotel boasts a wide range of amenities, including a swimming pool, fitness center, and spa. (這家飯店提供豐富的便利設施，包括游泳池、健身中心和水療中心。)"}, {"id": 337, "word": "america", "content": "america (n.) 美國（指美國聯邦政府或美國地區），在商務情境中通常指美國市場或美國公司\n【搭配詞】\nNorth American market 北美市場\nLatin America 拉丁美洲\n【例句】\nOur company is expanding its operations into the Americas. (我們公司正在將業務拓展到美洲市場。)"}, {"id": 338, "word": "american", "content": "american (adj., n.) 美國的、美國人的、與美國相關的\n【搭配詞】\nAmerican branch 美國分部\nAmerican headquarters 美國總部\n【例句】\nThe company is expanding its operations to the American market. (該公司正在擴展其業務到美國市場。)"}, {"id": 339, "word": "americans", "content": "americans (n.) 美國人\n【例句】\nOur company is expanding its operations to attract more American clients. (我們公司正在擴展業務，以吸引更多美國客戶。)"}, {"id": 340, "word": "amid", "content": "amid (prep.) 在...之中、被...環繞、在...過程中\n【搭配詞】\namid concerns 在擔憂中\namid speculation 在推測中\n【例句】\nThe company announced a new policy amid widespread protests from employees. (在員工廣泛抗議聲中，公司宣布了一項新政策。)"}, {"id": 341, "word": "amino", "content": "amino (adj., n.) 胺基 (化學用語\n【搭配詞】\namino acid 胺基酸\n【例句】\nProteins are made up of long chains of amino acids. (蛋白質由胺基酸的長鏈組成。)"}, {"id": 342, "word": "among", "content": "among (prep.) 在...之中、其中之一\n【搭配詞】\namong the candidates 在候選人之中\namong the best 最好的之一\n【例句】\nShe found her lost wallet among the piles of old newspapers. (她在舊報紙堆中找到了她遺失的錢包。)"}, {"id": 343, "word": "amongst", "content": "amongst (prep., adv.) 在...之中，在...中間（指多個事物中\n【例句】\nThe company's products are distributed amongst various retailers across the country. (該公司的產品在全國各地的零售商之間分銷。)"}, {"id": 344, "word": "amortization", "content": "amortization (n.) 攤銷、分期償還（債務）\n【詞性變化】\namortize (v.)\n【搭配詞】\namortization schedule 分期償還表\namortization period 攤銷期限/還款期限\n【例句】\nThe company uses straight-line amortization for its intangible assets. (該公司對其無形資產採用直線攤銷法。)"}, {"id": 345, "word": "amortize", "content": "amortize (v.) 分期償還、攤銷（債務或資產）\n【詞性變化】\namortization (n.)\n【搭配詞】\namortize a loan 分期償還貸款\namortize debt 攤銷債務\n【例句】\nThe company decided to amortize the cost of the new machinery over ten years. (公司決定將新機器的成本分十年攤銷。)"}, {"id": 346, "word": "amos", "content": "amos (n.) 亞莫斯 (Amos) 是聖經舊約中的先知，在商業情境中通常指引用聖經故事或道德原則\n【詞性變化】\namass (v.) ：累積\namiss (adj.) ：出差錯的\n【搭配詞】\namass a fortune 積聚財富\namass significant data 累積大量數據\n【例句】\nThe CEO often uses biblical stories, like the tale of Amos, to illustrate the importance of ethical leadership. (執行長經常使用聖經故事，例如亞莫斯的傳記，來闡述道德領導的重要性。)"}, {"id": 347, "word": "amount", "content": "amount (n.) 數量、總數（通常指無法精確計量的東西）\n【例句】\nThe company reported a significant increase in the amount of sales this quarter. (本季公司報告銷售總額大幅增加。)"}, {"id": 348, "word": "amounts", "content": "amounts (n.) 數量、總數（通常指多個或不可計數的數量）\n【詞性變化】\namount (n.)\n【搭配詞】\na significant amount of 大量的\na considerable amount of 相當數量的\n【例句】\nThe company needs to review the amounts listed on the invoice to ensure accuracy. (公司需要審查發票上列出的金額，以確保準確性。)"}, {"id": 349, "word": "ample", "content": "ample (adj.) 充足的、大量的、充裕的\n【搭配詞】\nample time 充足的時間\nample opportunity 充裕的機會\n【例句】\nThe company has ample resources to invest in new technologies. (公司擁有充足的資源來投資新技術。)"}, {"id": 350, "word": "amplify", "content": "amplify (v.) 擴大、增強（聲音、信號等）、加強強調（觀點、感受等）\n【詞性變化】\namplifier (n.) 擴大器/增幅器\n【搭配詞】\namplify the impact 擴大影響力\namplify visibility 提高能見度\n【例句】\nThe microphone system is designed to amplify the speaker's voice for better audience reach. (麥克風系統旨在擴大演講者的聲音，以提高聽眾的覆蓋率。)"}, {"id": 351, "word": "amplitude", "content": "amplitude (n.) 振幅、廣度、幅度\n【例句】\nThe amplitude of the sound wave determines its loudness. (聲波的振幅決定了它的響度。)"}, {"id": 352, "word": "amply", "content": "amply (adv.) 充裕地、充分地、大到足以\n【詞性變化】\nample (adj.) 充足的\namplify (v.) 放大/增強\n【搭配詞】\namply rewarded 獲得充分回報\namply demonstrated 已充分證明\n【例句】\nThe company's resources are amply sufficient to cover the project's expenses. (公司的資源完全足以涵蓋專案的費用。)"}, {"id": 353, "word": "amuse", "content": "amuse (v.) 使…感到有趣或愉悅、娛樂\n【搭配詞】\namused 修飾人，感到有趣的\namusing 修飾事物，令人有趣的\n【例句】\nThe presentation included humorous anecdotes to amuse the audience. (為了娛樂聽眾，簡報中穿插了幽默的小故事。)"}, {"id": 354, "word": "amusement", "content": "amusement (n.) 娛樂、消遣、（公司）員工福利娛樂活動\n【搭配詞】\namusement park 遊樂園\nto one's amusement 令某人感到有趣的是\n【例句】\nThe company provides various amusements, such as bowling and mini-golf, to boost employee morale. (該公司提供各種娛樂活動，例如保齡球和迷你高爾夫，以提高員工士氣。)"}, {"id": 355, "word": "anabolic", "content": "anabolic (adj.) 合成代謝的、促進合成代謝的\n【詞性變化】\nanabolism (n.)\nanabolically (adv.)\n【搭配詞】\nanabolic steroids 合成代謝類固醇\nanabolic state 合成狀態\n【例句】\nAnabolic steroids are often misused by athletes to enhance performance. (合成代謝類固醇常被運動員濫用以提高表現。)"}, {"id": 356, "word": "anaerobic", "content": "anaerobic (adj., n., adv.) 厭氧的，不需要氧氣的\n【詞性變化】\nanaerobe (n.)\nanaerobically (adv.)\n【搭配詞】\nanaerobic exercise 無氧運動，如舉重、短跑\nanaerobic respiration 無氧呼吸\n【例句】\nAnaerobic bacteria can survive in environments without oxygen. (厭氧細菌可以在沒有氧氣的環境中生存。)"}, {"id": 357, "word": "analogy", "content": "analogy (n.) 類比、比喻、相似之處\n【搭配詞】\ndraw an analogy between A and B 在 A 與 B 之間作類比\nby analogy with 以此類推\n【例句】\nThe teacher used an analogy of a computer to explain how the brain works. (老師用電腦來比喻大腦的運作方式。)"}, {"id": 358, "word": "analysis", "content": "analysis (n.) 分析\n【搭配詞】\nconduct an in-depth analysis 進行深入分析\nmarket analysis 市場分析\n【例句】\nThe quarterly financial analysis revealed significant cost savings opportunities across departments. (季度財務analysis顯示各部門存在重大的成本節約機會。)"}, {"id": 359, "word": "analyst", "content": "analyst (n.) 分析師\n【詞性變化】\nanalyze (v.) 分析\nanalysis (n.) 分析報告\n【搭配詞】\nfinancial analyst 財務分析師\nmarket analyst 市場分析師\n【例句】\nThe financial analyst presented a comprehensive report on the company's performance. (財務分析師提交了一份關於公司表現的全面報告。)"}, {"id": 360, "word": "analysts", "content": "analysts (n.) 分析師、分析人員\n【搭配詞】\nfinancial analysts 財務分析師\nmarket analysts 市場分析師\n【例句】\nThe company hired several analysts to evaluate the potential risks of the merger. (該公司聘請了幾位分析師來評估併購的潛在風險。)"}, {"id": 361, "word": "analytic", "content": "analytic (adj.) 分析的、分析性的\n【詞性變化】\nanalytical (adj.)\nanalyst (n.)\n【搭配詞】\nanalytic tools 分析工具\nanalytic skills 分析能力\n【例句】\nThe company uses analytic tools to understand customer behavior. (該公司使用分析工具來了解客戶行為。)"}, {"id": 362, "word": "analytical", "content": "analytical (adj.) 分析的、善於分析的、邏輯的\n【詞性變化】\nanalyst (n.)\nanalyze (v.)\n【搭配詞】\nanalytical skills 分析能力\nanalytical tools 分析工具\n【例句】\nShe has strong analytical skills, which are crucial for this research position. (她具備很強的分析能力，這對這個研究職位來說至關重要。)"}, {"id": 363, "word": "analyze", "content": "analyze (v.) 分析、仔細研究以評估或解釋\n【搭配詞】\nanalyze data 分析數據\nanalyze market trends 分析市場趨勢\n【例句】\nThe marketing team needs to analyze the sales data to identify trends. (行銷團隊需要分析銷售數據以找出趨勢。)"}, {"id": 364, "word": "analyzed", "content": "analyzed (v.) 分析、仔細研究（某事物）以評估其組成部分或找出其重要特徵\n【詞性變化】\nanalysis (n.) 分析\nanalytical (adj.) 分析的\n【例句】\nThe marketing team analyzed the sales data to identify trends. (行銷團隊分析了銷售數據以找出趨勢。)"}, {"id": 365, "word": "analyzing", "content": "analyzing (v.) 分析、評估（數據、資訊等）以做出決策或得出結論\n【搭配詞】\nanalyzing data 分析數據\nanalyzing market trends 分析市場趨勢\n【例句】\nThe marketing team is currently analyzing sales data to identify trends. (行銷團隊目前正在分析銷售數據以找出趨勢。)"}, {"id": 366, "word": "ancestor", "content": "ancestor (n.) 祖先、祖宗、前身、原型、原種\n【詞性變化】\nancestral (adj.) 祖傳的/祖先的\n【搭配詞】\ncommon ancestor 共同祖先\ndirect ancestor 直系祖先\n【例句】\nOur ancestors came to this country over a century ago. (我們的祖先在一個多世紀前來到這個國家。)"}, {"id": 367, "word": "anchor", "content": "anchor (n., v.) 固定、錨點、（新聞）主持人\n【例句】\nThe company used the successful marketing campaign as an anchor for its new product launch. (公司將成功的行銷活動作為其新產品發布的錨點。)"}, {"id": 368, "word": "ancient", "content": "ancient (adj.) 古老的、歷史悠久的、屬於過去時代的\n【詞性變化】\nolder (adj.)\noldest (adj.)\n【搭配詞】\nancient civilization 古代文明\nancient history 古代歷史\n【例句】\nThe company is restoring the ancient building to its former glory. (該公司正在將這座古老的建築恢復到它昔日的輝煌。)"}, {"id": 369, "word": "andrew", "content": "andrew (n.) 安德魯（男子名）\n【例句】\nAndrew from the sales department will be handling the new account. (銷售部門的安德魯將負責新客戶。)"}, {"id": 370, "word": "anew", "content": "anew (adv.) 重新、再一次\n【搭配詞】\nstart anew 重新開始\nbegin life anew 展開新生活\n【例句】\nAfter the failure, they decided to start the project anew. (失敗之後，他們決定重新開始這個專案。)"}, {"id": 371, "word": "angeles", "content": "angeles (n.) 天使、（多用於地名）洛杉磯天使（Los Angeles Angels）\n【例句】\nThe marketing campaign featured the Los Angeles Angels to appeal to a wider audience. (為了吸引更廣泛的受眾，行銷活動中使用了洛杉磯天使的形象。)"}, {"id": 372, "word": "anger", "content": "anger (n., v.) 憤怒、生氣、激怒\n【搭配詞】\nexpress anger 表達憤怒\nprovoke anger 激起憤怒\n【例句】\nShe felt a surge of anger when she heard the news. (她聽到這個消息時，一股怒火湧上心頭。)"}, {"id": 373, "word": "angle", "content": "angle (n., v.) 角度、觀點、立場、從某個角度看、傾斜、有特定觀點地提出\n【搭配詞】\nfrom a different angle 從不同角度\nfrom every angle 從各個方面\n【例句】\nLet's try to look at the issue from a different angle. (讓我們試著從不同的角度來看待這個問題。)"}, {"id": 374, "word": "angry", "content": "angry (adj.) 憤怒、生氣\n【詞性變化】\nangrier (adj.)\nangriest (adj.)\n【例句】\nThe manager was angry about the missed deadline and called an emergency meeting. (經理對於錯過期限感到憤怒，並召開了緊急會議。)"}, {"id": 375, "word": "animal", "content": "animal (n.) 動物、（在商業情境中\n【搭配詞】\nanimal testing 動物實驗\nanimal shelter 動物收容所\n【例句】\nOur company is committed to sourcing animal feed from sustainable farms. (我們公司致力於從永續經營的農場採購動物飼料。)"}, {"id": 376, "word": "animals", "content": "animals (n.) 動物（廣義上指所有非人類的生物，在商務情境中可能指公司飼養的寵物、動物實驗、或與動物相關的產品/服務）\n【搭配詞】\nanimal testing 動物實驗\nanimal welfare 動物福利\n【例句】\nThe company is committed to ethical treatment of animals used in product testing. (本公司致力於對用於產品測試的動物進行道德對待。)"}, {"id": 377, "word": "animate", "content": "animate (v.) 使...栩栩如生、使...充滿活力、（電腦動畫中）使...動起來\n【搭配詞】\nanimated discussion 熱烈的討論\nanimated film 動畫片\n【例句】\nThe software allows users to animate their presentations with engaging visuals. (這款軟體允許使用者使用引人入勝的視覺效果來為他們的簡報動畫化。)"}, {"id": 378, "word": "ankle", "content": "ankle (n.) 腳踝\n【搭配詞】\nsprained ankle 扭傷腳踝\n【例句】\nShe sprained her ankle while playing basketball. (她打籃球時扭傷了腳踝。)"}, {"id": 379, "word": "annex", "content": "annex (n., v.) 附加於主要文件或建築物的一部份\n【搭配詞】\nannex to the agreement 協議附件\ntechnical annex 技術附件\n【例句】\nThe company decided to annex a new office space to accommodate the growing team. (為了容納日益擴大的團隊，公司決定附加新的辦公空間。)"}, {"id": 380, "word": "anniversary", "content": "anniversary (n.) 週年紀念，紀念日（尤指公司、組織或關係的成立或重要事件的紀念日）\n【詞性變化】\nannual (adj.) 每年的\n【搭配詞】\nanniversary celebration 週年慶祝活動\nfounding anniversary 創立週年\n【例句】\nThe company is celebrating its 10th anniversary with a special promotion. (公司將以特別促銷活動慶祝成立 10 周年。)"}, {"id": 381, "word": "annotated", "content": "annotated (adj.) 添加註釋的、已做標註的\n【搭配詞】\nannotated bibliography 有註解的書目\nannotated diagram 附說明的圖表\n【例句】\nThe sales report was heavily annotated with comments and suggestions from the marketing team. (銷售報告被行銷團隊的評論和建議大量標註。)"}, {"id": 382, "word": "announce", "content": "announce (v.) 宣告、公佈、宣布\n【搭配詞】\nannounce a merger 宣布合併\nannounce a new policy 宣布新政策\n【例句】\nThe CEO announced the company's record profits during the annual meeting. (執行長在年度會議上宣布了公司創紀錄的利潤。)"}, {"id": 383, "word": "announced", "content": "announced (v.) 宣布、公佈、宣示\n【搭配詞】\nannounce a plan 宣佈計畫\nannounce a merger 宣佈合併\n【例句】\nThe CEO announced the company's record profits during the annual shareholders' meeting. (執行長在年度股東大會上宣布了公司創紀錄的利潤。)"}, {"id": 384, "word": "announcement", "content": "announcement (n.) 公告、宣佈（通常是正式的訊息，用於告知大家重要資訊）\n【搭配詞】\nmake an announcement 發表公告\nofficial announcement 正式聲明\n【例句】\nThe company made an announcement regarding the upcoming restructuring. (公司發布了關於即將進行的重組公告。)"}, {"id": 385, "word": "announcer", "content": "announcer (n.) 播音員、廣播員、節目主持人\n【搭配詞】\nradio announcer 廣播電台播報員\nnews announcer 新聞播報員\n【例句】\nThe announcer introduced the next segment of the live show. (播音員介紹了直播節目的下一部分。)"}, {"id": 386, "word": "announcing", "content": "announcing (v., adj.) 宣告、公佈、發布（消息、資訊等）\n【搭配詞】\nannouncing a merger 宣布合併\nannouncing a new product 發布新產品\n【例句】\nThe company is announcing a new product launch next month. (公司將於下個月宣布推出新產品。)"}, {"id": 387, "word": "annoy", "content": "annoy (v.) 使人感到煩躁或惱怒、激怒\n【例句】\nConstant interruptions during the meeting annoyed the project manager. (會議中持續的中斷讓專案經理感到煩躁。)"}, {"id": 388, "word": "annoyed", "content": "annoyed (adj.) 因不滿或煩躁而感到不悅\n【搭配詞】\nannoyed with someone 對某人感到惱火\nannoyed at/about something 對某事感到生氣\n【例句】\nThe manager was annoyed by the constant interruptions during the meeting. (會議中不斷被打斷，讓經理感到非常不悅。)"}, {"id": 389, "word": "annoying", "content": "annoying (adj.) 令人煩惱的、惱人的、令人不快的\n【搭配詞】\nannoying habit 惱人的習慣\nannoying delay 令人煩躁的延誤\n【例句】\nThe constant background noise during the conference call was incredibly annoying. (會議期間持續的背景噪音非常令人煩惱。)"}, {"id": 390, "word": "annual", "content": "annual (adj.) 每年的、一年一次的（形容詞），常用於描述年度報告、會議或計畫等\n【搭配詞】\nannual report 年度報告\nannual general meeting 股東週年大會\n【例句】\nThe company will hold its annual shareholders' meeting next Thursday. (公司將於下週四舉行年度股東大會。)"}, {"id": 391, "word": "annualize", "content": "annualize (v.) 將（數據或比率）按年計算、年率化\n【詞性變化】\nannual (adj.) 每年的\nannually (adv.) 每年地\n【搭配詞】\nannualized rate 年化率\nannualized return 年化報酬率\n【例句】\nThe company decided to annualize the quarterly sales figures to project the full year's revenue. (該公司決定將季度銷售數據年率化，以預測全年的收入。)"}, {"id": 392, "word": "annually", "content": "annually (adv.) 每年、一年一次\n【搭配詞】\nheld annually 每年舉行\nreview annually 每年審查\n【例句】\nThe company reports its financial results annually. (公司每年報告其財務業績。)"}, {"id": 393, "word": "annuity", "content": "annuity (n.) 年金、養老金\n【搭配詞】\nfixed annuity 固定年金\nvariable annuity 變額年金\n【例句】\nShe bought an annuity to ensure a steady income in retirement. (她購買了一份年金，以確保退休後有穩定的收入。)"}, {"id": 394, "word": "annum", "content": "annum (n.) 年，一年（常用於片語per annum，意為「每年」）\n【搭配詞】\nper annum 每年\n【例句】\nThe company offers an attractive salary of $60,000 per annum. (公司提供每年六萬美元的優渥薪資。)"}, {"id": 395, "word": "anonymous", "content": "anonymous (adj., adv.) 不具名、匿名、未公開身分\n【搭配詞】\nanonymous donor 匿名捐贈者\nanonymous tip 匿名消息/檢舉\n【例句】\nThe company received an anonymous tip about potential safety violations. (公司收到一份關於潛在安全違規行為的匿名舉報。)"}, {"id": 396, "word": "another", "content": "another (determiner, pron.) 另一個、又一個、再一個、另一位\n【搭配詞】\nanother three days 再三天\none another 彼此\n【例句】\nCould you please give me another chance? (請再給我一次機會好嗎？)"}, {"id": 397, "word": "answer", "content": "answer (n., v.) 回覆、答覆、回應\n【搭配詞】\nanswer an inquiry 回覆詢問\nanswer a call 接電話\n【例句】\nCould you please answer the questionnaire before the meeting? (請在會議前填寫問卷並回覆。)"}, {"id": 398, "word": "answering", "content": "answering (v., n.) 回應、答覆、處理（問題、電話等）\n【搭配詞】\nanswering the phone 正在接聽電話\nAnswering inquiries is part of her job 回覆詢問是她的工作之一\n【例句】\nThe receptionist is responsible for answering phone calls and directing them to the appropriate department. (接待員負責接聽電話並將其轉至相關部門。)"}, {"id": 399, "word": "answers", "content": "answers (n., v.) 答案、回應、解決方案\n【搭配詞】\nanswers to the questionnaire 問卷的回答\nanswer the inquiry 回覆查詢\n【例句】\nThe project manager needs to review the team's answers to ensure accuracy. (專案經理需要審閱團隊的答案以確保準確性。)"}, {"id": 400, "word": "anterior", "content": "anterior (adj.) 前面的、前部的\n【搭配詞】\nanterior portion 前部\nanterior surface 前表面\n【例句】\nThe anterior part of the brain is responsible for higher-level thinking. (大腦的前部負責更高層次的思維。)"}, {"id": 401, "word": "anthropology", "content": "anthropology (n.) 人類學，研究人類及其社會、文化和發展的科學\n【詞性變化】\nanthropologist (related noun)\nanthropological (related adjective)\n【搭配詞】\ncultural anthropology 文化人類學\nanthropological research 人類學研究\n【例句】\nShe majored in anthropology and spent a year studying ancient cultures. (她主修人類學，並花了一年時間研究古代文化。)"}, {"id": 402, "word": "anti", "content": "anti (adj., n.) 作為字首，意指「反對」、「相反」或「對抗」、亦可作形容詞，意指反對的、敵對的，或作名詞，意指反對者、反對論者\n【搭配詞】\nanti-theft system 防盜系統\nanti-virus software 防毒軟體\n【例句】\nMany citizens are strongly anti the new tax proposal. (許多市民強烈反對這項新的稅收提案。)"}, {"id": 403, "word": "antibiotic", "content": "antibiotic (n.) 抗生素，用於治療細菌感染的藥物\n【搭配詞】\na course of antibiotics 一整個療程的抗生素\nprescribe antibiotics 開立抗生素處方\n【例句】\nThe company's health insurance plan covers prescription antibiotics for employees. (公司醫療保險計畫涵蓋員工處方抗生素。)"}, {"id": 404, "word": "antibody", "content": "antibody (n.) 抗體（免疫系統產生的一種蛋白質，用於識別和中和細菌、病毒等外來病原體）\n【搭配詞】\nproduce antibodies 產生抗體\nantibody test/testing 抗體檢測\n【例句】\nVaccines work by stimulating the body to produce antibodies against specific diseases. (疫苗的作用是刺激身體產生針對特定疾病的抗體。)"}, {"id": 405, "word": "anticipate", "content": "anticipate (v.) 預期、預見\n【搭配詞】\nanticipate needing more staff 預期會需要更多員工\nanticipate changes 預期變動\n【例句】\nThe marketing team needs to anticipate potential customer reactions to the new product launch. (行銷團隊需要預期客戶對新產品發布的潛在反應。)"}, {"id": 406, "word": "anticipated", "content": "anticipated (adj.) 預期的、預先設想的、預料到的\n【搭配詞】\nhighly anticipated 備受期待的\nanticipated completion date 預計完工日期\n【例句】\nThe company announced the product launch, which was highly anticipated by investors. (公司宣布產品發布，這受到投資者的熱切期盼。)"}, {"id": 407, "word": "anticipation", "content": "anticipation (n.) 預期、期盼、對將來事情的期待\n【詞性變化】\nanticipate (v.) 預期\nanticipatory (adj.) 預期的\n【例句】\nThe company is experiencing high anticipation for the launch of its new product. (公司對其新產品的推出充滿期待。)"}, {"id": 408, "word": "antigua", "content": "antigua (adj.) 古老的、歷史悠久的（通常指建築、文物等）\n【詞性變化】\nantique (adj.) 古董的、古風的\n【搭配詞】\nantique 古董的、古風的\nbound for Antigua 前往安地卡\n【例句】\nThe hotel boasts an antigua facade, blending seamlessly with the historic district. (這家酒店擁有古老的正面，與歷史街區融為一體。)"}, {"id": 409, "word": "antioxidant", "content": "antioxidant (n., adj.) 抗氧化劑（一種能防止或延緩細胞損傷的物質）、抗氧化的\n【搭配詞】\nrich in antioxidants 富含抗氧化劑\nantioxidant properties 抗氧化特性\n【例句】\nMany fruits and vegetables are rich in antioxidants, which can help protect the body's cells. (許多水果和蔬菜富含抗氧化劑，可以幫助保護身體的細胞。)"}, {"id": 410, "word": "antique", "content": "antique (n., adj.) 古董、古老且有價值的物品\n【例句】\nThe company specializes in selling antique furniture to collectors worldwide. (這家公司專門向世界各地的收藏家銷售古董家具。)"}, {"id": 411, "word": "antiquity", "content": "antiquity (n.) 古代、古物、古老\n【搭配詞】\nof great antiquity 歷史悠久\n【例句】\nThe museum has a vast collection of artifacts from antiquity. (這家博物館收藏了大量來自古代的文物。)"}, {"id": 412, "word": "antitrust", "content": "antitrust (adj., n.) 反壟斷的、反托拉斯的、反壟斷法\n【搭配詞】\nantitrust laws 反托拉斯法\nantitrust regulators 反壟斷監管機構\n【例句】\nThe company is facing an antitrust investigation over its market practices. (該公司正因其市場行為而面臨反壟斷調查。)"}, {"id": 413, "word": "anxiety", "content": "anxiety (n.) 焦慮、憂慮\n【搭配詞】\nalleviate anxiety 減輕焦慮\ncause anxiety 引起焦慮\n【例句】\nThe department implemented innovative anxiety procedures to improve operational efficiency. (部門實施創新的anxiety程序以提高營運效率。)"}, {"id": 414, "word": "anxious", "content": "anxious (adj.) 焦慮的、擔憂的\n【搭配詞】\nanxious for feedback 渴望獲得回饋\nanxious about the upcoming merger 對即將到來的合併感到擔憂\n【例句】\nThe project manager was anxious about the upcoming deadline. (專案經理對即將到來的截止日期感到焦慮。)"}, {"id": 415, "word": "any", "content": "any (determiner, pron., adv.) 任何的，一些（用於疑問句、否定句或條件句中）、任何（不論哪個、哪些）、絲毫，一點兒（用於否定句或疑問句中，修飾形容詞或副詞的比較級）\n【搭配詞】\nany further questions 任何進一步的問題\n【例句】\nPlease let us know if you have any questions. (如果您有任何問題，請告訴我們。)"}, {"id": 416, "word": "anybody", "content": "anybody (pron.) 任何人、無論誰\n【搭配詞】\nanybody else 還有其他人\nanybody interested 任何感興趣的人\n【例句】\nIs anybody home? (家裡有人嗎？)"}, {"id": 417, "word": "anyhow", "content": "anyhow (adv.) 無論如何、反正、總之、無論用何種方式\n【例句】\nI don't know if it'll work, but I'll try it anyhow. (我不知道這是否會成功，但無論如何我都會試試看。)"}, {"id": 418, "word": "anymore", "content": "anymore (adv.) 不再，從今以後不再（表示否定或變化）\n【例句】\nWe no longer offer free shipping; it's not included anymore. (我們不再提供免費運送服務，從現在開始已不包含在內。)"}, {"id": 419, "word": "anyone", "content": "anyone (pron.) 任何人、任何一人（通常用於表示不確定性或詢問是否有人符合條件）\n【搭配詞】\nanyone interested in the position 對該職位感興趣的人\nanyone wishing to attend 想參加的人\n【例句】\nIs there anyone who can speak fluent Spanish to assist our client? (請問有誰能流利地說西班牙語來協助我們的客戶嗎？)"}, {"id": 420, "word": "anything", "content": "anything (pron., adv.) 任何事物、無論什麼\n【搭配詞】\nanything but 絕非、一點也不\nnothing but 僅僅、只有\n【例句】\nIs there anything I can do to help you with your presentation? (有什麼我可以幫你準備簡報的嗎？)"}, {"id": 421, "word": "anytime", "content": "anytime (adv.) 隨時、任何時候（強調時間上的彈性，不限於特定時間點）\n【例句】\nYou can submit your expense report anytime before the end of the month. (您可以在月底前隨時提交您的費用報表。)"}, {"id": 422, "word": "anyway", "content": "anyway (adv.) 無論如何、話雖如此、總之\n【例句】\nThe project is behind schedule, but anyway, we're making progress. (專案落後於原定進度，但總之，我們正在取得進展。)"}, {"id": 423, "word": "anywhere", "content": "anywhere (adv.) 任何地方、隨處\n【搭配詞】\nanywhere else 其他任何地方\nnot anywhere near finished 離完成還差得遠\n【例句】\nThe manager said we could hold the meeting anywhere convenient for the team. (經理說我們可以選擇團隊方便的任何地方開會。)"}, {"id": 424, "word": "apart", "content": "apart (adv., prep.) 分開、隔開、遠離\n【例句】\nThe desks were arranged far apart to allow for social distancing. (為了保持社交距離，辦公桌被安排得遠遠的。)"}, {"id": 425, "word": "apartment", "content": "apartment (n.) 公寓、租賃住宅單位\n【搭配詞】\napartment complex 公寓大樓\nstudio apartment 套房\n【例句】\nThe company provides temporary apartments for relocating employees. (公司為調職員工提供臨時公寓住宿。)"}, {"id": 426, "word": "apf", "content": "apf (n.) 應用程式程式介面 (Application Programming Interface)\n【例句】\nOur developers are working to integrate the new payment gateway API into the e-commerce platform. (我們的開發人員正在努力將新的支付閘道 API 整合到電子商務平台上。)"}, {"id": 427, "word": "apologies", "content": "apologies (n., v.) 道歉、致歉\n【搭配詞】\nextend my sincere apologies 表達我誠摯的歉意\n【例句】\nPlease accept our apologies for the delay in shipment. (對於貨運延遲，敬請諒解，並接受我們的致歉。)"}, {"id": 428, "word": "apologize", "content": "apologize (v.) 對造成的不便或錯誤表示遺憾並說明原因，以維護關係或彌補過失\n【例句】\nWe apologize for the delay in delivering your order and will expedite the shipment. (我們對訂單延遲表示歉意，並將加快出貨速度。)"}, {"id": 429, "word": "apology", "content": "apology (n., v.) 道歉、對不起的表示\n【詞性變化】\napologize (v.) v.\n【搭配詞】\noffer an apology 致歉\naccept an apology 接受道歉\n【例句】\nThe company issued an apology for the shipping delay. (該公司就運輸延誤發布了道歉聲明。)"}, {"id": 430, "word": "app", "content": "app (n.) 應用程式\n【例句】\nOur company is developing a new app to streamline the order processing system. (我們公司正在開發一個新的應用程式，以簡化訂單處理系統。)"}, {"id": 431, "word": "apparatus", "content": "apparatus (n.) 設備、儀器、一套系統或裝置\n【詞性變化】\napparati (n.)\n【搭配詞】\nsafety apparatus 安全設備\nlaboratory apparatus 實驗儀器\n【例句】\nThe company invested heavily in new apparatus to improve production efficiency. (公司投入大量資金購買新設備，以提高生產效率。)"}, {"id": 432, "word": "apparel", "content": "apparel (n.) 服裝、衣著（通常指正式或商業場合的服飾）\n【搭配詞】\nathletic apparel 運動服飾\nprotective apparel 防護衣物\n【例句】\nThe company dress code requires all employees to wear professional apparel. (公司的服裝規定要求所有員工穿著專業服裝。)"}, {"id": 433, "word": "apparent", "content": "apparent (adj.) 明顯的、顯而易見的、表面上的\n【詞性變化】\napparently (adv.)\n【例句】\nIt was apparent that the project would be delayed due to unforeseen circumstances. (很明顯，由於不可預見的情況，該專案將會延遲。)"}, {"id": 434, "word": "apparently", "content": "apparently (adv.) 顯然地、似乎是\n【搭配詞】\nit is apparently true 顯然是真的\napparently unrelated 表面上不相關\n【例句】\nApparently, the project deadline has been extended due to unforeseen circumstances. (顯然地，由於一些不可預見的情況，專案截止日期已被延長。)"}, {"id": 435, "word": "appeal", "content": "appeal (n., v.) 訴願、上訴、吸引力、吸引\n【例句】\nThe company decided to appeal the court's decision. (公司決定對法院的決定提出上訴。)"}, {"id": 436, "word": "appealing", "content": "appealing (adj.) 具有吸引力，引人入勝的、令人愉悅的\n【搭配詞】\nvisually appealing 視覺上吸睛的\nappealing offer 誘人的條件\n【例句】\nThe company launched a new advertising campaign to make their product more appealing to younger consumers. (該公司推出了一項新的廣告活動，旨在使他們的產品對年輕消費者更具吸引力。)"}, {"id": 437, "word": "appear", "content": "appear (v.) 出現、呈現、顯現\n【搭配詞】\nappear likely 看起來很有可能\nappear briefly 短暫出現\n【例句】\nThe error message appeared on the screen after the system update. (系統更新後，錯誤訊息出現在螢幕上。)"}, {"id": 438, "word": "appearance", "content": "appearance (n.) 外觀、外貌、給人的印象\n【詞性變化】\napparent (adj.) 明顯的\n【搭配詞】\nProfessional appearance 專業形象/服儀\n【例句】\nThe candidate's professional appearance helped him secure the job. (這位候選人的專業外貌幫助他獲得了這份工作。)"}, {"id": 439, "word": "appeared", "content": "appeared (v.) 出現、呈現、顯現\n【例句】\nThe error message appeared on the screen after the system update. (系統更新後，錯誤訊息出現在螢幕上。)"}, {"id": 440, "word": "appears", "content": "appears (v.) 出現、呈現、顯現\n【例句】\nThe error message appears on the screen after the system update. (系統更新後，錯誤訊息會在螢幕上出現。)"}, {"id": 441, "word": "append", "content": "append (v.) 附加、增補、添加\n【例句】\nPlease append the revised document to the original email. (請將修改後的文檔附加到原始郵件中。)"}, {"id": 442, "word": "appendix", "content": "appendix (n.) 附錄\n【搭配詞】\nrefer to 參閱\n【例句】\nPlease refer to Appendix A for a detailed breakdown of the survey results. (請參閱附錄 A 以獲取調查結果的詳細分類。)"}, {"id": 443, "word": "appetite", "content": "appetite (n.) 食慾、胃口、慾望、渴望\n【搭配詞】\ninsatiable appetite 永不滿足的渴望\n【例句】\nExercising regularly can help improve your appetite. (規律運動有助於增進你的食慾。)"}, {"id": 444, "word": "appetizer", "content": "appetizer (n.) 開胃菜、餐前小點\n【搭配詞】\norder an appetizer 點開胃菜\non the appetizer menu 在開胃菜菜單上\n【例句】\nThe restaurant offers a selection of complimentary appetizers to start the meal. (這家餐廳提供一系列免費開胃菜，以開啟用餐體驗。)"}, {"id": 445, "word": "applaud", "content": "applaud (v.) 鼓掌表示讚賞或肯定\n【搭配詞】\napplaud the decision 讚賞這項決定\napplaud the efforts 肯定其努力\n【例句】\nThe audience applauded enthusiastically after the CEO's inspiring presentation. (在 CEO 啟發性的簡報後，觀眾熱烈鼓掌。)"}, {"id": 446, "word": "applause", "content": "applause (n.) 掌聲、鼓掌、喝采\n【搭配詞】\na round of applause 一陣掌聲\napplaud 鼓掌\n【例句】\nThe audience erupted in enthusiastic applause after the performance. (演出結束後，觀眾爆發出熱烈的掌聲。)"}, {"id": 447, "word": "apple", "content": "apple (n.) 蘋果、(比喻) 好的事物或機會\n【例句】\nThe company is launching a new line of apple-flavored snacks to boost sales. (該公司正在推出一系列蘋果口味的零食以提高銷售額。)"}, {"id": 448, "word": "appliance", "content": "appliance (n.) 家用電器、辦公室設備\n【搭配詞】\nhousehold/home/kitchen appliance 家用/廚房電器\nenergy-efficient/energy-saving appliance 節能電器\n【例句】\nThe office manager is responsible for ordering new appliances for the break room. (辦公室經理負責為休息室訂購新的家用電器。)"}, {"id": 449, "word": "appliances", "content": "appliances (n.) 家用電器、辦公室設備\n【搭配詞】\nhousehold appliances 家用電器\nelectrical appliances 電器用品\n【例句】\nThe company is investing in new kitchen appliances to improve employee satisfaction. (公司正在投資新的廚房電器，以提高員工滿意度。)"}, {"id": 450, "word": "applicable", "content": "applicable (adj.) 可應用的、適用的、相關的\n【詞性變化】\napplicant (n.) 申請人\n【搭配詞】\napplicable to 適用於...\n【例句】\nPlease refer to the applicable terms and conditions. (請參閱適用的條款和條件。)"}, {"id": 451, "word": "applicant", "content": "applicant (n.) 求職者、申請人\n【搭配詞】\nsuccessful applicant 錄取者\nqualified applicant 合格的應徵者\n【例句】\nThe HR department is reviewing the applications of several qualified applicants. (人力資源部門正在審閱多位合格求職者的申請。)"}, {"id": 452, "word": "applicants", "content": "applicants (n.) 申請者、應徵者\n【搭配詞】\nsuccessful applicants 錄取者\njob applicants 求職者\n【例句】\nThe HR department received over 200 applicants for the marketing manager position. (人力資源部門收到了超過 200 位應徵市場經理職位的申請者。)"}, {"id": 453, "word": "application", "content": "application (n., v.) 申請、應用、請求\n【搭配詞】\napply for 申請某職位/許可\napply to 向某單位/機構申請\n【例句】\nPlease submit your job application by Friday. (請在星期五前提交您的求職申請。)"}, {"id": 454, "word": "applications", "content": "applications (n.) 申請、應用程式、申請文件\n【搭配詞】\nsubmit an application 提交申請\nprocess applications 處理申請\n【例句】\nThe HR department is reviewing a large number of job applications. (人資部門正在審查大量的職位申請。)"}, {"id": 455, "word": "applied", "content": "applied (adj., v.) 應用、實用、被使用\n【搭配詞】\napplied science 應用科學\napplied research 應用研究\n【例句】\nThe company is looking for candidates with practical experience and applied skills. (公司正在尋找具有實際經驗和應用技能的候選人。)"}, {"id": 456, "word": "applies", "content": "applies (v.) 塗抹、適用、申請\n【例句】\nThe company applies a strict quality control process to all products. (公司對所有產品都採用嚴格的品質管制流程。)"}, {"id": 457, "word": "apply", "content": "apply (v.) 申請、塗抹、適用\n【搭配詞】\napplicable to 適用於...\n【例句】\nApplicants should apply for the position online before the deadline. (應徵者應在截止日期前透過網路申請該職位。)"}, {"id": 458, "word": "applying", "content": "applying (v.) 申請（職位、許可等）或將某項規則、方法等實施於實務中\n【例句】\nShe is applying for the marketing manager position at the headquarters. (她正在總公司申請行銷經理的職位。)"}, {"id": 459, "word": "appoint", "content": "appoint (v.) 任命、委派\n【詞性變化】\nappointment (n.)\n【例句】\nThe committee will appoint a new director next month. (委員會將在下個月任命一位新主任。)"}, {"id": 460, "word": "appointment", "content": "appointment (n.) 預約、約會（通常指正式的會議或服務預約）\n【搭配詞】\nmake an appointment 預約\nschedule an appointment 安排預約\n【例句】\nPlease reschedule your appointment with Mr. Smith to next Tuesday. (請將您與史密斯先生的預約改到下週二。)"}, {"id": 461, "word": "appointments", "content": "appointments (n.) 預約、約會（通常指商業或專業性質的安排）\n【搭配詞】\nmake/schedule an appointment 預約時間\ncancel/postpone an appointment 取消或延後預約\n【例句】\nPlease reschedule your appointment with Mr. Lee to next Tuesday. (請將您與李先生的預約改期至下週二。)"}, {"id": 462, "word": "appraisal", "content": "appraisal (n., v.) 評估、評鑑、估價（尤指工作績效）\n【搭配詞】\nperformance appraisal 績效評估\nannual appraisal 年度考評\n【例句】\nThe annual performance appraisal will help employees identify areas for improvement. (年度績效評估將幫助員工找出需要改進的領域。)"}, {"id": 463, "word": "appreciate", "content": "appreciate (v.) 感激、欣賞、體會到價值\n【搭配詞】\nhighly appreciate 高度讚賞\nappreciate the opportunity 感激有此機會\n【例句】\nWe appreciate your prompt response and cooperation in resolving this issue. (我們感謝您在解決此問題上的快速回覆與合作。)"}, {"id": 464, "word": "appreciated", "content": "appreciated (adj., v.) 感激、重視、欣賞\n【詞性變化】\nappreciate (v.)\ngrateful (adj.)\n【搭配詞】\nYour prompt reply would be greatly appreciated 若能儘速回覆將不勝感激\n【例句】\nYour prompt response and dedication to this project are greatly appreciated. (您對此專案的快速回覆和奉獻精神備受我們感激。)"}, {"id": 465, "word": "appreciates", "content": "appreciates (v.) 重視、欣賞、感謝（某事物的價值或重要性）\n【搭配詞】\nappreciate your patience 感謝您的耐心\nappreciate having the opportunity 感謝有此機會\n【例句】\nThe company appreciates your prompt response and valuable feedback. (公司感謝您迅速的回應和寶貴的意見回饋。)"}, {"id": 466, "word": "appreciation", "content": "appreciation (n., v.) 對某事或某人的感激之情、對價值的認識\n【搭配詞】\nexpress/show appreciation for 對...表示感謝\nin appreciation of 為了感謝...\n【例句】\nThe company showed its appreciation for the team's hard work with a bonus. (公司以獎金回報團隊的辛勤工作，以示感激。)"}, {"id": 467, "word": "appreciative", "content": "appreciative (adj.) 表示對某事或某人感到感激、欣賞的、重視、體認到價值或貢獻的\n【例句】\nThe manager was appreciative of the team's hard work and dedication to the project. (經理對團隊在專案中付出的辛勤工作和奉獻精神表示讚賞。)"}, {"id": 468, "word": "apprehensive", "content": "apprehensive (adj.) 感到擔憂或不安，對將來的事情感到焦慮\n【搭配詞】\nbe apprehensive about the merger 對併購感到憂慮\n【例句】\nThe team was apprehensive about the upcoming merger negotiations. (團隊對即將到來的併購談判感到擔憂。)"}, {"id": 469, "word": "apprentice", "content": "apprentice (n.) 學徒、見習者（通常指在專業領域接受訓練並學習技能的人）\n【搭配詞】\napprenticeship program 見習計畫\nserve an apprenticeship 擔任學徒\n【例句】\nThe company offers an apprenticeship program for recent graduates interested in a career in engineering. (該公司為對工程領域有興趣的應屆畢業生提供學徒計畫。)"}, {"id": 470, "word": "approach", "content": "approach (n., v.) 靠近、方法、態度\n【搭配詞】\nsystematic approach 系統性的方法\ninnovative approach 創新方法\n【例句】\nThe team needs to approach the project with a new strategy to improve efficiency. (團隊需要以新的策略來處理這個專案，以提高效率。)"}, {"id": 471, "word": "appropriate", "content": "appropriate (adj.) 合適的、恰當的、適當的，符合需求的\n【搭配詞】\nappropriate for/to 適合於...\ntake appropriate action/measures 採取適當措施\n【例句】\nThe attire for the conference is business casual – something appropriate for a professional setting. (這場會議的服裝是商務休閒風格，適合專業場合。)"}, {"id": 472, "word": "appropriately", "content": "appropriately (adv.) 適當地、恰當地（指行為、言辭等符合情境或場合）\n【搭配詞】\ndress appropriately 穿著得體\nrespond appropriately 適當回應\n【例句】\nThe manager addressed the employee's concerns appropriately, ensuring a positive outcome. (經理適當地處理了員工的顧慮，確保了積極的結果。)"}, {"id": 473, "word": "approval", "content": "approval (n., v.) 批准、認可、同意\n【搭配詞】\nobtain/get approval 獲得批准\nsubject to approval 取決於批准\n【例句】\nThe project requires approval from the department head before it can proceed. (專案需要在部門主管批准後才能繼續進行。)"}, {"id": 474, "word": "approve", "content": "approve (v.) 核准、批准、同意\n【搭配詞】\napprove the budget 核准預算\nobtain/get approval 獲得批准\n【例句】\nThe manager needs to approve the expense report before reimbursement. (經理需要在報銷前核准費用報告。)"}, {"id": 475, "word": "approved", "content": "approved (adj.) 批准、核准、同意\n【搭配詞】\napproved budget 經核准的預算\napproved vendor 合格的供應商\n【例句】\nThe project proposal has been approved by the management team. (該專案提案已獲得管理團隊的批准。)"}, {"id": 476, "word": "approximate", "content": "approximate (adj., v.) 大約的、近似的、估計的 (adj.)、近似、估計 (v.)\n【搭配詞】\napproximate cost 大約成本\napproximate arrival time 大約抵達時間\n【例句】\nThe approximate cost of the project is $10,000. (該專案的預估成本約為一萬元。)"}, {"id": 477, "word": "approximately", "content": "approximately (adv.) 大約、約略、約莫（表示數量、時間等不完全精確的估計）\n【例句】\nThe project is expected to be completed approximately two weeks from today. (預計該專案將在今天起約兩週內完成。)"}, {"id": 478, "word": "approximation", "content": "approximation (n.) 估計值、約略值\n【搭配詞】\nrough approximation 粗略估計\nclose approximation 接近的近似值\n【例句】\nThe financial report provided an approximation of the company's profits for the quarter. (財務報告提供了本季公司利潤的估計值。)"}, {"id": 479, "word": "apr", "content": "apr (n.) （電腦）每秒處理的資料量\n【搭配詞】\nlow introductory APR 初期優惠利率\nfixed APR 固定年利息\n【例句】\nThe new server boasts an impressive APR of 10 Gbps, significantly improving data transfer rates. (這部新伺服器擁有令人印象深刻的每秒資料量 10 Gbps，顯著提升了資料傳輸速率。)"}, {"id": 480, "word": "april", "content": "april (n.) 四月，一年中的第四個月\n【搭配詞】\nby the end of April 四月底前\nstarting in April 自四月起\n【例句】\nThe company's annual sales conference is scheduled for April next year. (公司年度銷售會議預計在明年四月舉行。)"}, {"id": 481, "word": "aptitude", "content": "aptitude (n.) 天賦、潛能、能力傾向\n【搭配詞】\naptitude test 性向測驗或能力傾向測試\n【例句】\nThe company is looking for candidates with a strong aptitude for sales and customer service. (公司正在尋找具備銷售和客戶服務潛能的候選人。)"}, {"id": 482, "word": "aquarium", "content": "aquarium (n.) 水族館、觀賞魚缸\n【搭配詞】\naquarium exhibit 水族館展覽\nmarine life aquarium 海洋生物水族館\n【例句】\nThe company is considering a team-building event at the local aquarium. (公司正在考慮在當地水族館舉辦團隊建設活動。)"}, {"id": 483, "word": "arable", "content": "arable (adj.) 適合耕種的、可耕種的\n【搭配詞】\narable land 可耕地\n【例句】\nThe company is seeking to expand its operations into more arable land in the region. (該公司正在尋求將其業務擴展到該地區更適合耕種的土地。)"}, {"id": 484, "word": "arbitrage", "content": "arbitrage (n., v.) 套利、套匯 (利用不同市場的價格差異進行買賣以賺取利潤)\n【搭配詞】\narbitrage opportunity 套利機會\ncurrency arbitrage 貨幣套利\n【例句】\nThe trader made a quick profit through currency arbitrage. (這位交易員透過貨幣套利迅速獲利。)"}, {"id": 485, "word": "arbitrary", "content": "arbitrary (adj.) 任意的、武斷的、隨意的、專斷的\n【詞性變化】\narbitrarily (adv.)\n【搭配詞】\nan arbitrary decision 武斷的決定\n【例句】\nThe committee's decision seemed arbitrary, as there was no clear reason for their choice. (委員會的決定似乎很武斷，因為他們的選擇沒有明確的理由。)"}, {"id": 486, "word": "arbitration", "content": "arbitration (n.) 仲裁\n【搭配詞】\nBinding arbitration 具法律約束力的仲裁\nArbitration clause 仲裁條款\n【例句】\nThe company's new arbitration initiative exceeded expectations in the first quarter. (公司的新arbitration計畫在第一季度超出了預期。)"}, {"id": 487, "word": "arc", "content": "arc (n., v.) 弧形，弧線、弧光、弧形運動、形成弧形，沿弧線移動\n【搭配詞】\ncareer arc 職業生涯軌跡\nnarrative arc 敘事弧線\n【例句】\nThe bridge has a graceful arc over the river. (這座橋在河面上形成一道優雅的弧線。)"}, {"id": 488, "word": "arch", "content": "arch (n., v.) 拱形、建築物頂部彎曲的結構、（比喻）頂點，高峰\n【搭配詞】\narch 拱形/主要的\narchive 檔案/存檔\n【例句】\nThe architect designed a beautiful archway to enhance the entrance of the building. (建築師設計了一個美麗的拱門，以提升建築物的入口。)"}, {"id": 489, "word": "archaeology", "content": "archaeology (n.) 考古學\n【搭配詞】\narchaeological site 考古遺址\nexcavation project 挖掘計畫\n【例句】\nThe discovery of ancient artifacts is central to archaeology. (發現古代文物是考古學的核心。)"}, {"id": 490, "word": "archery", "content": "archery (n.) 箭術、射箭\n【搭配詞】\narchery range 射箭場\narchery equipment 射箭器材\n【例句】\nThe company is considering offering archery as a team-building activity for employees. (公司正在考慮為員工提供射箭作為團隊建設活動。)"}, {"id": 491, "word": "architect", "content": "architect (n.) 建築師，負責設計和規劃建築物及相關空間\n【搭配詞】\nchief architect 首席建築師\nrenowned architect 著名的建築師\n【例句】\nThe company hired an architect to design the new office building. (公司聘請了一位建築師來設計新的辦公大樓。)"}, {"id": 492, "word": "architects", "content": "architects (n.) 建築師、設計師（專注於建築物和空間的設計者）\n【搭配詞】\nLead architects 首席建築師\nArchitecture firm 建築事務所\n【例句】\nThe company hired experienced architects to design the new office building. (公司聘請了經驗豐富的建築師來設計新的辦公大樓。)"}, {"id": 493, "word": "architectural", "content": "architectural (adj.) 與建築設計或風格相關的、建築學的\n【搭配詞】\narchitectural firm 建築師事務所\narchitectural plans 建築圖面\n【例句】\nThe building's architectural design incorporates modern and traditional elements. (這棟建築的建築設計融合了現代和傳統元素。)"}, {"id": 494, "word": "architecture", "content": "architecture (n.) 建築設計、建築結構、建築風格\n【搭配詞】\nmodern architecture 現代建築\nnetwork architecture 網路架構\n【例句】\nThe company is investing heavily in modern architecture to attract high-profile tenants. (公司正在大量投資現代建築設計，以吸引知名租戶。)"}, {"id": 495, "word": "archival", "content": "archival (adj.) 歸檔用的、用於長期保存的、符合檔案保存標準的\n【搭配詞】\narchival storage 檔案儲存\narchival records 檔案紀錄\n【例句】\nThe company uses archival-quality paper to ensure documents last for decades. (公司使用歸檔級別的紙張，以確保文件可以保存數十年。)"}, {"id": 496, "word": "archive", "content": "archive (n.) 檔案室、檔案資料庫（通常指保存歷史文件或數據的場所或系統）\n【搭配詞】\ndigital archive 數位檔案庫\naccessible archive 可存取的檔案庫\n【例句】\nThe company's legal department is responsible for maintaining the archives of important contracts. (公司法務部門負責維護重要合約的檔案資料庫。)"}, {"id": 497, "word": "archives", "content": "archives (n.) 檔案室、檔案資料庫（通常指保存歷史文件、記錄或資料的場所或系統）\n【搭配詞】\ndigital archives 數位檔案庫\naccess the archives 存取檔案\n【例句】\nThe company's legal department is responsible for maintaining the archives of all contracts and agreements. (公司法務部門負責維護所有合約和協議的檔案資料庫。)"}, {"id": 498, "word": "archway", "content": "archway (n.) 拱門、拱道\n【例句】\nThe new office building features a grand archway leading to the reception area. (新辦公大樓設有一個宏偉的拱門，通往接待區。)"}, {"id": 499, "word": "area", "content": "area (n.) 區域、範圍、面積\n【搭配詞】\nrestricted area 禁區\ndesignated smoking area 指定吸菸區\n【例句】\nThe sales department needs to expand its area of responsibility. (銷售部門需要擴大其負責區域。)"}, {"id": 500, "word": "areas", "content": "areas (n.) 區域、領域、範圍\n【搭配詞】\ndesignated areas 指定區域\nurban/rural areas 都市/鄉村地區\n【例句】\nThe company is expanding into new geographical areas to increase market share. (公司正在擴展到新的地理區域以增加市場份額。)"}];
+
+        /**
+         * 打卡與統計服務 (CheckInService)
+         */
+        class CheckInService {
+            static getTodayStr(date = new Date()) {
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+
+            static calculateStreak(historyDates, todayStr = this.getTodayStr()) {
+                if (!historyDates || historyDates.length === 0) return 0;
+                const set = new Set(historyDates);
+
+                let streak = 0;
+                let checkDate = new Date(todayStr);
+
+                if (!set.has(todayStr)) {
+                    checkDate.setDate(checkDate.getDate() - 1);
+                }
+
+                while (true) {
+                    const dateStr = this.getTodayStr(checkDate);
+                    if (set.has(dateStr)) {
+                        streak++;
+                        checkDate.setDate(checkDate.getDate() - 1);
+                    } else {
+                        break;
+                    }
+                }
+
+                return streak;
+            }
+        }
+
+        /**
+         * 隨機 Session 產生管理員 (SessionManager)
+         */
+        class SessionManager {
+            static shuffle(array) {
+                const copy = [...array];
+                for (let i = copy.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+                return copy;
+            }
+
+            static pickSessionWords(allWords, masteredIds = new Set(), sessionSize = 10) {
+                if (!allWords || allWords.length === 0) return [];
+                
+                const unmastered = allWords.filter(w => !masteredIds.has(w.id));
+                const pool = unmastered.length >= sessionSize ? unmastered : allWords;
+                
+                const shuffled = this.shuffle(pool);
+                return shuffled.slice(0, Math.min(sessionSize, shuffled.length));
+            }
+        }
 
         /**
          * 語音朗讀服務類別 (AudioService)
@@ -960,7 +1160,7 @@
          */
         class StorageService {
             constructor() {
-                this.dbName = 'ToeicFlashcardDB_v2';
+                this.dbName = 'ToeicFlashcardDB_v3';
                 this.storeName = 'app_state';
                 this.db = null;
             }
@@ -1044,18 +1244,6 @@
                 } catch (e) {
                     return null;
                 }
-            }
-
-            async clear() {
-                if (this.db) {
-                    try {
-                        const tx = this.db.transaction([this.storeName], 'readwrite');
-                        tx.objectStore(this.storeName).clear();
-                    } catch (e) {}
-                }
-                try {
-                    localStorage.removeItem('srs_flashcard_state');
-                } catch (e) {}
             }
         }
 
@@ -1155,24 +1343,24 @@
          * SRS 佇列引擎 (SrsEngine)
          */
         class SrsEngine {
-            constructor(cards = []) {
-                this.allCards = [...cards];
-                this.queue = [...cards];
+            constructor(sessionCards = []) {
+                this.sessionCards = [...sessionCards];
+                this.queue = [...sessionCards];
                 this.stats = { again: 0, hard: 0, known: 0, easy: 0 };
-                this.initialTotal = cards.length;
+                this.initialTotal = sessionCards.length;
             }
 
             loadState(state) {
                 if (!state) return;
-                this.allCards = state.allCards || [];
+                this.sessionCards = state.sessionCards || [];
                 this.queue = state.queue || [];
                 this.stats = state.stats || { again: 0, hard: 0, known: 0, easy: 0 };
-                this.initialTotal = state.initialTotal || this.allCards.length;
+                this.initialTotal = state.initialTotal || this.sessionCards.length;
             }
 
             getState() {
                 return {
-                    allCards: this.allCards,
+                    sessionCards: this.sessionCards,
                     queue: this.queue,
                     stats: this.stats,
                     initialTotal: this.initialTotal
@@ -1188,7 +1376,7 @@
             }
 
             processAnswer(action) {
-                if (this.queue.length === 0) return;
+                if (this.queue.length === 0) return null;
                 const current = this.queue.shift();
 
                 switch (action) {
@@ -1216,12 +1404,14 @@
                         this.stats.easy++;
                         break;
                 }
+
+                return current;
             }
 
             reset() {
-                this.queue = [...this.allCards];
+                this.queue = [...this.sessionCards];
                 this.stats = { again: 0, hard: 0, known: 0, easy: 0 };
-                this.initialTotal = this.allCards.length;
+                this.initialTotal = this.sessionCards.length;
             }
         }
 
@@ -1232,10 +1422,18 @@
             constructor() {
                 this.audio = new AudioService();
                 this.storage = new StorageService();
-                this.srs = new SrsEngine(DEFAULT_CARDS_DATA || []);
+                
+                this.allVocabulary = DEFAULT_CARDS_DATA || [];
+                this.masteredIds = new Set();
+                this.checkinHistory = [];
                 this.currentFileName = '預設 TOEIC 題庫';
                 this.isFlipped = false;
                 this.theme = 'light';
+                this.sessionCount = 1;
+
+                // 建立初始隨機 10 字 Session
+                const initialWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                this.srs = new SrsEngine(initialWords);
 
                 this.dom = {
                     flashcard: document.getElementById('flashcard'),
@@ -1247,25 +1445,36 @@
                     imgFallback: document.getElementById('img-fallback'),
                     frontSpeechBtn: document.getElementById('front-speech-btn'),
                     backSpeechBtn: document.getElementById('back-speech-btn'),
+                    cardIndexBadge: document.getElementById('card-index-badge'),
                     controlsToolbar: document.getElementById('controls-toolbar'),
                     queueCounter: document.getElementById('queue-counter'),
                     progressBar: document.getElementById('progress-bar'),
-                    currentFilename: document.getElementById('current-filename'),
-                    vocabCountBadge: document.getElementById('vocab-count-badge'),
+                    sessionTag: document.getElementById('session-tag'),
+                    streakBadge: document.getElementById('streak-badge'),
+                    streakText: document.getElementById('streak-text'),
                     completionView: document.getElementById('completion-view'),
+                    checkinBanner: document.getElementById('checkin-banner'),
+                    checkinBannerText: document.getElementById('checkin-banner-text'),
                     statAgain: document.getElementById('stat-again'),
                     statHard: document.getElementById('stat-hard'),
                     statKnown: document.getElementById('stat-known'),
                     statEasy: document.getElementById('stat-easy'),
+                    nextSetBtn: document.getElementById('next-set-btn'),
                     restartBtn: document.getElementById('restart-btn'),
-                    importNewBtn: document.getElementById('import-new-btn'),
+                    viewHistoryBtn: document.getElementById('view-history-btn'),
+                    nextSessionBtn: document.getElementById('next-session-btn'),
                     uploadBtn: document.getElementById('upload-btn'),
                     csvFileInput: document.getElementById('csv-file-input'),
-                    resetBtn: document.getElementById('reset-btn'),
                     themeBtn: document.getElementById('theme-btn'),
                     helpBtn: document.getElementById('help-btn'),
                     helpModal: document.getElementById('help-modal'),
                     modalCloseBtn: document.getElementById('modal-close-btn'),
+                    checkinModal: document.getElementById('checkin-modal'),
+                    checkinCloseBtn: document.getElementById('checkin-close-btn'),
+                    modalStreakVal: document.getElementById('modal-streak-val'),
+                    modalTotalDays: document.getElementById('modal-total-days'),
+                    modalMasteredWords: document.getElementById('modal-mastered-words'),
+                    checkinHistoryList: document.getElementById('checkin-history-list'),
                     btnAgain: document.getElementById('btn-again'),
                     btnHard: document.getElementById('btn-hard'),
                     btnKnown: document.getElementById('btn-known'),
@@ -1287,11 +1496,23 @@
 
             async loadPersistedState() {
                 try {
-                    const savedState = await this.storage.load('srs_flashcard_state');
-                    if (savedState && savedState.srs && savedState.srs.allCards && savedState.srs.allCards.length > 0) {
-                        this.srs.loadState(savedState.srs);
+                    const savedState = await this.storage.load('srs_flashcard_state_v3');
+                    if (savedState) {
+                        if (savedState.allVocabulary && savedState.allVocabulary.length > 0) {
+                            this.allVocabulary = savedState.allVocabulary;
+                        }
+                        if (savedState.masteredIds) {
+                            this.masteredIds = new Set(savedState.masteredIds);
+                        }
+                        if (savedState.checkinHistory) {
+                            this.checkinHistory = savedState.checkinHistory;
+                        }
+                        if (savedState.srs && savedState.srs.sessionCards && savedState.srs.sessionCards.length > 0) {
+                            this.srs.loadState(savedState.srs);
+                        }
                         this.currentFileName = savedState.fileName || '預設 TOEIC 題庫';
                         this.theme = savedState.theme || 'light';
+                        this.sessionCount = savedState.sessionCount || 1;
                     }
                     this.applyTheme(this.theme);
                 } catch (e) {
@@ -1301,11 +1522,15 @@
 
             async persistState() {
                 const payload = {
+                    allVocabulary: this.allVocabulary,
+                    masteredIds: Array.from(this.masteredIds),
+                    checkinHistory: this.checkinHistory,
                     srs: this.srs.getState(),
                     fileName: this.currentFileName,
-                    theme: this.theme
+                    theme: this.theme,
+                    sessionCount: this.sessionCount
                 };
-                await this.storage.save('srs_flashcard_state', payload);
+                await this.storage.save('srs_flashcard_state_v3', payload);
             }
 
             bindEvents() {
@@ -1340,13 +1565,21 @@
                 if (this.dom.btnKnown) this.dom.btnKnown.addEventListener('click', () => this.handleSrsAction('known'));
                 if (this.dom.btnEasy) this.dom.btnEasy.addEventListener('click', () => this.handleSrsAction('easy'));
 
+                // 換一組隨機 10 字
+                if (this.dom.nextSetBtn) this.dom.nextSetBtn.addEventListener('click', () => this.startNewSession());
+                if (this.dom.nextSessionBtn) this.dom.nextSessionBtn.addEventListener('click', () => {
+                    if (confirm('確定要隨機抽取下一組 10 個單字嗎？')) {
+                        this.startNewSession();
+                    }
+                });
+
                 if (this.dom.restartBtn) {
                     this.dom.restartBtn.addEventListener('click', () => {
                         this.srs.reset();
                         this.isFlipped = false;
                         this.persistState();
                         this.render();
-                        this.showToast('已重新開始學習！');
+                        this.showToast('已重新開始本組學習！');
                     });
                 }
 
@@ -1373,14 +1606,24 @@
                     }
                 });
 
-                if (this.dom.resetBtn) {
-                    this.dom.resetBtn.addEventListener('click', () => {
-                        if (confirm('確定要重設當前學習進度嗎？')) {
-                            this.srs.reset();
-                            this.isFlipped = false;
-                            this.persistState();
-                            this.render();
-                            this.showToast('學習進度已重設');
+                if (this.dom.streakBadge) {
+                    this.dom.streakBadge.addEventListener('click', () => this.openCheckinModal());
+                }
+
+                if (this.dom.viewHistoryBtn) {
+                    this.dom.viewHistoryBtn.addEventListener('click', () => this.openCheckinModal());
+                }
+
+                if (this.dom.checkinCloseBtn) {
+                    this.dom.checkinCloseBtn.addEventListener('click', () => {
+                        this.dom.checkinModal.classList.remove('active');
+                    });
+                }
+
+                if (this.dom.checkinModal) {
+                    this.dom.checkinModal.addEventListener('click', (e) => {
+                        if (e.target === this.dom.checkinModal) {
+                            this.dom.checkinModal.classList.remove('active');
                         }
                     });
                 }
@@ -1469,14 +1712,56 @@
 
             handleSrsAction(action) {
                 if (this.srs.isFinished()) return;
-                this.srs.processAnswer(action);
+                const answeredCard = this.srs.processAnswer(action);
+                
+                if (action === 'easy' && answeredCard) {
+                    this.masteredIds.add(answeredCard.id);
+                }
+
+                this.isFlipped = false;
+                this.updateCardFlipVisual();
+
+                // 檢查是否完成 Session
+                if (this.srs.isFinished()) {
+                    this.onSessionCompleted();
+                } else {
+                    this.playCurrentSpeech();
+                }
+
+                this.persistState();
+                this.render();
+            }
+
+            onSessionCompleted() {
+                const today = CheckInService.getTodayStr();
+                let newlyCheckedIn = false;
+
+                if (!this.checkinHistory.includes(today)) {
+                    this.checkinHistory.push(today);
+                    newlyCheckedIn = true;
+                }
+
+                const streak = CheckInService.calculateStreak(this.checkinHistory);
+                if (newlyCheckedIn) {
+                    this.showToast(`🎉 今日打卡成功！連續打卡 ${streak} 天！`);
+                } else {
+                    this.showToast(`太棒了！已完成第 ${this.sessionCount} 組學習！`);
+                }
+            }
+
+            startNewSession() {
+                const newWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                if (newWords.length === 0) {
+                    this.showToast('題庫中無可用單字');
+                    return;
+                }
+                this.srs = new SrsEngine(newWords);
+                this.sessionCount++;
                 this.isFlipped = false;
                 this.updateCardFlipVisual();
                 this.persistState();
                 this.render();
-                if (!this.srs.isFinished()) {
-                    this.playCurrentSpeech();
-                }
+                this.showToast(`已載入全新隨機 10 字（第 ${this.sessionCount} 組）`);
             }
 
             async handleCsvUpload(event) {
@@ -1491,14 +1776,47 @@
                 try {
                     const text = await file.text();
                     const parsedCards = CsvParserService.parse(text);
-                    this.srs = new SrsEngine(parsedCards);
+                    this.allVocabulary = parsedCards;
+                    this.masteredIds.clear();
                     this.currentFileName = file.name;
+                    this.sessionCount = 1;
+                    
+                    const newWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                    this.srs = new SrsEngine(newWords);
                     this.isFlipped = false;
                     await this.persistState();
                     this.render();
-                    this.showToast(`成功匯入 ${parsedCards.length} 筆單字！`);
+                    this.showToast(`成功匯入 ${parsedCards.length} 筆單字，已抽取首組 10 字！`);
                 } catch (err) {
                     alert(`CSV 匯入失敗：${err.message}`);
+                }
+            }
+
+            openCheckinModal() {
+                const streak = CheckInService.calculateStreak(this.checkinHistory);
+                const totalDays = this.checkinHistory.length;
+                const masteredCount = this.masteredIds.size;
+
+                if (this.dom.modalStreakVal) this.dom.modalStreakVal.textContent = streak;
+                if (this.dom.modalTotalDays) this.dom.modalTotalDays.textContent = totalDays;
+                if (this.dom.modalMasteredWords) this.dom.modalMasteredWords.textContent = masteredCount;
+
+                if (this.dom.checkinHistoryList) {
+                    if (this.checkinHistory.length === 0) {
+                        this.dom.checkinHistoryList.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:0.5rem;">尚未有打卡記錄，完成今天 10 個單字即可打卡！</p>';
+                    } else {
+                        const sortedDates = [...this.checkinHistory].reverse().slice(0, 15);
+                        this.dom.checkinHistoryList.innerHTML = sortedDates.map(date => `
+                            <div class="checkin-history-item">
+                                <span>📅 ${date}</span>
+                                <span class="checkin-badge-done">✓ 打卡完成</span>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                if (this.dom.checkinModal) {
+                    this.dom.checkinModal.classList.add('active');
                 }
             }
 
@@ -1512,13 +1830,17 @@
                 this.dom.toast.classList.add('show');
                 setTimeout(() => {
                     this.dom.toast.classList.remove('show');
-                }, 2200);
+                }, 2400);
             }
 
             render() {
-                if (!this.dom.currentFilename) return;
-                this.dom.currentFilename.textContent = this.currentFileName;
-                this.dom.vocabCountBadge.textContent = `${this.srs.allCards.length} 字`;
+                const streak = CheckInService.calculateStreak(this.checkinHistory);
+                if (this.dom.streakText) {
+                    this.dom.streakText.textContent = `${streak} 天`;
+                }
+
+                const today = CheckInService.getTodayStr();
+                const isTodayDone = this.checkinHistory.includes(today);
 
                 if (this.srs.isFinished()) {
                     if (this.dom.flashcard) this.dom.flashcard.style.display = 'none';
@@ -1528,12 +1850,18 @@
                         this.dom.controlsToolbar.style.pointerEvents = 'none';
                     }
 
+                    if (this.dom.checkinBannerText) {
+                        this.dom.checkinBannerText.textContent = isTodayDone
+                            ? `今日打卡已達成！連續打卡 ${streak} 天 🔥`
+                            : `完成本次 Session！今日打卡成功 🎉`;
+                    }
+
                     if (this.dom.statAgain) this.dom.statAgain.textContent = this.srs.stats.again;
                     if (this.dom.statHard) this.dom.statHard.textContent = this.srs.stats.hard;
                     if (this.dom.statKnown) this.dom.statKnown.textContent = this.srs.stats.known;
                     if (this.dom.statEasy) this.dom.statEasy.textContent = this.srs.stats.easy;
 
-                    if (this.dom.queueCounter) this.dom.queueCounter.textContent = '學習完畢';
+                    if (this.dom.queueCounter) this.dom.queueCounter.textContent = '本組完成';
                     if (this.dom.progressBar) this.dom.progressBar.style.width = '100%';
                     return;
                 }
@@ -1554,11 +1882,19 @@
                 this.updateCardImage(card.word);
 
                 const remaining = this.srs.queue.length;
-                const total = this.srs.initialTotal || this.srs.allCards.length;
+                const total = this.srs.initialTotal || 10;
                 const done = Math.max(0, total - remaining);
                 const percent = Math.min(100, Math.round((done / total) * 100));
 
-                if (this.dom.queueCounter) this.dom.queueCounter.textContent = `剩餘: ${remaining} / 總計: ${total}`;
+                if (this.dom.cardIndexBadge) {
+                    this.dom.cardIndexBadge.textContent = `SESSION #${this.sessionCount} (${done + 1}/${total})`;
+                }
+
+                if (this.dom.sessionTag) {
+                    this.dom.sessionTag.innerHTML = `<span>📅 第 ${this.sessionCount} 組 ${isTodayDone ? '• 今日已打卡' : '• 今日未打卡'}</span>`;
+                }
+
+                if (this.dom.queueCounter) this.dom.queueCounter.textContent = `剩餘: ${remaining} / 本次: ${total} 字`;
                 if (this.dom.progressBar) this.dom.progressBar.style.width = `${percent}%`;
 
                 this.updateCardFlipVisual();
