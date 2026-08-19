@@ -1,6 +1,6 @@
 """
 單元測試模組：test_transformer.py
-測試說明：測試 VocabTransformer 整體轉換、模型封裝與過濾邏輯
+測試說明：測試 VocabTransformer 雙欄閃卡轉換邏輯
 """
 
 import unittest
@@ -14,56 +14,36 @@ class TestVocabTransformer(unittest.TestCase):
 
     def test_transformer_filters_multi_word(self):
         """
-        測試轉換器是否正確過濾長度超過一個單字的項目
+        測試過濾長度超過一個單字的資料
         """
         transformer = VocabTransformer()
         multi_word_item = {
-            "english_word": "A be followed by B",
-            "chinese_definition": "接續在...之後",
+            "english_word": "arrive in London",
+            "chinese_definition": "到達倫敦",
             "parts_of_speech": ["verb"],
-            "star_rating": 4,
-            "toeic_score_range": "600-780",
-            "category": "辦公日常",
-            "examples": [{"english": "A is followed by B.", "chinese": "A 接在 B 之後。"}],
-            "exam_tips": ["固定片語"]
         }
         result = transformer.transform_entry(multi_word_item)
         self.assertIsNone(result)
 
     def test_transformer_single_word_success(self):
         """
-        測試單一單字正常轉換並填入所有欄位
+        測試單一單字轉換成功生成 VocabCardItem
         """
         transformer = VocabTransformer()
         single_word_item = {
-            "english_word": "abbreviate",
-            "chinese_definition": "縮寫；簡略化",
-            "parts_of_speech": ["verb"],
-            "star_rating": 3,
-            "toeic_score_range": "600-780",
-            "category": "辦公日常",
-            "word_forms": [{"part_of_speech": "verb", "forms": ["abbreviate", "abbreviates"]}],
+            "english_word": "ability",
+            "chinese_definition": "能力、才幹",
+            "parts_of_speech": ["noun"],
             "examples": [
-                {"english": "We often abbreviate company names.", "chinese": "我們經常縮寫公司名稱。"},
-                {"english": "The team will abbreviate the report.", "chinese": "團隊將簡化報告。"}
+                {"english": "She has the ability to solve complex problems.", "chinese": "她有解決複雜問題的能力。"}
             ],
-            "exam_tips": [
-                "常見搭配詞：'be abbreviated to' (縮寫成)",
-                "注意衍生字 abbreviation (名詞)"
-            ]
+            "exam_tips": ["常見搭配：academic ability (學術能力)"]
         }
         result = transformer.transform_entry(single_word_item)
         self.assertIsNotNone(result)
-        self.assertEqual(result.english_word, "abbreviate")
-        self.assertEqual(result.chinese_definition, "縮寫；簡略化")
-        self.assertEqual(result.parts_of_speech, "verb")
-        self.assertEqual(result.star_rating, 3)
-        self.assertEqual(result.toeic_score_range, "600-780")
-        self.assertEqual(result.category, "辦公日常")
-        self.assertEqual(result.example_en, "We often abbreviate company names.")
-        self.assertEqual(result.example_zh, "我們經常縮寫公司名稱。")
-        self.assertIn("【詞性變化】", result.exam_tips)
-        self.assertIn("【詞性變化】", result.word_forms)
+        self.assertEqual(result.word, "ability")
+        self.assertIn("ability (n.) 能力、才幹", result.content)
+        self.assertIn("academic ability 學術能力", result.content)
 
 
 if __name__ == "__main__":
