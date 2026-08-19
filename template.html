@@ -1083,6 +1083,7 @@
 
         /**
          * 隨機 Session 產生管理員 (SessionManager)
+         * 支援多字母分散隨機抽樣（Diverse Multi-Letter Sampling），避免單字全部集中於同一開頭字母
          */
         class SessionManager {
             static shuffle(array) {
@@ -1094,14 +1095,53 @@
                 return copy;
             }
 
+            /**
+             * 隨機抽取 10 個單字，確保首字母高度分散多樣（A~Z）
+             */
             static pickSessionWords(allWords, masteredIds = new Set(), sessionSize = 10) {
                 if (!allWords || allWords.length === 0) return [];
                 
+                // 優先挑選未掌握的單字
                 const unmastered = allWords.filter(w => !masteredIds.has(w.id));
                 const pool = unmastered.length >= sessionSize ? unmastered : allWords;
-                
-                const shuffled = this.shuffle(pool);
-                return shuffled.slice(0, Math.min(sessionSize, shuffled.length));
+
+                // 依照英文首字母分組 (A~Z)
+                const buckets = {};
+                for (const card of pool) {
+                    const firstChar = (card.word[0] || '').toUpperCase();
+                    if (!buckets[firstChar]) buckets[firstChar] = [];
+                    buckets[firstChar].push(card);
+                }
+
+                // 隨機打亂所有可用首字母
+                const availableLetters = this.shuffle(Object.keys(buckets));
+                const selected = [];
+                const usedWords = new Set();
+
+                // 第一輪：各首字母最多挑選 1 個單字，確保 10 個字來自 10 個不同字母
+                for (const letter of availableLetters) {
+                    if (selected.length >= sessionSize) break;
+                    const letterPool = buckets[letter];
+                    if (letterPool && letterPool.length > 0) {
+                        const randomCard = letterPool[Math.floor(Math.random() * letterPool.length)];
+                        if (!usedWords.has(randomCard.id)) {
+                            selected.push(randomCard);
+                            usedWords.add(randomCard.id);
+                        }
+                    }
+                }
+
+                // 若單字不足 sessionSize，再從剩餘未被選中的單字中隨機補齊
+                if (selected.length < sessionSize) {
+                    const remaining = this.shuffle(pool.filter(w => !usedWords.has(w.id)));
+                    for (const card of remaining) {
+                        if (selected.length >= sessionSize) break;
+                        selected.push(card);
+                    }
+                }
+
+                // 最後將抽出的 10 個單字打亂順序回傳
+                return this.shuffle(selected);
             }
         }
 
@@ -1496,7 +1536,7 @@
 
             async loadPersistedState() {
                 try {
-                    const savedState = await this.storage.load('srs_flashcard_state_v3');
+                    const savedState = await this.storage.load('srs_flashcard_state_v4');
                     if (savedState) {
                         if (savedState.allVocabulary && savedState.allVocabulary.length > 0) {
                             this.allVocabulary = savedState.allVocabulary;
@@ -1508,11 +1548,22 @@
                             this.checkinHistory = savedState.checkinHistory;
                         }
                         if (savedState.srs && savedState.srs.sessionCards && savedState.srs.sessionCards.length > 0) {
-                            this.srs.loadState(savedState.srs);
+                            // 檢查是否為舊版全 A 單字組，若為全 A 則重新隨機抽多元首字母
+                            const letters = new Set(savedState.srs.sessionCards.map(c => (c.word[0] || '').toUpperCase()));
+                            if (letters.size <= 1 && this.allVocabulary.length > 50) {
+                                const freshWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                                this.srs = new SrsEngine(freshWords);
+                            } else {
+                                this.srs.loadState(savedState.srs);
+                            }
                         }
                         this.currentFileName = savedState.fileName || '預設 TOEIC 題庫';
                         this.theme = savedState.theme || 'light';
                         this.sessionCount = savedState.sessionCount || 1;
+                    } else {
+                        // 若無 v4 快取，立即隨機抽取全新 10 字 Session
+                        const freshWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                        this.srs = new SrsEngine(freshWords);
                     }
                     this.applyTheme(this.theme);
                 } catch (e) {
@@ -1530,7 +1581,7 @@
                     theme: this.theme,
                     sessionCount: this.sessionCount
                 };
-                await this.storage.save('srs_flashcard_state_v3', payload);
+                await this.storage.save('srs_flashcard_state_v4', payload);
             }
 
             bindEvents() {

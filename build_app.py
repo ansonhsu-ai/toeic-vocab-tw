@@ -22,8 +22,8 @@ def build():
                     })
     print(f"Loaded {len(cards_data)} cards from CSV.")
 
-    # 預載前 500 筆作為預設即用庫，載入迅速
-    default_cards_json = json.dumps(cards_data[:500], ensure_ascii=False)
+    # 預載完整全量單字庫（9,698 筆涵蓋 A-Z 所有字母）
+    default_cards_json = json.dumps(cards_data, ensure_ascii=False)
 
     template_file = 'template.html'
     if not os.path.exists(template_file):
