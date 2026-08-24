@@ -1,0 +1,378 @@
+Total entries: 11154
+Total single words: 9698
+
+=== Word 1: abandon ===
+Chinese: 拋棄；遺棄；放棄（計畫、責任等）
+Parts of speech: ['verb']
+Star rating: 3
+Score range: 600-780
+Category: 營運管理
+Word forms: [{'part_of_speech': 'verb', 'forms': ['abandon', 'abandons', 'abandoning', 'abandoned']}]
+Examples: [{'english': 'The company decided to abandon the project due to budget constraints.', 'chinese': '由於預算限制，公司決定放棄這個專案。'}, {'english': 'We cannot abandon our commitment to providing excellent customer service.', 'chinese': '我們不能放棄對提供卓越客戶服務的承諾。'}]
+Exam tips:
+  - 常用搭配詞組：在多益考試中常以 abandon a project (放棄專案)、abandon a plan (放棄計畫) 或 abandon an idea (放棄念頭) 的形式出現。
+  - 商業情境應用：通常用於描述因預算刪減、市場變動或公司重組而導致原定計畫中途停止的情境。例如：The company decided to abandon the expansion project due to budget constraints.
+  - 相似詞辨析：需區分 abandon (中途放棄/拋棄責任) 與 discard (丟棄無用實體物) 及 quit (辭職/停止習慣)。abandon 帶有「不再繼續經營或負責任」的含義。
+  - 考試聽力考點：在聽力 Part 1 圖片題中，常用其過去分詞 abandoned 做形容詞，例如 abandoned vehicle (棄置車輛) 或 abandoned building (廢棄建築) 以描述場景狀態。
+  - 閱讀理解策略：在 Part 7 商業書信或報導中，若出現 abandon 一詞，往往暗示後續會有相關補償措施、策略轉向或新的替代方案，考生需留意後文的因果關係。
+
+=== Word 2: abandoned ===
+Chinese: 被遺棄的；廢棄的；（計畫、項目等）被擱置的
+Parts of speech: ['adjective']
+Star rating: 3
+Score range: 600-780
+Category: 營運管理
+Word forms: [{'part_of_speech': 'adjective', 'forms': ['abandoned', 'more abandoned', 'most abandoned']}]
+Examples: [{'english': 'The project was abandoned due to budget cuts and lack of resources.', 'chinese': '由於預算削減和資源不足，該項目被擱置。'}, {'english': 'The abandoned warehouse presented a safety hazard and needed immediate repairs.', 'chinese': '廢棄的倉庫存在安全隱患，需要立即維修。'}]
+Exam tips:
+  - 常見搭配詞：'abandoned building' (廢棄建築)、'abandoned vehicle' (廢棄車輛) 及 'abandoned project' (被中止的計畫)。
+  - 商業情境：在 TOEIC 閱讀測驗中，常用於描述因預算不足或法律爭議而停擺的開發計畫或閒置資產。
+  - 易混淆詞：注意拼寫相近的 'abundant' (充足的)；並區分其與 'deserted' (荒無人煙的) 的細微差別，後者多強調場所無人。
+  - 考試考點：在 Part 5 語法題中常考形容詞用法（修飾名詞）；在 Part 1 圖片題中，常用來描述荒廢、無人看管的景象。
+  - 答題建議：若在閱讀看到此詞，可聯想其同義表達 'no longer used' 或 'vacated' 以快速掌握文章脈絡。
+
+=== Word 3: abate ===
+Chinese: （風、雨、疼痛等）減弱，緩和
+Parts of speech: ['verb']
+Star rating: 2
+Score range: 780-900
+Category: 營運管理
+Word forms: [{'part_of_speech': 'verb', 'forms': ['abate', 'abates', 'abating', 'abated']}]
+Examples: [{'english': 'The storm is expected to abate by tomorrow morning.', 'chinese': '預計明天早上風暴會減弱。'}, {'english': 'The company is working to abate the negative impact of the recent supply chain disruptions.', 'chinese': '公司正在努力減輕近期供應鏈中斷的負面影響。'}]
+Exam tips:
+  - 常見搭配詞與情境：abate 常與自然現象（如 storm, rain, wind）或負面影響（如 noise, pollution, nuisance）連用，意指「減弱」或「減輕」。
+  - 商業與法律情境：在 TOEIC 閱讀中，abate 可用於法律術語，表示法律行動的「中止」或租金、稅金的「減免」（例如 tax abatement），常見於合約或政府公告。
+  - 易混淆詞辨析：需區分 abate（程度減輕）、rebate（金錢退還/折扣）與 abet（教唆/助長）。在商業環境中，abate 強調的是狀態的好轉或壓力的減小。
+  - 考點重點：常出現在 Part 7 的新聞報導或正式信函中，若描述環境干擾或法規限制被「abated」，通常暗示著後續營運或建案可以繼續進行。
+  - 答題注意事項：abate 作為不及物動詞時表示主動減弱（The rain abated），作為及物動詞時表示人為消除或減少，在克漏字中需注意主被動語態與受詞的語意連結。
+
+=== Word 4: abbreviate ===
+Chinese: 縮寫；簡略化（表達方式）
+Parts of speech: ['verb']
+Star rating: 3
+Score range: 600-780
+Category: 辦公日常
+Word forms: [{'part_of_speech': 'verb', 'forms': ['abbreviate', 'abbreviates', 'abbreviating', 'abbreviated']}]
+Examples: [{'english': 'To save space, we often abbreviate company names in internal memos.', 'chinese': '為了節省空間，我們經常在內部備忘錄中縮寫公司名稱。'}, {'english': 'The project manager asked the team to abbreviate the report to highlight the key findings.', 'chinese': '專案經理要求團隊簡化報告，以強調重點發現。'}]
+Exam tips:
+  - 常見搭配詞：常用於 'be abbreviated to' 或 'be abbreviated as' 表示「縮寫成...」，例如：'The word "Street" is abbreviated to "St."'。
+  - 商業情境：此單字常出現在商務日程表、正式報告或公司規章中，用來標註職稱、部門或技術性術語的縮寫形式。
+  - 易混淆詞辨析：'abbreviate' 指對單字或詞組的縮寫；'shorten' 泛指縮短長度、時間或距離；'abridge' 則專指對書籍、文章或演說內容的節錄與刪減。
+  - 閱讀考點：在 TOEIC Part 7 的文件閱讀中，常見縮寫後的名稱，考生須具備根據上下文推斷其完整單字的能力（如：Inc. 代表 Incorporated）。
+  - 詞性應用：注意其名詞形式為 'abbreviation'，Part 5 題型常測試其動詞與名詞的辨識，應根據句子主詞與受詞位置決定正確詞性。
+
+=== Word 5: abdomen ===
+Chinese: 腹部；肚子
+Parts of speech: ['noun']
+Star rating: 1
+Score range: 900+
+Category: 一般專業
+Word forms: [{'part_of_speech': 'noun', 'forms': ['abdomens']}]
+Examples: [{'english': "The doctor pressed lightly on the patient's abdomen.", 'chinese': '醫生輕輕按壓了病人的腹部。'}, {'english': 'She felt a discomfort in her lower abdomen after eating.', 'chinese': '飯後她感覺下腹部有些不適。'}]
+Exam tips:
+  - 常見搭配詞與形式：在 TOEIC 考試中，雖然此單字較為專業，但常以形容詞形式 'abdominal' 出現，如 'abdominal pain' (腹部疼痛) 或 'abdominal examination' (腹部檢查)。常見於員工健康保險理賠或醫療假申請情境。
+  - 商業情境運用：此單字通常出現在『醫療福利』(medical benefits)、『職場安全』(workplace safety) 或『保險單據』(insurance claims) 的閱讀文章中。例如，在描述工傷事故報告時，會使用較正式的 'abdomen' 而非口語的 'stomach'。
+  - 易混淆詞辨析：'abdomen' 是正式的解剖學術語，代表橫膈膜到骨盆間的區域；'stomach' 則指內臟器官『胃』或非正式的『肚子』。在 TOEIC 聽力中，若對話背景為醫院或診所，聽到 'abdomen' 時應聯想到正式的醫療諮詢。
+  - 考試考點與答題注意：在 Part 7 的文章中，若出現此單字，題目可能會問及員工請假的原因或保險給付的範圍。考生應將其視為『身體健康狀況』的關鍵字，並留意與其相關的動作動詞，如 'diagnose' (診斷) 或 'complain of' (抱怨/主訴症狀)。
+  - 聽力發音重點：注意其重音在第一音節，且聽力中可能會出現美式發音與英式發音的微小差異。在 Part 3 或 Part 4 的醫療廣播或對話中，識別出此單字有助於快速鎖定場景為醫療環境。
+
+=== Word 6: abdominal ===
+Chinese: 腹部的；與腹部相關的
+Parts of speech: ['adjective']
+Star rating: 2
+Score range: 780-900
+Category: 人力資源
+Word forms: [{'part_of_speech': 'adjective', 'forms': ['abdominal', 'more abdominal', 'most abdominal']}]
+Examples: [{'english': 'The employee reported experiencing abdominal discomfort and requested a medical leave.', 'chinese': '這位員工報告稱腹部不適，並要求病假。'}, {'english': 'The company provides health insurance that covers abdominal scans and related treatments.', 'chinese': '公司提供的健康保險涵蓋腹部掃描及相關治療。'}]
+Exam tips:
+  - 常見搭配詞：'abdominal pain' (腹痛) 與 'abdominal muscles' (腹肌，簡稱 abs)。在 TOEIC 的健康講座或員工福利保險主題中常出現。
+  - 易混淆詞辨析：需區分形容詞 'abdominal' 與名詞 'abdomen' (腹部)；特別要注意與發音及拼字相似的 'abnormal' (異常的) 做區分，後者常出現在產品瑕疵或數據異常的描述中。
+  - 商業情境應用：常用於員工病假申請 (sick leave) 或企業健康管理計畫 (wellness program) 的描述，例如描述因身體不適需進行 'abdominal surgery' (腹部手術)。
+  - 考試重點：在閱讀測驗 Part 7 的保險理賠文件、診斷證明或公司內部醫務室通知中，此字是判斷患病位置或請假理由的關鍵字。
+  - 詞性判斷：注意字尾 '-al' 為典型的形容詞後綴，在 Part 5 填充題中，若空格位於名詞前且描述身體部位，應優先考慮此形容詞型態。
+
+=== Word 7: abductor ===
+Chinese: 綁架者；誘拐者
+Parts of speech: ['noun']
+Star rating: 1
+Score range: 900+
+Category: 法務合規與安全
+Word forms: [{'part_of_speech': 'noun', 'forms': ['abductor', 'abductors']}]
+Examples: [{'english': 'Police are searching for the abductor of the missing child.', 'chinese': '警方正在搜尋失蹤兒童的綁架者。'}, {'english': 'The victim identified the abductor from a lineup.', 'chinese': '受害者從列隊中指認出綁架者。'}]
+Exam tips:
+  - 詞根與前綴辨析：'ab-' 表示 'away'（離開），'duct' 表示 'lead'（引導），字面意思為『引導走』。在 TOEIC 閱讀中，需與 'adductor'（內收肌）區分，'ad-' 表示 'toward'（朝向）。
+  - 多重語境應用：在商業法律或社會新聞類型的閱讀題中，指『綁架者』；在健康醫療或體育器材描述中，則指『外展肌』。考生應根據文章標題判斷其意義。
+  - 常見搭配詞組：在法律情境中常出現 'alleged abductor'（涉嫌綁架者）或 'identify the abductor'（確認綁架者身分）；在健身醫療情境則見於 'hip abductor machine'（髖部外展機）。
+  - 詞性轉變考點：注意名詞形式 'abduction'（綁架/外展）與動詞 'abduct'（綁架/使外展）。TOEIC Part 5 常考動詞與名詞的詞性填空。
+  - 考試答題技巧：若此詞出現在聽力第三或第四部分，通常伴隨著 'police'、'security' 或 'emergency' 等關鍵字，暗示對話背景與安全事故或刑事案件有關。
+
+=== Word 8: abide ===
+Chinese: 忍受；遵守（規則、協議等）
+Parts of speech: ['verb']
+Star rating: 3
+Score range: 780-900
+Category: 法務合規與安全
+Word forms: [{'part_of_speech': 'verb', 'forms': ['abides', 'abiding', 'abided']}]
+Examples: [{'english': "All employees must abide by the company's code of conduct.", 'chinese': '所有員工都必須遵守公司的行為準則。'}, {'english': "We have agreed to abide by the arbitrator's decision.", 'chinese': '我們已同意遵守仲裁員的決定。'}]
+Exam tips:
+  - 最核心的用法是固定片語「abide by」，意為「遵守」或「信守」。在多益閱讀 Part 5 填充題中，常會挖空介系詞「by」或動詞「abide」來考查搭配關係。
+  - 商業情境應用：常用於合約（contracts）、法律規範（laws）、規章（regulations）或協定（agreements）的情境中。例如：「All parties must abide by the terms of the agreement.」
+  - 易混淆詞彙辨析：應特別注意同義詞的介系詞搭配差異：abide BY、comply WITH、adhere TO、conform TO。這四者在多益考試中常被放在同一個選項中，必須根據後方的介系詞來決定正確答案。
+  - 考試重點：在 Part 7 的合約或公告閱讀中，abide 的出現通常預示著接下來會提到具體的規定或義務，對於理解受規範者的責任至關重要。
+  - 聽力與語法：雖然 abide 有「忍受」的意思（如 I can't abide it），但在多益考試中幾乎 100% 是以「遵守」的商業法律含意出現。
+
+=== Word 9: abilities ===
+Chinese: 能力、技能，指完成某項任務或職責所需的才能。
+Parts of speech: ['noun']
+Star rating: 4
+Score range: 400-600
+Category: 人力資源
+Word forms: [{'part_of_speech': 'noun', 'forms': ['abilities']}]
+Examples: [{'english': 'The company is looking for candidates with strong communication abilities.', 'chinese': '公司正在尋找具備良好溝通能力的候選人。'}, {'english': "To succeed in this role, you're expected to demonstrate problem-solving abilities.", 'chinese': '要在這個職位上取得成功，預期您能展現解決問題的能力。'}]
+Exam tips:
+  - 常見搭配詞：'demonstrate abilities' (展現能力)、'technical abilities' (技術能力) 及 'leadership abilities' (領導能力)，常出現在員工評核或招募廣告中。
+  - 商業情境應用：常用於描述求職者的資歷或員工的專業技能組合。在 Job Description (職位說明書) 中，abilities 往往與 skills 並列使用。
+  - 易混淆詞辨析：'ability' 側重於具備完成某事的實際力量或技能；'capability' 較常用於指發展潛力或組織的大規模能力；'capacity' 則多指容量、容積或擔任某職位的身份。
+  - 聽力與閱讀考點：在 TOEIC Part 5 與 Part 6 中，常考 ability 後接不定詞的結構，即 'ability to + 原形動詞' (如：ability to work under pressure)。
+  - 答題注意事項：複數型 'abilities' 通常強調多樣化的技能。在 Part 7 閱讀理解中，若題目問及 Candidate's profile，需特別留意文中提及的具體能力清單，以利正確對應答案。
+
+=== Word 10: ability ===
+Chinese: 能力、才能，指完成某項任務或達到特定目標所需的技能或潛力。
+Parts of speech: ['noun']
+Star rating: 5
+Score range: 400-600
+Category: 人力資源
+Word forms: [{'part_of_speech': 'noun', 'forms': ['ability', 'abilities']}]
+Examples: [{'english': "The candidate's ability to manage projects effectively impressed the hiring manager.", 'chinese': '這位候選人有效管理專案的能力讓招聘經理印象深刻。'}, {'english': 'To improve employee ability, the company offers various training programs.', 'chinese': '為了提升員工能力，公司提供各種培訓計畫。'}]
+Exam tips:
+  - 常見語法結構：'ability' 後方最常接不定詞，形成 'ability to + V' 的結構，表示『做某事的能力』，這是多益 Part 5 文法題的常客。
+  - 商業搭配詞：常見搭配包括 'demonstrate/show ability' (展現能力)、'exceptional ability' (卓越的能力) 以及 'leadership ability' (領導能力)，常用於員工考核或履歷。
+  - 易混淆詞辨析：'Ability' 指當下擁有的技能；'Capability' 側重於發展潛力或完成特定任務的極限；'Capacity' 則多指實體容量或生產力（如工廠產能）。
+  - 徵才廣告常見用法：在閱讀 Part 7 中，職位要求常寫作 'The ability to multi-task' (多工處理能力) 或 'The ability to work under pressure' (在壓力下工作的能力)。
+  - 聽力理解關鍵：在多益聽力中，若聽到 'proven ability'，通常是在強調某人有過去實績證明的能力，這常是選擇正確人選的關鍵線索。
+
+=== Word 11: able ===
+Chinese: 有能力、能夠；勝任
+Parts of speech: ['adjective', 'adverb']
+Star rating: 5
+Score range: 0-400
+Category: 辦公日常
+Word forms: [{'part_of_speech': 'adjective', 'forms': ['able', 'more able', 'most able']}, {'part_of_speech': 'adverb', 'forms': ['able']}]
+Examples: [{'english': 'The candidate is able to manage multiple projects simultaneously.', 'chinese': '這位候選人能夠同時管理多個專案。'}, {'english': 'She is able to speak fluent Spanish, which is a valuable asset to the team.', 'chinese': '她能流利地說西班牙語，這是團隊的一項寶貴資產。'}]
+Exam tips:
+  - 常見搭配詞組：最核心用法為 'be able to + 原形動詞'，表示具備能力或條件去做某事。在 TOEIC 閱讀 Part 5 中，常考 gap 之後是否接 to-infinitive。
+  - 易混淆詞辨析：與 'capable' 的區別在於介係詞的搭配。'be able to do' 與 'be capable of doing' 是考試中極常見的陷阱考點，務必觀察後方的介係詞來選詞。
+  - 商業情境應用：常用於描述系統功能或員工能力。例如：'The candidate is able to speak multiple languages.' 或 'The server is able to handle heavy traffic.'。
+  - 詞性轉變考點：注意衍生詞 'enable' (動詞，使...能夠) 與 'ability' (名詞，能力)。在 TOEIC Part 5 & 6 的詞性題中，若空格前有形容詞修飾，應選名詞 ability；若位於受詞後帶領受詞補語，則常用 enable + O + to V。
+  - 聽力答題關鍵：在聽力測驗中，'able' 常出現在解決方案的討論中，代表某事可行 (possible)，考生若聽到此詞，通常代表後續會提到正面的行動或回覆。
+
+=== Word 12: aboard ===
+Chinese: 登上（船、飛機、火車等）；在船、飛機、火車等上面
+Parts of speech: ['adverb', 'preposition']
+Star rating: 4
+Score range: 400-600
+Category: 旅遊與交通
+Word forms: [{'part_of_speech': 'adverb', 'forms': ['aboard']}, {'part_of_speech': 'preposition', 'forms': ['aboard']}]
+Examples: [{'english': 'All passengers are requested to board the flight immediately.', 'chinese': '請所有乘客立即登上飛機。'}, {'english': 'The team will be aboard the cargo ship to oversee the delivery.', 'chinese': '團隊將登上貨船以監督交付。'}]
+Exam tips:
+  - 拼字辨析：aboard 容易與 abroad (在國外) 混淆，前者與交通工具相關（飛機、船、火車），後者與跨國旅遊或商務相關，這是多益測驗中常見的拼字陷阱。
+  - 商業情境應用：除了字面上的交通工具，'welcome aboard' 常用於商務情境中，代表歡迎新進職員加入團隊。
+  - 聽力考點：在聽力第一部分（照片描述）中，常出現描述乘客登機 (boarding) 或乘客已在交通工具內 (is aboard) 的情境。
+  - 常見搭配詞：包括 'go aboard' (上船/飛機)、'all aboard' (請大家上船/車) 及 'stay aboard' (留在船/飛機上)。
+  - 詞性特性：aboard 可兼作副詞與介係詞，後方可直接加上交通工具名稱，例如 'aboard the flight' 或 'aboard the ship'，在閱讀測驗 Part 5 的文法填空中需注意其接詞用法。
+
+=== Word 13: abolish ===
+Chinese: 廢除；取消（法律、制度等）
+Parts of speech: ['verb']
+Star rating: 3
+Score range: 780-900
+Category: 法務合規與安全
+Word forms: [{'part_of_speech': 'verb', 'forms': ['abolish', 'abolishes', 'abolishing', 'abolished']}]
+Examples: [{'english': 'The company decided to abolish the outdated policy to improve efficiency.', 'chinese': '為了提高效率，公司決定廢除過時的政策。'}, {'english': 'The government plans to abolish the tax on imported goods to boost trade.', 'chinese': '政府計畫取消進口商品的稅收，以促進貿易。'}]
+Exam tips:
+  - 常見搭配詞組：abolish 常與法律、制度或稅收搭配，例如 abolish a law (廢除法律)、abolish a system (廢除制度) 或 abolish taxes (廢止稅收)。
+  - 商業情境：在多益閱讀中常出現在討論法規變更或企業政策改革，如廢除舊有的考勤制度或過時的補貼政策。
+  - 易混淆詞辨析：需與 cancel (取消預約或訂單) 或 eliminate (消除競爭或障礙) 區分，abolish 專指正式且永久地廢除某項長期存在的規定或慣例。
+  - 常見考點：考試中常以被動語態 (be abolished) 出現，例如 The outdated regulation was abolished last year，考生需理解其語法結構。
+  - 答題注意事項：當此單字出現在 Part 7 閱讀文章時，通常暗示組織正在經歷變革，題目可能會詢問關於新舊政策的差異或變更的原因。
+
+=== Word 14: abort ===
+Chinese: 中止；取消（計畫、程序等）
+Parts of speech: ['verb']
+Star rating: 2
+Score range: 780-900
+Category: 營運管理
+Word forms: [{'part_of_speech': 'verb', 'forms': ['abort', 'aborts', 'aborting', 'aborted']}]
+Examples: [{'english': 'The project was aborted due to unforeseen budget cuts.', 'chinese': '由於預算削減，該專案被中止。'}, {'english': 'The pilot had to abort the takeoff due to a technical malfunction.', 'chinese': '由於技術故障，飛行員不得不中止起飛。'}]
+Exam tips:
+  - 常見搭配詞：在 TOEIC 中常以 'abort a project'、'abort a plan' 或 'abort a mission' 的形式出現，表示計畫或任務在執行過程中被迫中止。
+  - 商業與技術情境：此單字常出現在 IT 或製造業情境，例如軟體安裝失敗（abort the installation）或因機械故障停止生產線。
+  - 詞義辨析：與 'cancel' 相比，'abort' 帶有更強烈的『中斷』意味，通常指動作已經開始但因錯誤或緊急狀況而不得不停止；'cancel' 則多指在開始前取消。
+  - 閱讀考點：在 Part 7 的專案進度報告或電子郵件中，若提到資金不足或技術障礙，可能會使用 'abort' 來描述計畫的終局。
+  - 答題注意：注意其被動用法 'be aborted'，在聽力測驗中若聽到流程被中止，選項中可能用 'stop' 或 'terminate' 作為同義詞替換。
+
+=== Word 15: abortion ===
+Chinese: 墮胎；中止；流產
+Parts of speech: ['noun']
+Star rating: 1
+Score range: 900+
+Category: 法務合規與安全
+Word forms: [{'part_of_speech': 'noun', 'forms': ['abortion', 'abortions']}]
+Examples: [{'english': 'The debate over abortion rights is a complex social and ethical issue.', 'chinese': '關於墮胎權的辯論是一個複雜的社會與倫理議題。'}, {'english': "The project's abortion was a result of unforeseen financial difficulties.", 'chinese': '該專案的中止是出於無法預料的財務困難。'}]
+Exam tips:
+  - 常見搭配詞：常與動詞 perform, have, 或 undergo 連用，例如 'perform an abortion'（施行墮胎）；在社會討論中常出現 'abortion rights'（墮胎權）或 'abortion clinic'（墮胎診所）。
+  - 商業與技術延伸：其動詞 'abort' 在 TOEIC 商業或技術情境中更常用於「中止計畫或任務」，如 'abort the launch'（中止發射）或 'abort a process'（中止程序），代表在完成前停止執行。
+  - 易混淆詞辨析：需區分 'abortion'（通常指人工流產/中斷）與 'miscarriage'（自然流產），後者特指非人為、意外的妊娠中斷。
+  - 閱讀考點：在閱讀測驗 Part 7 的新聞報導或社會評論中，可能涉及醫療保險給付範圍或法律條文更新，考生需識別其在法律與醫療背景下的具體含義。
+  - 答題要領：注意形容詞 'abortive'，在考試中可能指「失敗的、無結果的」，例如 'an abortive attempt'（一次失敗的嘗試），此時與醫學無關，需依據上下文語境（Context）精準判斷其延伸語義。
+
+=== Word 16: about ===
+Chinese: 關於；大約；在…周圍；即將
+Parts of speech: ['preposition', 'adverb']
+Star rating: 5
+Score range: 0-400
+Category: 一般專業
+Word forms: [{'part_of_speech': 'preposition', 'forms': ['about']}, {'part_of_speech': 'adverb', 'forms': ['about']}]
+Examples: [{'english': 'The meeting is about the new marketing strategy.', 'chinese': '這次會議是關於新的行銷策略。'}, {'english': 'We expect about 50 participants at the conference.', 'chinese': '我們預計約有50位與會者參加會議。'}]
+Exam tips:
+  - 表示『大約』：在多益閱讀與聽力中，about 常接在數字或時間前，意思等同於 approximately 或 roughly，常用於描述預算、截止時間或人數。
+  - 即將發生：固定句型 be about to + 動詞原型，表示『正要、即將』做某事，這在聽力 Part 1 的圖片描述或 Part 3 的對話中，用來預測角色接下來的行動時非常關鍵。
+  - 提出建議：How about 或 What about 後接動名詞 (V-ing) 或名詞，在多益聽力的商務洽談情境中，用於提出方案或替代選項。
+  - 正式替代詞：在商業書信閱讀題中，雖然 about 很常見，但作者常會使用 regarding、concerning 或 pertaining to 來增加專業感，考生應具備這些同義詞的辨識能力。
+  - 常見搭配詞組：例如 have an enquiry about (詢問關於...)、information about (關於...的資訊) 或 talk about (討論關於...)，需注意其後接續的受詞性質。
+
+=== Word 17: above ===
+Chinese: 在...上方；高於；超過（數量、程度）；優於；上述的；在上方
+Parts of speech: ['preposition', 'adverb', 'adjective', 'noun']
+Star rating: 5
+Score range: 0-400
+Category: 一般專業
+Word forms: [{'part_of_speech': 'preposition', 'forms': ['above']}, {'part_of_speech': 'adverb', 'forms': ['above']}, {'part_of_speech': 'adjective', 'forms': ['above']}, {'part_of_speech': 'noun', 'forms': ['above']}]
+Examples: [{'english': 'The temperature is expected to rise above 30 degrees Celsius today.', 'chinese': '今天氣溫預計會升至攝氏30度以上。'}, {'english': 'Please refer to the chart above for more details.', 'chinese': '請參考上面的圖表以獲取更多詳情。'}]
+Exam tips:
+  - 常見搭配詞與商業情境：在商務書信或報告中，常使用『the information mentioned above』或『as stated above』來指稱前文提到的內容，考生需具備快速回溯閱讀的能力。
+  - 易混淆詞辨析：與『over』相比，『above』主要指相對位置較高或在某種標準之上（如 above average），而『over』則多指正上方、覆蓋或跨越。
+  - 閱讀理解考點：在 Part 7 的合約或通知中，常出現『above-mentioned』作為形容詞，意指『上述的』，通常用來修飾先前提到的人事物或條款。
+  - 固定短語應用：『above all』意為『尤其是、最重要的是』，常作為段落開頭或結論的轉折詞，是掌握文章核心論點的關鍵。
+  - 聽力測驗注意事項：在 Part 1 圖片描述題中，above 常描述物件間的垂直空間關係（但不一定接觸），需與 on（在...上面且接觸）區隔開來。
+
+=== Word 18: abramson ===
+Chinese: 艾布拉姆森 (Abramson) 通常指一家律師事務所或其合夥人，在商務情境中，可能涉及法律諮詢、合同審閱等服務。
+Parts of speech: ['noun']
+Star rating: 1
+Score range: 900+
+Category: 法務合規與安全
+Word forms: [{'part_of_speech': 'noun', 'forms': ['abramson', 'Abramsons']}]
+Examples: [{'english': 'Our company retained Abramson & Associates to review the merger agreement.', 'chinese': '我們聘請了艾布拉姆森律師事務所來審閱併購協議。'}, {'english': 'The legal team is consulting with Abramson regarding the intellectual property rights.', 'chinese': '法律團隊正在諮詢艾布拉姆森律師關於知識產權問題。'}]
+Exam tips:
+  - 識別為專有名詞：在多益考試中，'Abramson' 通常作為人名（姓氏）出現，首字母大寫是辨識關鍵，考生應將其視為特定人物而非普通詞彙。
+  - 角色與職稱搭配：常與 Mr., Ms. 或職稱如 'Director Abramson' 或 'Manager Abramson' 搭配出現，聽力測驗中辨識這些搭配詞有助於釐清人物的身分與權責。
+  - 閱讀定位技巧：在 Part 7 的閱讀測驗中，將 'Abramson' 作為關鍵字進行快速掃描 (Scanning)，可迅速定位到該人物提到的觀點、具體承諾或信件的寄收件人。
+  - 聽力音近辨析：注意發音為 /ˈeɪbrəmsən/，在聽力測驗中需注意避免與音近字如 'absent' (缺席) 或 'admission' (入場/承認) 混淆，以免誤解句意。
+  - 所有格應用：注意 'Abramson's' 這種所有格形式，通常與文件、計畫或會議關連，例如 'Abramson's proposal'，這是回答『誰負責某項工作』類題目的關鍵細節。
+
+=== Word 19: abridgment ===
+Chinese: 簡略版；縮寫版（通常指書籍、文件等內容被縮短後的版本）
+Parts of speech: ['noun']
+Star rating: 2
+Score range: 780-900
+Category: 辦公日常
+Word forms: [{'part_of_speech': 'noun', 'forms': ['abridgment', 'abridgments']}]
+Examples: [{'english': 'The editor provided an abridgment of the lengthy report for the executive summary.', 'chinese': '編輯為執行摘要提供了這份冗長報告的簡略版。'}, {'english': 'To save space, we included an abridgment of the original contract in the brochure.', 'chinese': '為了節省空間，我們在小冊子中包含了原始合約的簡略版。'}]
+Exam tips:
+  - 常見搭配詞與商務情境：abridgment 常與書面文件、報告或法律條約連用，例如 "an abridgment of the original contract" (原始合約的節本)。在商務出版或法規審查情境中，它指將長篇大論濃縮為重點精華，而不改變原文意旨。
+  - 易混淆詞辨析：需區分 abridgment 與 abbreviation。Abbreviation 指的是單字的縮寫 (如 ASAP 為 As Soon As Possible)，而 abridgment 指的是文本、書籍或法律條文的節略、縮短版本。
+  - TOEIC 考點與字根記憶：字根 "bridge" 有縮短距離之意，在此指縮短篇幅，字尾 "-ment" 表名詞。在閱讀 Part 7 中，若提到文件的性質為 abridgment，考生需意識到該文件並非全文 (full version)。
+  - 答題注意事項：此字與 summary (摘要) 為近義詞。在多益聽力或閱讀測驗中，若選項出現 concise version 或 shortened edition，通常是 abridgment 的同義換照。
+  - 語法結構：常出現在 "make an abridgment of..." 結構中，指對某內容進行節選，理解此結構有助於在 Part 5 填充題中快速判斷詞性。
+
+=== Word 20: abroad ===
+Chinese: 在國外；在海外
+Parts of speech: ['adverb', 'preposition']
+Star rating: 5
+Score range: 400-600
+Category: 辦公日常
+Word forms: [{'part_of_speech': 'adverb', 'forms': ['abroad']}]
+Examples: [{'english': 'The company is expanding its operations abroad.', 'chinese': '該公司正在海外擴展業務。'}, {'english': "He's been working abroad for five years.", 'chinese': '他在國外工作五年了。'}]
+Exam tips:
+  - 詞性與文法陷阱：abroad 是副詞，意為「在國外」或「往國外」。最常見的考點是與動詞搭配時不需要介系詞 to，例如 go abroad、travel abroad、study abroad。在 TOEIC Part 5 文法題中，應避免選取 go to abroad 這種錯誤選項。
+  - 易混淆詞辨析：極易與 aboard（在船、飛機或火車上）混淆。辨識口訣：abroad 字尾有 road（路），暗示出國旅行；aboard 字尾有 board（甲板/板子），暗示登上交通工具。
+  - 商業情境應用：在 TOEIC 閱讀與聽力中，常用於「海外擴張」或「海外分部」的情境，如 expand business abroad（向海外拓展業務）、overseas branches（海外分公司，與 branches abroad 同義）。
+  - 搭配介系詞 from：雖然 abroad 前通常不加 to 或 in，但可以加 from，表示「從國外」，例如 products imported from abroad（從國外進口的產品），這在商務貿易篇章中非常常見。
+  - 聽力測驗重點：在 Part 1 圖片題或 Part 2 簡短對答中，abroad 常與商務出差（business trip）連用，考生需注意說話者的意圖是討論國外行程還是國內行程。
+
+=== Word 21: abruptly ===
+Chinese: 突然地；驟然地
+Parts of speech: ['adverb']
+Star rating: 3
+Score range: 600-780
+Category: 辦公日常
+Word forms: [{'part_of_speech': 'adverb', 'forms': ['abruptly']}]
+Examples: [{'english': 'The meeting was abruptly canceled due to unforeseen circumstances.', 'chinese': '由於突發狀況，會議突然被取消。'}, {'english': 'The project manager abruptly ended the discussion to keep the meeting on schedule.', 'chinese': '為了確保會議按時結束，專案經理突然結束了討論。'}]
+Exam tips:
+  - 常見搭配詞：常與動詞連用，如 end abruptly (突然結束)、change abruptly (突然改變) 或 stop abruptly (突然停止)，常用於描述會議、計畫或趨勢的突發狀況。
+  - 商業情境：在 TOEIC 閱讀測驗中，常出現在描述市場趨勢突然轉向、合約突然終止或高階主管突然辭職 (resign abruptly) 的新聞稿或內部備忘錄中。
+  - 易混淆詞辨析：與 suddenly 語意相近，但 abruptly 語氣更正式且常帶有一種「突兀、不連貫」的感覺；在測驗中常作為 gradually (逐漸地) 的反義詞考點。
+  - 聽力與閱讀考點：常出現在 Part 5 的字彙題，測驗副詞修飾動詞的能力，或在 Part 7 閱讀理解中，用來標示故事情節或商務流程的突然轉折。
+  - 答題注意事項：若題目中出現 unexpected、without notice 或 short notice 等暗示「不可預期性」的關鍵字，選項中的 abruptly 即為高度可能的正確答案。
+
+=== Word 22: abs ===
+Chinese: 絕對值；總數
+Parts of speech: ['noun']
+Star rating: 1
+Score range: 900+
+Category: 旅遊與交通
+Word forms: [{'part_of_speech': 'noun', 'forms': ['abs']}]
+Examples: [{'english': 'The company reported a significant increase in absolute sales figures for the quarter.', 'chinese': '該公司報告了本季的絕對銷售額顯著增加。'}, {'english': "Despite the losses, the absolute value of the company's assets remains high.", 'chinese': '儘管有虧損，該公司的資產絕對值仍然很高。'}]
+Exam tips:
+  - 常見情境：在 TOEIC 閱讀測驗 Part 7 中，'abs'（abdominal muscles 的縮寫）常出現在健身房、健康中心廣告或健身器材的推銷文案中，與 fitness, workout, trainer 等詞彙並列。
+  - 常見搭配詞：'tone your abs' (鍛鍊腹肌)、'abs routine' (腹肌訓練程序) 或 'six-pack abs' (六塊腹肌)，看到這些詞組可快速定位文章主題為健康或運動。
+  - 易混淆詞與歧義辨析：在 TOEIC 的汽車產業或保險理賠文章中，'ABS' 通常代表 'Anti-lock Braking System' (防鎖死煞車系統)；在科學或實驗報告中，'abs.' 可能是 'absolute' (絕對的) 的縮寫。
+  - 聽力考點：在 Part 4 的短文中，若主題涉及員工福利（如公司提供健身房會員資格），可能會提到核心肌群的鍛鍊，需聽辨出此類生活化縮寫。
+  - 答題注意事項：'abs' 屬於較非正式的簡稱，在正式的商務對談或正式報告中較少見，若在考試中出現，通常暗示該段落為廣告、宣傳單或休閒生活類內容。
+
+=== Word 23: absence ===
+Chinese: 缺席；不在場
+Parts of speech: ['noun']
+Star rating: 4
+Score range: 600-780
+Category: 人力資源
+Word forms: [{'part_of_speech': 'noun', 'forms': ['absence', 'absences']}]
+Examples: [{'english': 'Due to his absence from the meeting, Mr. Lee missed the crucial decision.', 'chinese': '由於李先生缺席會議，他錯過了重要的決策。'}, {'english': 'The company policy states that excessive absences may result in disciplinary action.', 'chinese': '公司政策規定，過多的缺席可能會導致紀律處分。'}]
+Exam tips:
+  - 常見固定搭配：'leave of absence' 是多益極高頻詞彙，指「准假/休假」；'in the absence of' 表示「在缺少...的情況下」，常出現在 Part 5 或 Part 6 的介係詞短語考點中。
+  - 商業情境應用：常用於人力資源與辦公室行政，討論員工缺勤、長假或會議缺席，例如 'frequent absence' (頻繁缺席) 或 'absence from work' (曠職)。
+  - 詞性辨析與文法：Part 5 常考名詞 'absence' 與形容詞 'absent' 的區別，填空時需觀察空格前後是否有冠詞或介係詞。
+  - 相似詞辨析：'absence' 側重於「人或物不在現場」的狀態，而 'lack' 則強調「質或量的不具備/缺乏」，兩者在閱讀測驗中不能完全互換。
+  - 考試重點：在聽力 Part 3/4 與閱讀 Part 7 中，常出現在討論代理人（acting delegate）的情境中，例如「某主管因故缺席（absence），請聯繫其助理」。
+
+=== Word 24: absent ===
+Chinese: 缺席的；不在場的；缺勤的
+Parts of speech: ['adjective', 'adverb']
+Star rating: 5
+Score range: 400-600
+Category: 辦公日常
+Word forms: [{'part_of_speech': 'adjective', 'forms': ['absent', 'more absent', 'most absent']}, {'part_of_speech': 'adverb', 'forms': ['absent']}]
+Examples: [{'english': 'The employee was absent from the meeting due to a family emergency.', 'chinese': '這位員工因家裡突發狀況缺席會議。'}, {'english': 'He was absentmindedly reviewing the report, missing several key details.', 'chinese': '他心不在焉地審閱報告，錯過了幾個關鍵細節。'}]
+Exam tips:
+  - 常見搭配詞：最常與介係詞 from 連用，如 "absent from the meeting/office"。
+  - 商業情境應用：常用於人事考勤或會議紀錄，與 "present" (出席) 相對。須注意常見片語 "leave of absence" 指的是「請假/准假」。
+  - 易混淆詞辨析：應區分 "absent" (形容詞：缺席的) 與 "absence" (名詞：缺席) 的用法。與 "missing" (失蹤、遺失) 不同，"absent" 通常指人未能在預定場合出現。
+  - 詞性變化考點：在 Part 5 語法題中，注意 "absent" 亦可作為動詞使用，後接反身代名詞，如 "absent oneself from work" (擅自缺勤)。
+  - 聽力與閱讀考點：常出現在 Part 2 針對缺席原因的詢問，或 Part 7 的商務電郵中，用來解釋同事為何無法回覆訊息或參與專案。
+
+=== Word 25: absolute ===
+Chinese: 絕對的；完全的；無可爭議的
+Parts of speech: ['adjective', 'adverb']
+Star rating: 4
+Score range: 600-780
+Category: 辦公日常
+Word forms: [{'part_of_speech': 'adjective', 'forms': ['absolute', 'more absolute', 'most absolute']}, {'part_of_speech': 'adverb', 'forms': ['absolute']}]
+Examples: [{'english': 'The company has an absolute commitment to providing high-quality products.', 'chinese': '公司對提供高品質產品有絕對的承諾。'}, {'english': 'We need an absolute guarantee that the shipment will arrive on time.', 'chinese': '我們需要絕對的保證，貨物會準時送達。'}]
+Exam tips:
+  - 常見搭配詞：在商業文件或法律條款中常出現 absolute necessity (絕對必要) 或 absolute minimum/maximum (絕對最小值/最大值)。
+  - 商業情境：常用來強調程度或權限，如 absolute confidence (絕對信心) 或 absolute authority (絕對職權)。
+  - 易混淆詞辨析：需區分 absolute (絕對的) 與 obsolete (過時的)，兩者拼寫稍有相似但在 TOEIC 字彙測驗中意義迥異。
+  - 聽力考點：在聽力 Part 2 的簡短對話中，副詞形式 absolutely 常用作強烈肯定的回答，等同於 'Definitely' 或 'I completely agree'。
+  - 閱讀考點：Part 5 詞彙題常考形容詞修飾名詞的語義辨析，若選項中出現 absolute，通常暗示該語境具有唯一性、完全性或不可妥協的性質。
+

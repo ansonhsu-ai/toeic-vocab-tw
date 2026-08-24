@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRS 單字學習 Flash Card</title>
+    <!-- 現代字體支援 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-back: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --streak-color: #f97316;
+            --streak-bg: #fff7ed;
+            --streak-border: #ffedd5;
+            --again-color: #dc2626;
+            --again-bg: #fef2f2;
+            --again-border: #fecaca;
+            --hard-color: #d97706;
+            --hard-bg: #fffbeb;
+            --hard-border: #fde68a;
+            --known-color: #0284c7;
+            --known-bg: #f0f9ff;
+            --known-border: #bae6fd;
+            --easy-color: #059669;
+            --easy-bg: #ecfdf5;
+            --easy-border: #a7f3d0;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0b0f19;
+            --bg-card: #151d30;
+            --bg-card-back: #131b2c;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #222f49;
+            --card-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.6);
+            --streak-bg: #321d0d;
+            --streak-border: #7c2d12;
+            --again-bg: #2b1417;
+            --again-border: #7f1d1d;
+            --hard-bg: #2b2111;
+            --hard-border: #78350f;
+            --known-bg: #0f243d;
+            --known-border: #0369a1;
+            --easy-bg: #0c271e;
+            --easy-border: #047857;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.75rem;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* 主容器：固定視窗高度，防止任何塌陷 */
+        .app-container {
+            width: 100%;
+            max-width: 540px;
+            height: 100%;
+            max-height: 860px;
+            min-height: 540px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+
+        /* 頂部導航列 */
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .brand-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: var(--text-primary);
+        }
+
+        /* 打卡徽章 */
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 9999px;
+            background: var(--streak-bg);
+            color: var(--streak-color);
+            border: 1px solid var(--streak-border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .streak-badge:hover {
+            transform: scale(1.04);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .icon-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            user-select: none;
+        }
+
+        .icon-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        /* 隱藏的檔案輸入框 */
+        .visually-hidden-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+            opacity: 0;
+        }
+
+        /* 進度條與狀態 */
+        .progress-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            flex-shrink: 0;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .session-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
+            border-radius: 9999px;
+            transition: width 0.35s ease;
+        }
+
+        /* 卡片舞臺區域（完整自適應高度，絕不塌陷） */
+        .card-stage {
+            perspective: 1200px;
+            width: 100%;
+            flex: 1 1 auto;
+            min-height: 380px;
+            position: relative;
+            display: flex;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.45s cubic-bezier(0.2, 0.85, 0.4, 1.1);
+            cursor: pointer;
+            border-radius: var(--radius-lg);
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        /* 卡片正面：乾淨大字與垂直置中 */
+        .card-front {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .front-top-toolbar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-index-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .sound-btn {
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .sound-btn:hover {
+            background: rgba(37, 99, 235, 0.16);
+            transform: scale(1.03);
+        }
+
+        .front-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            margin: auto 0;
+            padding: 1rem 0;
+        }
+
+        .front-word {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .front-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .key-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            padding: 0.12rem 0.4rem;
+            background: var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 5px;
+            font-weight: 700;
+        }
+
+        /* 卡片背面：結構化排版 */
+        .card-back {
+            transform: rotateY(180deg);
+            background: var(--bg-card-back);
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem 1.4rem;
+            gap: 0.65rem;
+        }
+
+        .back-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .back-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* 示意圖片縮圖（完整呈現不裁切） */
+        .card-image-wrap {
+            width: 100%;
+            height: 175px;
+            max-height: 190px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #0f172a;
+            position: relative;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .image-fallback {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+        }
+
+        /* 背面內文區塊 */
+        .back-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .section-header-line {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-tag {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .example-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.25rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .dialogue-btn {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.12));
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            color: #7c3aed;
+            padding: 0.22rem 0.55rem;
+            border-radius: 9999px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.28rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(124, 58, 237, 0.06);
+        }
+
+        .dialogue-btn:hover {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(124, 58, 237, 0.2));
+            transform: translateY(-1px);
+        }
+
+        [data-theme="dark"] .dialogue-btn {
+            color: #c084fc;
+            border-color: rgba(192, 132, 252, 0.35);
+        }
+
+        .section-text {
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .example-block {
+            background: rgba(37, 99, 235, 0.05);
+            border-left: 3px solid var(--primary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.88rem;
+            line-height: 1.45;
+        }
+
+        .example-en {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        .example-zh {
+            color: var(--text-secondary);
+        }
+
+        /* 提示詞預覽與分享彈窗樣式 */
+        .prompt-preview-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.85rem;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: inherit;
+            margin-bottom: 1rem;
+            user-select: all;
+        }
+
+        .modal-actions-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 500px) {
+            .modal-actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 底部 SRS 4 鍵工具列 */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .srs-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 0.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .srs-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(0.96);
+        }
+
+        .srs-btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .btn-sub {
+            font-size: 0.72rem;
+            opacity: 0.85;
+            margin-top: 0.05rem;
+        }
+
+        .btn-key {
+            font-size: 0.68rem;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0.6;
+            margin-top: 0.2rem;
+        }
+
+        .btn-again {
+            background-color: var(--again-bg);
+            color: var(--again-color);
+            border-color: var(--again-border);
+        }
+
+        .btn-hard {
+            background-color: var(--hard-bg);
+            color: var(--hard-color);
+            border-color: var(--hard-border);
+        }
+
+        .btn-known {
+            background-color: var(--known-bg);
+            color: var(--known-color);
+            border-color: var(--known-border);
+        }
+
+        .btn-easy {
+            background-color: var(--easy-bg);
+            color: var(--easy-color);
+            border-color: var(--easy-border);
+        }
+
+        /* 完成畫面 */
+        .completion-card {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow);
+            padding: 1.75rem 1.25rem;
+            text-align: center;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .checkin-banner {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(234, 88, 12, 0.05));
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: var(--radius-md);
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--streak-color);
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        .completion-icon {
+            font-size: 2.8rem;
+            line-height: 1;
+        }
+
+        .completion-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .stat-box {
+            padding: 0.65rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-num {
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-top: 0.1rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+            max-width: 320px;
+            margin-top: 0.2rem;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .primary-btn, .secondary-btn {
+            flex: 1;
+            padding: 0.7rem 0.8rem;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .secondary-btn {
+            background: var(--bg-card);
+            border-color: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Toast 提示 */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #0f172a;
+            color: #ffffff;
+            padding: 0.65rem 1.2rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Modal 彈窗 */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: var(--card-shadow);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        /* 打卡歷史視窗樣式 */
+        .checkin-stats-card {
+            display: flex;
+            justify-content: space-around;
+            background: var(--bg-main);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+
+        .checkin-stat-val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--streak-color);
+        }
+
+        .checkin-stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+            font-weight: 600;
+        }
+
+        .checkin-history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .checkin-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-main);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+        }
+
+        .checkin-badge-done {
+            color: var(--easy-color);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* 快捷鍵列表 */
+        .shortcut-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 拖曳高亮 */
+        body.drag-over .card-stage {
+            outline: 3px dashed var(--primary);
+            outline-offset: 4px;
+            border-radius: var(--radius-lg);
+        }
+
+        /* 手機自適應 */
+        @media (max-width: 600px) {
+            body {
+                padding: 0.5rem;
+            }
+            .front-word {
+                font-size: 2.4rem;
+            }
+            .srs-btn {
+                padding: 0.55rem 0.15rem;
+            }
+            .btn-title {
+                font-size: 0.82rem;
+            }
+            .btn-sub {
+                font-size: 0.68rem;
+            }
+            .card-back {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- 頂部導航列 -->
+        <header class="app-header">
+            <div class="brand-title">
+                <span>🧠 Flashcard</span>
+                <!-- 打卡徽章 -->
+                <button class="streak-badge" id="streak-badge" title="點擊查看打卡歷史紀錄">
+                    <span>🔥</span>
+                    <span id="streak-text">0 天</span>
+                </button>
+            </div>
+            <div class="header-actions">
+                <!-- 原生 label 觸發檔案選擇器 -->
+                <input type="file" id="csv-file-input" class="visually-hidden-input" accept=".csv,text/csv">
+                <label for="csv-file-input" class="icon-btn" id="upload-btn" title="匯入 CSV 單字檔案">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </label>
+                <button class="icon-btn" id="next-session-btn" title="隨機換一組新單字 (10字)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                </button>
+                <button class="icon-btn" id="theme-btn" title="切換深色/淺色主題">
+                    <svg id="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+                <button class="icon-btn" id="help-btn" title="快速鍵與使用說明">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 進度指示條 -->
+        <section class="progress-section">
+            <div class="status-bar">
+                <span class="session-tag" id="session-tag">
+                    <span>📅 今日 Session</span>
+                </span>
+                <span id="queue-counter">剩餘: 10 / 本次 10 字</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+        </section>
+
+        <!-- 閃卡主舞臺（佔滿中央區域） -->
+        <main class="card-stage" id="card-stage">
+            <div class="card" id="flashcard">
+                <!-- 正面 -->
+                <div class="card-face card-front">
+                    <div class="front-top-toolbar">
+                        <span class="card-index-badge" id="card-index-badge">WORD 1/10</span>
+                        <button class="sound-btn" id="front-speech-btn" title="朗讀單字">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                            朗讀
+                        </button>
+                    </div>
+                    <div class="front-main">
+                        <h1 class="front-word" id="front-word-text">Loading...</h1>
+                    </div>
+                    <div class="front-hint">
+                        點擊卡片或按 <span class="key-badge">Space</span> 翻面
+                    </div>
+                </div>
+
+                <!-- 背面 -->
+                <div class="card-face card-back">
+                    <div class="back-header">
+                        <span class="back-title" id="back-word-title">ability</span>
+                        <button class="sound-btn" id="back-speech-btn" title="朗讀英文例句">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                            例句朗讀
+                        </button>
+                    </div>
+
+                    <!-- 相關情境圖片 -->
+                    <div class="card-image-wrap">
+                        <img class="card-image" id="card-dynamic-img" src="" alt="Word Context" onerror="this.style.display='none'; document.getElementById('img-fallback').style.display='flex';">
+                        <div class="image-fallback" id="img-fallback" style="display: none;">
+                            <span>🖼️ TOEIC Flashcard Context</span>
+                        </div>
+                    </div>
+
+                    <!-- 背面結構化內容 -->
+                    <div class="back-content" id="back-content-body">
+                        <!-- 動態渲染 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 完成結算畫面 -->
+            <div class="completion-card" id="completion-view">
+                <div class="checkin-banner" id="checkin-banner">
+                    <span>🎉</span>
+                    <span id="checkin-banner-text">今日打卡已達成！連續打卡 1 天</span>
+                </div>
+                <div class="completion-icon">🏆</div>
+                <h2 class="completion-title">本組學習完成！</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-box" style="color: var(--again-color);">
+                        <div class="stat-num" id="stat-again">0</div>
+                        <div class="stat-label">Again 重來</div>
+                    </div>
+                    <div class="stat-box" style="color: var(--hard-color);">
+                        <div class="stat-num" id="stat-hard">0</div>
+                        <div class="stat-label">Hard 困難</div>
+                    </div>
+                    <div class="stat-box" style="color: var(--known-color);">
+                        <div class="stat-num" id="stat-known">0</div>
+                        <div class="stat-label">Known 已掌握</div>
+                    </div>
+                    <div class="stat-box" style="color: var(--easy-color);">
+                        <div class="stat-num" id="stat-easy">0</div>
+                        <div class="stat-label">Easy 簡單</div>
+                    </div>
+                </div>
+
+                <div class="completion-actions">
+                    <button class="primary-btn" id="next-set-btn">✨ 再學一組隨機單字 (10字)</button>
+                    <div class="action-row">
+                        <button class="secondary-btn" id="restart-btn">重新複習本組</button>
+                        <button class="secondary-btn" id="view-history-btn">查看打卡紀錄</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 底部 SRS 4 鍵按鈕列 -->
+        <footer class="controls-grid" id="controls-toolbar">
+            <button class="srs-btn btn-again" id="btn-again" title="快速鍵: 1">
+                <span class="btn-title">Again</span>
+                <span class="btn-sub">重來</span>
+                <span class="btn-key">[1]</span>
+            </button>
+            <button class="srs-btn btn-hard" id="btn-hard" title="快速鍵: 2">
+                <span class="btn-title">Hard</span>
+                <span class="btn-sub">困難</span>
+                <span class="btn-key">[2]</span>
+            </button>
+            <button class="srs-btn btn-known" id="btn-known" title="快速鍵: 3">
+                <span class="btn-title">Known</span>
+                <span class="btn-sub">已掌握</span>
+                <span class="btn-key">[3]</span>
+            </button>
+            <button class="srs-btn btn-easy" id="btn-easy" title="快速鍵: 4">
+                <span class="btn-title">Easy</span>
+                <span class="btn-sub">簡單</span>
+                <span class="btn-key">[4]</span>
+            </button>
+        </footer>
+    </div>
+
+    <!-- AI 語音對話提示詞 Modal -->
+    <div class="modal-backdrop" id="dialogue-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">🗣️ AI 語音對話提示詞</h3>
+                <button class="modal-close" id="dialogue-close-btn">&times;</button>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.65rem;">
+                已為您生成專屬口說提示詞，可直接開啟 ChatGPT 或 Gemini 進行實時語音對話練習：
+            </p>
+            <div class="prompt-preview-box" id="prompt-preview-text">
+                <!-- 動態注入 Prompt -->
+            </div>
+            <div class="modal-actions-grid">
+                <button class="primary-btn" id="copy-prompt-btn">📋 複製提示詞</button>
+                <a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" class="secondary-btn" id="open-chatgpt-btn">🤖 ChatGPT</a>
+                <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="secondary-btn" id="open-gemini-btn">✨ Gemini</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 打卡紀錄 Modal -->
+    <div class="modal-backdrop" id="checkin-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">📅 學習與打卡記錄</h3>
+                <button class="modal-close" id="checkin-close-btn">&times;</button>
+            </div>
+            <div class="checkin-stats-card">
+                <div>
+                    <div class="checkin-stat-val" id="modal-streak-val">0</div>
+                    <div class="checkin-stat-lbl">連續打卡 (天)</div>
+                </div>
+                <div>
+                    <div class="checkin-stat-val" id="modal-total-days">0</div>
+                    <div class="checkin-stat-lbl">累積打卡 (天)</div>
+                </div>
+                <div>
+                    <div class="checkin-stat-val" id="modal-mastered-words">0</div>
+                    <div class="checkin-stat-lbl">掌握單字 (個)</div>
+                </div>
+            </div>
+            <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-secondary);">最近打卡日期</h4>
+            <div class="checkin-history-list" id="checkin-history-list">
+                <!-- 動態注入 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 快速鍵說明 Modal -->
+    <div class="modal-backdrop" id="help-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">快捷鍵與規則說明</h3>
+                <button class="modal-close" id="modal-close-btn">&times;</button>
+            </div>
+            <div class="shortcut-list">
+                <div class="shortcut-item">
+                    <span>每日 Session 機制</span>
+                    <span style="font-weight: 700; color: var(--primary);">每次 10 個隨機單字</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>每日打卡機制</span>
+                    <span style="font-weight: 700; color: var(--streak-color);">每天完成 1 組即打卡</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>翻轉卡片（正 / 背面）</span>
+                    <span class="key-badge">Space</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>朗讀目前畫面語音</span>
+                    <span class="key-badge">Enter</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Again（插入佇列第 2 位）</span>
+                    <span class="key-badge">1</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Hard（插入佇列中央）</span>
+                    <span class="key-badge">2</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Known（插入佇列尾端）</span>
+                    <span class="key-badge">3</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>Easy（直接移出佇列）</span>
+                    <span class="key-badge">4</span>
+                </div>
+                <div class="shortcut-item">
+                    <span>AI 語音對話提示詞</span>
+                    <span class="key-badge">D</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 浮動提示 -->
+    <div class="toast" id="toast">提示訊息</div>
+
+    <!-- 預載資料與前端核心邏輯 -->
+    <script>
+        const DEFAULT_CARDS_DATA = __DEFAULT_CARDS_DATA__;
+
+        /**
+         * AI 語音對話提示詞生成服務 (DialoguePromptService)
+         * 遵循 Single Responsibility Principle (SRP)
+         */
+        class DialoguePromptService {
+            /**
+             * 生成用於 ChatGPT / Gemini 實時語音對話的提示詞
+             * @param {string} word - 目標單字
+             * @param {string} sentence - 英文例句
+             * @param {string} zhTranslation - 中文翻譯 (選填)
+             * @returns {string} 格式化後的 Prompt
+             */
+            static generatePrompt(word, sentence, zhTranslation = '') {
+                if (!word || !sentence) return '';
+                const cleanWord = word.trim();
+                const cleanSentence = sentence.trim();
+                const transText = zhTranslation ? ` (${zhTranslation.trim()})` : '';
+
+                return `請扮演一位友善的朋友，跟我進行一場輕鬆自然、專注於口語應用的英文語音對話練習。
+
+【本次練習主題】
+• 目標單字：${cleanWord}
+• 參考例句：${cleanSentence}${transText}
+
+【對話規則】
+1. 請以朋友般輕鬆自然的口吻，圍繞這個單字和例句所代表的情境，向我提出 3 個相關的口語問題進行問答練習。
+2. 請務必「一次只提出 1 個問題」，等我用語音回答後，再接續下一個問題，絕不要一次列出所有問題。
+3. 每次你的回覆請精簡在 1~2 句話，適合實時語音交流，避免冗長書面語。
+4. 當我回答後，若我的英文有明顯表達錯誤，請用友善的方式順帶給予 1 句簡短的口語修飾建議，然後繼續我們的對話。
+5. 現在，請直接用全英文向我打招呼，並提出第 1 個問題開始對話！`;
+            }
+        }
+
+        /**
+         * 打卡與統計服務 (CheckInService)
+         */
+        class CheckInService {
+            static getTodayStr(date = new Date()) {
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+
+            static calculateStreak(historyDates, todayStr = this.getTodayStr()) {
+                if (!historyDates || historyDates.length === 0) return 0;
+                const set = new Set(historyDates);
+
+                let streak = 0;
+                let checkDate = new Date(todayStr);
+
+                if (!set.has(todayStr)) {
+                    checkDate.setDate(checkDate.getDate() - 1);
+                }
+
+                while (true) {
+                    const dateStr = this.getTodayStr(checkDate);
+                    if (set.has(dateStr)) {
+                        streak++;
+                        checkDate.setDate(checkDate.getDate() - 1);
+                    } else {
+                        break;
+                    }
+                }
+
+                return streak;
+            }
+        }
+
+        /**
+         * 隨機 Session 產生管理員 (SessionManager)
+         * 支援多字母分散隨機抽樣（Diverse Multi-Letter Sampling），避免單字全部集中於同一開頭字母
+         */
+        class SessionManager {
+            static shuffle(array) {
+                const copy = [...array];
+                for (let i = copy.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+                return copy;
+            }
+
+            /**
+             * 隨機抽取 10 個單字，確保首字母高度分散多樣（A~Z）
+             */
+            static pickSessionWords(allWords, masteredIds = new Set(), sessionSize = 10) {
+                if (!allWords || allWords.length === 0) return [];
+                
+                // 優先挑選未掌握的單字
+                const unmastered = allWords.filter(w => !masteredIds.has(w.id));
+                const pool = unmastered.length >= sessionSize ? unmastered : allWords;
+
+                // 依照英文首字母分組 (A~Z)
+                const buckets = {};
+                for (const card of pool) {
+                    const firstChar = (card.word[0] || '').toUpperCase();
+                    if (!buckets[firstChar]) buckets[firstChar] = [];
+                    buckets[firstChar].push(card);
+                }
+
+                // 隨機打亂所有可用首字母
+                const availableLetters = this.shuffle(Object.keys(buckets));
+                const selected = [];
+                const usedWords = new Set();
+
+                // 第一輪：各首字母最多挑選 1 個單字，確保 10 個字來自 10 個不同字母
+                for (const letter of availableLetters) {
+                    if (selected.length >= sessionSize) break;
+                    const letterPool = buckets[letter];
+                    if (letterPool && letterPool.length > 0) {
+                        const randomCard = letterPool[Math.floor(Math.random() * letterPool.length)];
+                        if (!usedWords.has(randomCard.id)) {
+                            selected.push(randomCard);
+                            usedWords.add(randomCard.id);
+                        }
+                    }
+                }
+
+                // 若單字不足 sessionSize，再從剩餘未被選中的單字中隨機補齊
+                if (selected.length < sessionSize) {
+                    const remaining = this.shuffle(pool.filter(w => !usedWords.has(w.id)));
+                    for (const card of remaining) {
+                        if (selected.length >= sessionSize) break;
+                        selected.push(card);
+                    }
+                }
+
+                // 最後將抽出的 10 個單字打亂順序回傳
+                return this.shuffle(selected);
+            }
+        }
+
+        /**
+         * 語音朗讀服務類別 (AudioService)
+         */
+        class AudioService {
+            constructor() {
+                this.synth = window.speechSynthesis || null;
+                this.voice = null;
+                this.initVoice();
+            }
+
+            initVoice() {
+                if (!this.synth) return;
+                try {
+                    const updateVoice = () => {
+                        const voices = this.synth.getVoices();
+                        this.voice = voices.find(v => v.lang.includes('en-US')) || voices.find(v => v.lang.startsWith('en')) || null;
+                    };
+                    updateVoice();
+                    if (this.synth.onvoiceschanged !== undefined) {
+                        this.synth.onvoiceschanged = updateVoice;
+                    }
+                } catch (e) {
+                    console.warn('Speech synthesis voice init error', e);
+                }
+            }
+
+            speak(text) {
+                if (!this.synth || !text) return;
+                try {
+                    this.synth.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.95;
+                    if (this.voice) utterance.voice = this.voice;
+                    this.synth.speak(utterance);
+                } catch (e) {
+                    console.warn('Speak error', e);
+                }
+            }
+
+            extractEnglishSentence(content) {
+                if (!content) return '';
+                const match = content.match(/【例句】\s*\n?([^\n(（]+)/);
+                if (match && match[1]) {
+                    return match[1].trim();
+                }
+                return '';
+            }
+        }
+
+        /**
+         * 本地持久化儲存服務 (StorageService)
+         */
+        class StorageService {
+            constructor() {
+                this.dbName = 'ToeicFlashcardDB_v3';
+                this.storeName = 'app_state';
+                this.db = null;
+            }
+
+            async init() {
+                return new Promise((resolve) => {
+                    if (!window.indexedDB) {
+                        resolve(false);
+                        return;
+                    }
+                    let resolved = false;
+                    const timer = setTimeout(() => {
+                        if (!resolved) {
+                            resolved = true;
+                            resolve(false);
+                        }
+                    }, 400);
+
+                    try {
+                        const request = indexedDB.open(this.dbName, 1);
+                        request.onupgradeneeded = (e) => {
+                            const db = e.target.result;
+                            if (!db.objectStoreNames.contains(this.storeName)) {
+                                db.createObjectStore(this.storeName);
+                            }
+                        };
+                        request.onsuccess = (e) => {
+                            if (!resolved) {
+                                resolved = true;
+                                clearTimeout(timer);
+                                this.db = e.target.result;
+                                resolve(true);
+                            }
+                        };
+                        request.onerror = () => {
+                            if (!resolved) {
+                                resolved = true;
+                                clearTimeout(timer);
+                                resolve(false);
+                            }
+                        };
+                    } catch (e) {
+                        if (!resolved) {
+                            resolved = true;
+                            clearTimeout(timer);
+                            resolve(false);
+                        }
+                    }
+                });
+            }
+
+            async save(key, value) {
+                if (this.db) {
+                    try {
+                        const tx = this.db.transaction([this.storeName], 'readwrite');
+                        const store = tx.objectStore(this.storeName);
+                        store.put(value, key);
+                        return;
+                    } catch (e) {}
+                }
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (e) {}
+            }
+
+            async load(key) {
+                if (this.db) {
+                    try {
+                        return await new Promise((resolve) => {
+                            const tx = this.db.transaction([this.storeName], 'readonly');
+                            const store = tx.objectStore(this.storeName);
+                            const req = store.get(key);
+                            req.onsuccess = () => resolve(req.result);
+                            req.onerror = () => resolve(null);
+                        });
+                    } catch (e) {}
+                }
+                try {
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+        }
+
+        /**
+         * CSV 解析服務 (CsvParserService)
+         */
+        class CsvParserService {
+            static parse(csvText) {
+                if (!csvText || typeof csvText !== 'string' || !csvText.trim()) {
+                    throw new Error('CSV 檔案為空或內容無效');
+                }
+
+                const rows = [];
+                let currentRow = [];
+                let currentField = '';
+                let insideQuotes = false;
+                let i = 0;
+
+                let text = csvText.charCodeAt(0) === 0xFEFF ? csvText.slice(1) : csvText;
+
+                while (i < text.length) {
+                    const char = text[i];
+                    const nextChar = text[i + 1];
+
+                    if (char === '"') {
+                        if (insideQuotes && nextChar === '"') {
+                            currentField += '"';
+                            i += 2;
+                            continue;
+                        } else {
+                            insideQuotes = !insideQuotes;
+                            i++;
+                            continue;
+                        }
+                    }
+
+                    if (!insideQuotes && char === ',') {
+                        currentRow.push(currentField.trim());
+                        currentField = '';
+                        i++;
+                        continue;
+                    }
+
+                    if (!insideQuotes && (char === '\r' || char === '\n')) {
+                        if (char === '\r' && nextChar === '\n') {
+                            i++;
+                        }
+                        currentRow.push(currentField.trim());
+                        currentField = '';
+                        if (currentRow.some(f => f.length > 0)) {
+                            rows.push(currentRow);
+                        }
+                        currentRow = [];
+                        i++;
+                        continue;
+                    }
+
+                    currentField += char;
+                    i++;
+                }
+
+                if (currentField.length > 0 || currentRow.length > 0) {
+                    currentRow.push(currentField.trim());
+                    if (currentRow.some(f => f.length > 0)) {
+                        rows.push(currentRow);
+                    }
+                }
+
+                if (rows.length === 0) {
+                    throw new Error('未在 CSV 中偵測到有效資料列');
+                }
+
+                const cards = [];
+                for (let rIndex = 0; rIndex < rows.length; rIndex++) {
+                    const row = rows[rIndex];
+                    const word = row[0] || '';
+                    const content = row.slice(1).join('\n') || '';
+
+                    if (word && word !== '單字') {
+                        cards.push({
+                            id: rIndex + 1,
+                            word: word.trim(),
+                            content: content.trim()
+                        });
+                    }
+                }
+
+                if (cards.length === 0) {
+                    throw new Error('未能自 CSV 中成功解析出任何單字卡片');
+                }
+
+                return cards;
+            }
+        }
+
+        /**
+         * SRS 佇列引擎 (SrsEngine)
+         */
+        class SrsEngine {
+            constructor(sessionCards = []) {
+                this.sessionCards = [...sessionCards];
+                this.queue = [...sessionCards];
+                this.stats = { again: 0, hard: 0, known: 0, easy: 0 };
+                this.initialTotal = sessionCards.length;
+            }
+
+            loadState(state) {
+                if (!state) return;
+                this.sessionCards = state.sessionCards || [];
+                this.queue = state.queue || [];
+                this.stats = state.stats || { again: 0, hard: 0, known: 0, easy: 0 };
+                this.initialTotal = state.initialTotal || this.sessionCards.length;
+            }
+
+            getState() {
+                return {
+                    sessionCards: this.sessionCards,
+                    queue: this.queue,
+                    stats: this.stats,
+                    initialTotal: this.initialTotal
+                };
+            }
+
+            getCurrentCard() {
+                return this.queue.length > 0 ? this.queue[0] : null;
+            }
+
+            isFinished() {
+                return this.queue.length === 0;
+            }
+
+            processAnswer(action) {
+                if (this.queue.length === 0) return null;
+                const current = this.queue.shift();
+
+                switch (action) {
+                    case 'again':
+                        this.stats.again++;
+                        if (this.queue.length >= 1) {
+                            this.queue.splice(1, 0, current);
+                        } else {
+                            this.queue.push(current);
+                        }
+                        break;
+
+                    case 'hard':
+                        this.stats.hard++;
+                        const mid = Math.floor(this.queue.length / 2);
+                        this.queue.splice(mid, 0, current);
+                        break;
+
+                    case 'known':
+                        this.stats.known++;
+                        this.queue.push(current);
+                        break;
+
+                    case 'easy':
+                        this.stats.easy++;
+                        break;
+                }
+
+                return current;
+            }
+
+            reset() {
+                this.queue = [...this.sessionCards];
+                this.stats = { again: 0, hard: 0, known: 0, easy: 0 };
+                this.initialTotal = this.sessionCards.length;
+            }
+        }
+
+        /**
+         * Flashcard 主應用控制器 (FlashcardApp)
+         */
+        class FlashcardApp {
+            constructor() {
+                this.audio = new AudioService();
+                this.storage = new StorageService();
+                
+                this.allVocabulary = DEFAULT_CARDS_DATA || [];
+                this.masteredIds = new Set();
+                this.checkinHistory = [];
+                this.currentFileName = '預設 TOEIC 題庫';
+                this.isFlipped = false;
+                this.theme = 'light';
+                this.sessionCount = 1;
+
+                // 建立初始隨機 10 字 Session
+                const initialWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                this.srs = new SrsEngine(initialWords);
+
+                this.dom = {
+                    flashcard: document.getElementById('flashcard'),
+                    cardStage: document.getElementById('card-stage'),
+                    frontWordText: document.getElementById('front-word-text'),
+                    backWordTitle: document.getElementById('back-word-title'),
+                    backContentBody: document.getElementById('back-content-body'),
+                    cardDynamicImg: document.getElementById('card-dynamic-img'),
+                    imgFallback: document.getElementById('img-fallback'),
+                    frontSpeechBtn: document.getElementById('front-speech-btn'),
+                    backSpeechBtn: document.getElementById('back-speech-btn'),
+                    cardIndexBadge: document.getElementById('card-index-badge'),
+                    controlsToolbar: document.getElementById('controls-toolbar'),
+                    queueCounter: document.getElementById('queue-counter'),
+                    progressBar: document.getElementById('progress-bar'),
+                    sessionTag: document.getElementById('session-tag'),
+                    streakBadge: document.getElementById('streak-badge'),
+                    streakText: document.getElementById('streak-text'),
+                    completionView: document.getElementById('completion-view'),
+                    checkinBanner: document.getElementById('checkin-banner'),
+                    checkinBannerText: document.getElementById('checkin-banner-text'),
+                    statAgain: document.getElementById('stat-again'),
+                    statHard: document.getElementById('stat-hard'),
+                    statKnown: document.getElementById('stat-known'),
+                    statEasy: document.getElementById('stat-easy'),
+                    nextSetBtn: document.getElementById('next-set-btn'),
+                    restartBtn: document.getElementById('restart-btn'),
+                    viewHistoryBtn: document.getElementById('view-history-btn'),
+                    nextSessionBtn: document.getElementById('next-session-btn'),
+                    uploadBtn: document.getElementById('upload-btn'),
+                    csvFileInput: document.getElementById('csv-file-input'),
+                    themeBtn: document.getElementById('theme-btn'),
+                    helpBtn: document.getElementById('help-btn'),
+                    helpModal: document.getElementById('help-modal'),
+                    modalCloseBtn: document.getElementById('modal-close-btn'),
+                    checkinModal: document.getElementById('checkin-modal'),
+                    checkinCloseBtn: document.getElementById('checkin-close-btn'),
+                    modalStreakVal: document.getElementById('modal-streak-val'),
+                    modalTotalDays: document.getElementById('modal-total-days'),
+                    modalMasteredWords: document.getElementById('modal-mastered-words'),
+                    checkinHistoryList: document.getElementById('checkin-history-list'),
+                    dialogueModal: document.getElementById('dialogue-modal'),
+                    dialogueCloseBtn: document.getElementById('dialogue-close-btn'),
+                    promptPreviewText: document.getElementById('prompt-preview-text'),
+                    copyPromptBtn: document.getElementById('copy-prompt-btn'),
+                    btnAgain: document.getElementById('btn-again'),
+                    btnHard: document.getElementById('btn-hard'),
+                    btnKnown: document.getElementById('btn-known'),
+                    btnEasy: document.getElementById('btn-easy'),
+                    toast: document.getElementById('toast')
+                };
+            }
+
+            init() {
+                this.bindEvents();
+                this.render();
+
+                this.storage.init().then(() => {
+                    this.loadPersistedState().then(() => {
+                        this.render();
+                    });
+                });
+            }
+
+            async loadPersistedState() {
+                try {
+                    const savedState = await this.storage.load('srs_flashcard_state_v4');
+                    if (savedState) {
+                        if (savedState.allVocabulary && savedState.allVocabulary.length > 0) {
+                            this.allVocabulary = savedState.allVocabulary;
+                        }
+                        if (savedState.masteredIds) {
+                            this.masteredIds = new Set(savedState.masteredIds);
+                        }
+                        if (savedState.checkinHistory) {
+                            this.checkinHistory = savedState.checkinHistory;
+                        }
+                        if (savedState.srs && savedState.srs.sessionCards && savedState.srs.sessionCards.length > 0) {
+                            // 檢查是否為舊版全 A 單字組，若為全 A 則重新隨機抽多元首字母
+                            const letters = new Set(savedState.srs.sessionCards.map(c => (c.word[0] || '').toUpperCase()));
+                            if (letters.size <= 1 && this.allVocabulary.length > 50) {
+                                const freshWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                                this.srs = new SrsEngine(freshWords);
+                            } else {
+                                this.srs.loadState(savedState.srs);
+                            }
+                        }
+                        this.currentFileName = savedState.fileName || '預設 TOEIC 題庫';
+                        this.theme = savedState.theme || 'light';
+                        this.sessionCount = savedState.sessionCount || 1;
+                    } else {
+                        // 若無 v4 快取，立即隨機抽取全新 10 字 Session
+                        const freshWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                        this.srs = new SrsEngine(freshWords);
+                    }
+                    this.applyTheme(this.theme);
+                } catch (e) {
+                    console.warn('Load state error', e);
+                }
+            }
+
+            async persistState() {
+                const payload = {
+                    allVocabulary: this.allVocabulary,
+                    masteredIds: Array.from(this.masteredIds),
+                    checkinHistory: this.checkinHistory,
+                    srs: this.srs.getState(),
+                    fileName: this.currentFileName,
+                    theme: this.theme,
+                    sessionCount: this.sessionCount
+                };
+                await this.storage.save('srs_flashcard_state_v4', payload);
+            }
+
+            bindEvents() {
+                if (this.dom.flashcard) {
+                    this.dom.flashcard.addEventListener('click', (e) => {
+                        if (e.target.closest('.sound-btn')) return;
+                        this.toggleFlip();
+                    });
+                }
+
+                if (this.dom.frontSpeechBtn) {
+                    this.dom.frontSpeechBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const card = this.srs.getCurrentCard();
+                        if (card) this.audio.speak(card.word);
+                    });
+                }
+
+                if (this.dom.backSpeechBtn) {
+                    this.dom.backSpeechBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const card = this.srs.getCurrentCard();
+                        if (card) {
+                            const sentence = this.audio.extractEnglishSentence(card.content) || card.word;
+                            this.audio.speak(sentence);
+                        }
+                    });
+                }
+
+                if (this.dom.btnAgain) this.dom.btnAgain.addEventListener('click', () => this.handleSrsAction('again'));
+                if (this.dom.btnHard) this.dom.btnHard.addEventListener('click', () => this.handleSrsAction('hard'));
+                if (this.dom.btnKnown) this.dom.btnKnown.addEventListener('click', () => this.handleSrsAction('known'));
+                if (this.dom.btnEasy) this.dom.btnEasy.addEventListener('click', () => this.handleSrsAction('easy'));
+
+                // 換一組隨機 10 字
+                if (this.dom.nextSetBtn) this.dom.nextSetBtn.addEventListener('click', () => this.startNewSession());
+                if (this.dom.nextSessionBtn) this.dom.nextSessionBtn.addEventListener('click', () => {
+                    if (confirm('確定要隨機抽取下一組 10 個單字嗎？')) {
+                        this.startNewSession();
+                    }
+                });
+
+                if (this.dom.restartBtn) {
+                    this.dom.restartBtn.addEventListener('click', () => {
+                        this.srs.reset();
+                        this.isFlipped = false;
+                        this.persistState();
+                        this.render();
+                        this.showToast('已重新開始本組學習！');
+                    });
+                }
+
+                if (this.dom.csvFileInput) {
+                    this.dom.csvFileInput.addEventListener('change', (e) => this.handleCsvUpload(e));
+                }
+
+                window.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    document.body.classList.add('drag-over');
+                });
+
+                window.addEventListener('dragleave', (e) => {
+                    if (e.clientX === 0 || e.clientY === 0) {
+                        document.body.classList.remove('drag-over');
+                    }
+                });
+
+                window.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    document.body.classList.remove('drag-over');
+                    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                        this.handleDroppedFile(e.dataTransfer.files[0]);
+                    }
+                });
+
+                if (this.dom.streakBadge) {
+                    this.dom.streakBadge.addEventListener('click', () => this.openCheckinModal());
+                }
+
+                if (this.dom.viewHistoryBtn) {
+                    this.dom.viewHistoryBtn.addEventListener('click', () => this.openCheckinModal());
+                }
+
+                if (this.dom.checkinCloseBtn) {
+                    this.dom.checkinCloseBtn.addEventListener('click', () => {
+                        this.dom.checkinModal.classList.remove('active');
+                    });
+                }
+
+                if (this.dom.checkinModal) {
+                    this.dom.checkinModal.addEventListener('click', (e) => {
+                        if (e.target === this.dom.checkinModal) {
+                            this.dom.checkinModal.classList.remove('active');
+                        }
+                    });
+                }
+
+                if (this.dom.dialogueCloseBtn) {
+                    this.dom.dialogueCloseBtn.addEventListener('click', () => {
+                        this.dom.dialogueModal.classList.remove('active');
+                    });
+                }
+
+                if (this.dom.dialogueModal) {
+                    this.dom.dialogueModal.addEventListener('click', (e) => {
+                        if (e.target === this.dom.dialogueModal) {
+                            this.dom.dialogueModal.classList.remove('active');
+                        }
+                    });
+                }
+
+                if (this.dom.copyPromptBtn) {
+                    this.dom.copyPromptBtn.addEventListener('click', async () => {
+                        const text = this.dom.promptPreviewText ? this.dom.promptPreviewText.textContent : '';
+                        if (text) {
+                            try {
+                                if (navigator.clipboard && navigator.clipboard.writeText) {
+                                    await navigator.clipboard.writeText(text);
+                                }
+                                this.showToast('✅ 已複製對話提示詞到剪貼簿！');
+                            } catch (err) {
+                                this.showToast('複製失敗，請手動全選複製');
+                            }
+                        }
+                    });
+                }
+
+                if (this.dom.themeBtn) {
+                    this.dom.themeBtn.addEventListener('click', () => {
+                        this.theme = this.theme === 'light' ? 'dark' : 'light';
+                        this.applyTheme(this.theme);
+                        this.persistState();
+                    });
+                }
+
+                if (this.dom.helpBtn) {
+                    this.dom.helpBtn.addEventListener('click', () => {
+                        this.dom.helpModal.classList.add('active');
+                    });
+                }
+
+                if (this.dom.modalCloseBtn) {
+                    this.dom.modalCloseBtn.addEventListener('click', () => {
+                        this.dom.helpModal.classList.remove('active');
+                    });
+                }
+
+                if (this.dom.helpModal) {
+                    this.dom.helpModal.addEventListener('click', (e) => {
+                        if (e.target === this.dom.helpModal) {
+                            this.dom.helpModal.classList.remove('active');
+                        }
+                    });
+                }
+
+                window.addEventListener('keydown', (e) => this.handleKeyDown(e));
+            }
+
+            handleKeyDown(e) {
+                if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    this.toggleFlip();
+                } else if (e.code === 'Enter') {
+                    e.preventDefault();
+                    this.playCurrentSpeech();
+                } else if (e.key === 'd' || e.key === 'D') {
+                    e.preventDefault();
+                    this.handleAiDialogue();
+                } else if (e.key === '1') {
+                    e.preventDefault();
+                    this.handleSrsAction('again');
+                } else if (e.key === '2') {
+                    e.preventDefault();
+                    this.handleSrsAction('hard');
+                } else if (e.key === '3') {
+                    e.preventDefault();
+                    this.handleSrsAction('known');
+                } else if (e.key === '4') {
+                    e.preventDefault();
+                    this.handleSrsAction('easy');
+                }
+            }
+
+            toggleFlip() {
+                if (this.srs.isFinished()) return;
+                this.isFlipped = !this.isFlipped;
+                this.updateCardFlipVisual();
+                this.playCurrentSpeech();
+            }
+
+            updateCardFlipVisual() {
+                if (!this.dom.flashcard) return;
+                if (this.isFlipped) {
+                    this.dom.flashcard.classList.add('is-flipped');
+                } else {
+                    this.dom.flashcard.classList.remove('is-flipped');
+                }
+            }
+
+            playCurrentSpeech() {
+                const card = this.srs.getCurrentCard();
+                if (!card) return;
+                if (!this.isFlipped) {
+                    this.audio.speak(card.word);
+                } else {
+                    const sentence = this.audio.extractEnglishSentence(card.content) || card.word;
+                    this.audio.speak(sentence);
+                }
+            }
+
+            handleSrsAction(action) {
+                if (this.srs.isFinished()) return;
+                const answeredCard = this.srs.processAnswer(action);
+                
+                if (action === 'easy' && answeredCard) {
+                    this.masteredIds.add(answeredCard.id);
+                }
+
+                this.isFlipped = false;
+                this.updateCardFlipVisual();
+
+                // 檢查是否完成 Session
+                if (this.srs.isFinished()) {
+                    this.onSessionCompleted();
+                } else {
+                    this.playCurrentSpeech();
+                }
+
+                this.persistState();
+                this.render();
+            }
+
+            onSessionCompleted() {
+                const today = CheckInService.getTodayStr();
+                let newlyCheckedIn = false;
+
+                if (!this.checkinHistory.includes(today)) {
+                    this.checkinHistory.push(today);
+                    newlyCheckedIn = true;
+                }
+
+                const streak = CheckInService.calculateStreak(this.checkinHistory);
+                if (newlyCheckedIn) {
+                    this.showToast(`🎉 今日打卡成功！連續打卡 ${streak} 天！`);
+                } else {
+                    this.showToast(`太棒了！已完成第 ${this.sessionCount} 組學習！`);
+                }
+            }
+
+            startNewSession() {
+                const newWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                if (newWords.length === 0) {
+                    this.showToast('題庫中無可用單字');
+                    return;
+                }
+                this.srs = new SrsEngine(newWords);
+                this.sessionCount++;
+                this.isFlipped = false;
+                this.updateCardFlipVisual();
+                this.persistState();
+                this.render();
+                this.showToast(`已載入全新隨機 10 字（第 ${this.sessionCount} 組）`);
+            }
+
+            async handleCsvUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                await this.handleDroppedFile(file);
+                event.target.value = '';
+            }
+
+            async handleDroppedFile(file) {
+                if (!file) return;
+                try {
+                    const text = await file.text();
+                    const parsedCards = CsvParserService.parse(text);
+                    this.allVocabulary = parsedCards;
+                    this.masteredIds.clear();
+                    this.currentFileName = file.name;
+                    this.sessionCount = 1;
+                    
+                    const newWords = SessionManager.pickSessionWords(this.allVocabulary, this.masteredIds, 10);
+                    this.srs = new SrsEngine(newWords);
+                    this.isFlipped = false;
+                    await this.persistState();
+                    this.render();
+                    this.showToast(`成功匯入 ${parsedCards.length} 筆單字，已抽取首組 10 字！`);
+                } catch (err) {
+                    alert(`CSV 匯入失敗：${err.message}`);
+                }
+            }
+
+            openCheckinModal() {
+                const streak = CheckInService.calculateStreak(this.checkinHistory);
+                const totalDays = this.checkinHistory.length;
+                const masteredCount = this.masteredIds.size;
+
+                if (this.dom.modalStreakVal) this.dom.modalStreakVal.textContent = streak;
+                if (this.dom.modalTotalDays) this.dom.modalTotalDays.textContent = totalDays;
+                if (this.dom.modalMasteredWords) this.dom.modalMasteredWords.textContent = masteredCount;
+
+                if (this.dom.checkinHistoryList) {
+                    if (this.checkinHistory.length === 0) {
+                        this.dom.checkinHistoryList.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:0.5rem;">尚未有打卡記錄，完成今天 10 個單字即可打卡！</p>';
+                    } else {
+                        const sortedDates = [...this.checkinHistory].reverse().slice(0, 15);
+                        this.dom.checkinHistoryList.innerHTML = sortedDates.map(date => `
+                            <div class="checkin-history-item">
+                                <span>📅 ${date}</span>
+                                <span class="checkin-badge-done">✓ 打卡完成</span>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                if (this.dom.checkinModal) {
+                    this.dom.checkinModal.classList.add('active');
+                }
+            }
+
+            applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+
+            showToast(msg) {
+                if (!this.dom.toast) return;
+                this.dom.toast.textContent = msg;
+                this.dom.toast.classList.add('show');
+                setTimeout(() => {
+                    this.dom.toast.classList.remove('show');
+                }, 2400);
+            }
+
+            render() {
+                const streak = CheckInService.calculateStreak(this.checkinHistory);
+                if (this.dom.streakText) {
+                    this.dom.streakText.textContent = `${streak} 天`;
+                }
+
+                const today = CheckInService.getTodayStr();
+                const isTodayDone = this.checkinHistory.includes(today);
+
+                if (this.srs.isFinished()) {
+                    if (this.dom.flashcard) this.dom.flashcard.style.display = 'none';
+                    if (this.dom.completionView) this.dom.completionView.style.display = 'flex';
+                    if (this.dom.controlsToolbar) {
+                        this.dom.controlsToolbar.style.opacity = '0.4';
+                        this.dom.controlsToolbar.style.pointerEvents = 'none';
+                    }
+
+                    if (this.dom.checkinBannerText) {
+                        this.dom.checkinBannerText.textContent = isTodayDone
+                            ? `今日打卡已達成！連續打卡 ${streak} 天 🔥`
+                            : `完成本次 Session！今日打卡成功 🎉`;
+                    }
+
+                    if (this.dom.statAgain) this.dom.statAgain.textContent = this.srs.stats.again;
+                    if (this.dom.statHard) this.dom.statHard.textContent = this.srs.stats.hard;
+                    if (this.dom.statKnown) this.dom.statKnown.textContent = this.srs.stats.known;
+                    if (this.dom.statEasy) this.dom.statEasy.textContent = this.srs.stats.easy;
+
+                    if (this.dom.queueCounter) this.dom.queueCounter.textContent = '本組完成';
+                    if (this.dom.progressBar) this.dom.progressBar.style.width = '100%';
+                    return;
+                }
+
+                if (this.dom.flashcard) this.dom.flashcard.style.display = 'block';
+                if (this.dom.completionView) this.dom.completionView.style.display = 'none';
+                if (this.dom.controlsToolbar) {
+                    this.dom.controlsToolbar.style.opacity = '1';
+                    this.dom.controlsToolbar.style.pointerEvents = 'auto';
+                }
+
+                const card = this.srs.getCurrentCard();
+                if (!card) return;
+
+                if (this.dom.frontWordText) this.dom.frontWordText.textContent = card.word;
+                if (this.dom.backWordTitle) this.dom.backWordTitle.textContent = card.word;
+                this.renderBackContent(card.content);
+                this.updateCardImage(card.word);
+
+                const remaining = this.srs.queue.length;
+                const total = this.srs.initialTotal || 10;
+                const done = Math.max(0, total - remaining);
+                const percent = Math.min(100, Math.round((done / total) * 100));
+
+                if (this.dom.cardIndexBadge) {
+                    this.dom.cardIndexBadge.textContent = `SESSION #${this.sessionCount} (${done + 1}/${total})`;
+                }
+
+                if (this.dom.sessionTag) {
+                    this.dom.sessionTag.innerHTML = `<span>📅 第 ${this.sessionCount} 組 ${isTodayDone ? '• 今日已打卡' : '• 今日未打卡'}</span>`;
+                }
+
+                if (this.dom.queueCounter) this.dom.queueCounter.textContent = `剩餘: ${remaining} / 本次: ${total} 字`;
+                if (this.dom.progressBar) this.dom.progressBar.style.width = `${percent}%`;
+
+                this.updateCardFlipVisual();
+            }
+
+            updateCardImage(word) {
+                if (!this.dom.cardDynamicImg) return;
+                const cleanWord = encodeURIComponent(word.toLowerCase().replace(/[^a-z0-9]/g, ''));
+                const imgUrl = `https://loremflickr.com/600/380/${cleanWord}?lock=${cleanWord.length * 17}`;
+                
+                this.dom.cardDynamicImg.style.display = 'block';
+                if (this.dom.imgFallback) this.dom.imgFallback.style.display = 'none';
+                this.dom.cardDynamicImg.src = imgUrl;
+            }
+
+            /**
+             * 處理 AI 語音對話觸發：生成提示詞、複製剪貼簿、調用原生分享或彈出 Modal
+             */
+            async handleAiDialogue() {
+                const card = this.srs.getCurrentCard();
+                if (!card) return;
+
+                const sentence = this.audio.extractEnglishSentence(card.content) || card.word;
+                const zhMatch = card.content.match(/【例句】[^\n]*\n[^\n(（]+(?:[\(（](.+)[\\)）])?/);
+                const zhTranslation = (zhMatch && zhMatch[1]) ? zhMatch[1].trim() : '';
+
+                const promptText = DialoguePromptService.generatePrompt(card.word, sentence, zhTranslation);
+
+                // 1. 自動複製提示詞到剪貼簿
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(promptText);
+                    }
+                } catch (e) {
+                    console.warn('Clipboard write error', e);
+                }
+
+                // 2. 若在手機端且支援原生分享 (Web Share API)，直接呼叫原生分享選單
+                const isMobile = /mobile|android|iphone|ipad|tablet/i.test(navigator.userAgent);
+                if (isMobile && navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: `TOEIC 口說對話練習：${card.word}`,
+                            text: promptText
+                        });
+                        this.showToast('已開啟分享選單 🎙️');
+                        return;
+                    } catch (e) {
+                        // 使用者取消或不支援，降級至 Modal
+                    }
+                }
+
+                // 3. 桌面端或原生分享結束後顯示對話提示詞彈窗
+                this.openDialogueModal(promptText);
+                this.showToast('已複製對話提示詞！可打開 ChatGPT / Gemini 🎙️');
+            }
+
+            openDialogueModal(promptText) {
+                if (this.dom.promptPreviewText) {
+                    this.dom.promptPreviewText.textContent = promptText;
+                }
+                if (this.dom.dialogueModal) {
+                    this.dom.dialogueModal.classList.add('active');
+                }
+            }
+
+            renderBackContent(rawContent) {
+                if (!this.dom.backContentBody) return;
+                if (!rawContent) {
+                    this.dom.backContentBody.innerHTML = '<p style="color: var(--text-muted);">無詳細內容</p>';
+                    return;
+                }
+
+                const lines = rawContent.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                const htmlParts = [];
+
+                let currentSection = '';
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+
+                    if (line.startsWith('【詞性變化】')) {
+                        currentSection = 'forms';
+                        htmlParts.push('<span class="section-tag">【詞性變化】</span>');
+                    } else if (line.startsWith('【搭配詞】')) {
+                        currentSection = 'colloc';
+                        htmlParts.push('<span class="section-tag">【搭配詞】</span>');
+                    } else if (line.startsWith('【例句】')) {
+                        currentSection = 'example';
+                        htmlParts.push(`
+                            <div class="example-header">
+                                <span class="section-tag">【例句】</span>
+                                <button class="dialogue-btn" id="example-dialogue-btn" type="button" title="生成 AI 語音對話提示詞 (快捷鍵: D)">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                    <span>🗣️ AI 對話</span>
+                                </button>
+                            </div>
+                        `);
+                    } else {
+                        if (i === 0 && !line.startsWith('【')) {
+                            htmlParts.push(`<div class="section-header-line">${this.escapeHtml(line)}</div>`);
+                        } else if (currentSection === 'example') {
+                            const enMatch = line.match(/^([^()（）]+)(?:[\(（](.+)[\\)）])?/);
+                            if (enMatch) {
+                                const enText = enMatch[1].trim();
+                                const zhText = enMatch[2] ? enMatch[2].trim() : '';
+                                htmlParts.push(`
+                                    <div class="example-block">
+                                        <span class="example-en">${this.escapeHtml(enText)}</span>
+                                        ${zhText ? `<span class="example-zh">(${this.escapeHtml(zhText)})</span>` : ''}
+                                    </div>
+                                `);
+                            } else {
+                                htmlParts.push(`<div class="section-text">${this.escapeHtml(line)}</div>`);
+                            }
+                        } else {
+                            htmlParts.push(`<div class="section-text">${this.escapeHtml(line)}</div>`);
+                        }
+                    }
+                }
+
+                this.dom.backContentBody.innerHTML = htmlParts.join('');
+
+                // 綁定例句區塊內部的 AI 對話按鈕點擊事件
+                const dialogueBtn = this.dom.backContentBody.querySelector('#example-dialogue-btn');
+                if (dialogueBtn) {
+                    dialogueBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.handleAiDialogue();
+                    });
+                }
+            }
+
+            escapeHtml(str) {
+                return str
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                window.app = new FlashcardApp();
+                window.app.init();
+            } catch (e) {
+                console.error('App init error:', e);
+            }
+        });
+    </script>
+</body>
+</html>
