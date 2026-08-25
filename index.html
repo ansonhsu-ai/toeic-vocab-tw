@@ -1114,15 +1114,15 @@
                 <button type="button" class="deeplink-btn chatgpt-btn" id="open-chatgpt-btn">
                     <span class="deeplink-btn-icon">🤖</span>
                     <div class="deeplink-btn-text">
-                        <span class="deeplink-btn-title">直接開啟 ChatGPT App</span>
-                        <span class="deeplink-btn-desc">強制呼叫手機 App（已自動複製提示詞）</span>
+                        <span class="deeplink-btn-title">開啟 ChatGPT App</span>
+                        <span class="deeplink-btn-desc">喚醒手機 App（已自動複製提示詞）</span>
                     </div>
                 </button>
                 <button type="button" class="deeplink-btn gemini-btn" id="open-gemini-btn">
                     <span class="deeplink-btn-icon">✨</span>
                     <div class="deeplink-btn-text">
-                        <span class="deeplink-btn-title">直接開啟 Gemini App</span>
-                        <span class="deeplink-btn-desc">呼叫 Gemini App / 服務開始語音對話</span>
+                        <span class="deeplink-btn-title">開啟 Google Gemini</span>
+                        <span class="deeplink-btn-desc">前往 Gemini 貼上提示詞開始語音</span>
                     </div>
                 </button>
             </div>
@@ -1921,8 +1921,7 @@
                             try { await navigator.clipboard.writeText(text); } catch (e) {}
                         }
                         this.showToast('🚀 正在喚醒 ChatGPT App...');
-                        const webUrl = `https://chatgpt.com/?q=${encodeURIComponent(text)}`;
-                        this.launchApp('chatgpt://', webUrl);
+                        this.openChatGpt(text);
                     });
                 }
 
@@ -1933,13 +1932,7 @@
                             try { await navigator.clipboard.writeText(text); } catch (e) {}
                         }
                         this.showToast('🚀 正在開啟 Gemini...');
-                        const isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-                        const isAndroid = /Android/i.test(navigator.userAgent);
-                        let scheme = 'googleapp://';
-                        if (isAndroid) {
-                            scheme = 'intent://gemini.google.com/app#Intent;scheme=https;package=com.google.android.apps.bard;end';
-                        }
-                        this.launchApp(scheme, 'https://gemini.google.com/app');
+                        this.openGemini(text);
                     });
                 }
 
@@ -2290,24 +2283,30 @@
             }
 
             /**
-             * 優先使用自訂 URL Scheme 強制喚醒手機原生 App，未安裝時優雅降級至 Web 版
+             * 安全喚醒 ChatGPT App，避免背景跳轉導致返回時頁面被覆蓋
              */
-            launchApp(schemeUrl, webUrl) {
+            openChatGpt(promptText) {
                 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                if (isMobile && schemeUrl) {
-                    const start = Date.now();
-                    // 強制呼叫手機原生 App Scheme 協定
-                    window.location.href = schemeUrl;
-
-                    // 若 1.4 秒內使用者仍留在瀏覽器（表示未安裝該 App 或系統未攔截），則跳轉網頁版
-                    setTimeout(() => {
-                        if (Date.now() - start < 2000) {
-                            window.location.href = webUrl;
-                        }
-                    }, 1400);
+                if (isMobile) {
+                    // 使用 URL Scheme 喚起 App，絕不替換 window.location.href 為外部網頁
+                    window.location.href = 'chatgpt://';
                 } else {
-                    // 電腦端開啟新分頁
+                    const webUrl = `https://chatgpt.com/?q=${encodeURIComponent(promptText)}`;
                     window.open(webUrl, '_blank', 'noopener,noreferrer');
+                }
+            }
+
+            /**
+             * 安全開啟 Gemini（iOS 開啟新分頁，Android 喚醒 App 或新分頁）
+             */
+            openGemini(promptText) {
+                const isAndroid = /Android/i.test(navigator.userAgent);
+                if (isAndroid) {
+                    // Android 嘗試喚起專屬 Gemini App
+                    window.location.href = 'intent://gemini.google.com/app#Intent;scheme=https;package=com.google.android.apps.bard;end';
+                } else {
+                    // iOS 與桌面端開啟獨立新分頁，保留 WebApp 原分頁
+                    window.open('https://gemini.google.com/app', '_blank', 'noopener,noreferrer');
                 }
             }
 
