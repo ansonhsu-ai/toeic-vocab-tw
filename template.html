@@ -489,31 +489,96 @@
             color: var(--text-secondary);
         }
 
-        /* 提示詞預覽與分享彈窗樣式 */
+        /* 提示詞預覽與 Deep Link 彈窗樣式 */
+        .deeplink-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            margin: 0.85rem 0;
+        }
+
+        .deeplink-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+        }
+
+        .deeplink-btn-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .deeplink-btn-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .deeplink-btn-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .deeplink-btn-desc {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .chatgpt-btn {
+            background: linear-gradient(135deg, #10a37f 0%, #0d8a6c 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(16, 163, 127, 0.22);
+        }
+
+        .chatgpt-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 163, 127, 0.32);
+        }
+
+        .gemini-btn {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.22);
+        }
+
+        .gemini-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.32);
+        }
+
+        .auxiliary-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 0.85rem;
+        }
+
         .prompt-preview-box {
             background: var(--bg-main);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 0.85rem;
-            font-size: 0.82rem;
-            line-height: 1.5;
+            padding: 0.75rem;
+            font-size: 0.8rem;
+            line-height: 1.45;
             color: var(--text-secondary);
             white-space: pre-wrap;
-            max-height: 200px;
+            max-height: 150px;
             overflow-y: auto;
             font-family: inherit;
-            margin-bottom: 1rem;
             user-select: all;
         }
 
-        .modal-actions-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr;
-            gap: 0.5rem;
-        }
-
         @media (max-width: 500px) {
-            .modal-actions-grid {
+            .auxiliary-actions {
                 grid-template-columns: 1fr;
             }
         }
@@ -1037,19 +1102,39 @@
     <div class="modal-backdrop" id="dialogue-modal">
         <div class="modal-box">
             <div class="modal-header">
-                <h3 class="modal-title">🗣️ AI 語音對話提示詞</h3>
+                <h3 class="modal-title">🗣️ AI 語音口說助手</h3>
                 <button class="modal-close" id="dialogue-close-btn">&times;</button>
             </div>
-            <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.65rem;">
-                已為您生成專屬口說提示詞，可直接開啟 ChatGPT 或 Gemini 進行實時語音對話練習：
+            <p style="font-size: 0.83rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                已為六年級量身生成專屬 Prompt（已自動複製至剪貼簿）：
             </p>
+
+            <!-- 一鍵直達 Deep Links -->
+            <div class="deeplink-list">
+                <a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" class="deeplink-btn chatgpt-btn" id="open-chatgpt-btn">
+                    <span class="deeplink-btn-icon">🤖</span>
+                    <div class="deeplink-btn-text">
+                        <span class="deeplink-btn-title">直接開啟 ChatGPT App</span>
+                        <span class="deeplink-btn-desc">喚醒 App 並自動帶入六年級對話題目</span>
+                    </div>
+                </a>
+                <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="deeplink-btn gemini-btn" id="open-gemini-btn">
+                    <span class="deeplink-btn-icon">✨</span>
+                    <div class="deeplink-btn-text">
+                        <span class="deeplink-btn-title">直接開啟 Gemini App</span>
+                        <span class="deeplink-btn-desc">跳轉開啟 Gemini 貼上提示詞開始語音</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 輔助操作按鈕 -->
+            <div class="auxiliary-actions">
+                <button class="secondary-btn" id="copy-prompt-btn">📋 複製提示詞</button>
+                <button class="secondary-btn" id="system-share-btn">📤 系統分享選單</button>
+            </div>
+
             <div class="prompt-preview-box" id="prompt-preview-text">
                 <!-- 動態注入 Prompt -->
-            </div>
-            <div class="modal-actions-grid">
-                <button class="primary-btn" id="copy-prompt-btn">📋 複製提示詞</button>
-                <a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" class="secondary-btn" id="open-chatgpt-btn">🤖 ChatGPT</a>
-                <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" class="secondary-btn" id="open-gemini-btn">✨ Gemini</a>
             </div>
         </div>
     </div>
@@ -1648,6 +1733,9 @@
                     dialogueCloseBtn: document.getElementById('dialogue-close-btn'),
                     promptPreviewText: document.getElementById('prompt-preview-text'),
                     copyPromptBtn: document.getElementById('copy-prompt-btn'),
+                    openChatgptBtn: document.getElementById('open-chatgpt-btn'),
+                    openGeminiBtn: document.getElementById('open-gemini-btn'),
+                    systemShareBtn: document.getElementById('system-share-btn'),
                     btnAgain: document.getElementById('btn-again'),
                     btnHard: document.getElementById('btn-hard'),
                     btnKnown: document.getElementById('btn-known'),
@@ -1838,6 +1926,24 @@
                             } catch (err) {
                                 this.showToast('複製失敗，請手動全選複製');
                             }
+                        }
+                    });
+                }
+
+                if (this.dom.systemShareBtn) {
+                    this.dom.systemShareBtn.addEventListener('click', async () => {
+                        const text = this.dom.promptPreviewText ? this.dom.promptPreviewText.textContent : '';
+                        if (navigator.share && text) {
+                            try {
+                                await navigator.share({
+                                    title: 'TOEIC 英文語音口說練習',
+                                    text: text
+                                });
+                            } catch (e) {
+                                // 使用者取消或不支援
+                            }
+                        } else {
+                            this.showToast('提示詞已在剪貼簿，可直接至 App 貼上');
                         }
                     });
                 }
@@ -2128,7 +2234,7 @@
             }
 
             /**
-             * 處理 AI 語音對話觸發：生成提示詞、複製剪貼簿、調用原生分享或彈出 Modal
+             * 處理 AI 語音對話觸發：生成提示詞、自動複製剪貼簿、設定 Deep Link 並顯示一鍵直達對話助手
              */
             async handleAiDialogue() {
                 const card = this.srs.getCurrentCard();
@@ -2149,30 +2255,27 @@
                     console.warn('Clipboard write error', e);
                 }
 
-                // 2. 若在手機端且支援原生分享 (Web Share API)，直接呼叫原生分享選單
-                const isMobile = /mobile|android|iphone|ipad|tablet/i.test(navigator.userAgent);
-                if (isMobile && navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: `TOEIC 口說對話練習：${card.word}`,
-                            text: promptText
-                        });
-                        this.showToast('已開啟分享選單 🎙️');
-                        return;
-                    } catch (e) {
-                        // 使用者取消或不支援，降級至 Modal
-                    }
-                }
-
-                // 3. 桌面端或原生分享結束後顯示對話提示詞彈窗
+                // 2. 開啟對話助手彈窗（包含 ChatGPT Deep Link 與 Gemini 捷徑）
                 this.openDialogueModal(promptText);
-                this.showToast('已複製對話提示詞！可打開 ChatGPT / Gemini 🎙️');
+                this.showToast('✅ 已複製提示詞！點擊按鈕直接開啟 App 🎙️');
             }
 
             openDialogueModal(promptText) {
                 if (this.dom.promptPreviewText) {
                     this.dom.promptPreviewText.textContent = promptText;
                 }
+
+                // 設定 ChatGPT Deep Link (帶入 Prompt 參數)
+                if (this.dom.openChatgptBtn) {
+                    const encoded = encodeURIComponent(promptText);
+                    this.dom.openChatgptBtn.href = `https://chatgpt.com/?hints=search&q=${encoded}`;
+                }
+
+                // 設定 Gemini 連結
+                if (this.dom.openGeminiBtn) {
+                    this.dom.openGeminiBtn.href = 'https://gemini.google.com/app';
+                }
+
                 if (this.dom.dialogueModal) {
                     this.dom.dialogueModal.classList.add('active');
                 }
