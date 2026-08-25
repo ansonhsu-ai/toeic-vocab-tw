@@ -8,6 +8,9 @@
     <meta name="apple-mobile-web-app-title" content="TOEIC單字卡">
     <meta name="theme-color" content="#2563eb">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>SRS 單字學習 Flash Card</title>
     <!-- 現代字體支援 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -933,25 +936,63 @@
             border-radius: var(--radius-lg);
         }
 
-        /* 手機自適應 */
+        /* iPad / 平板大螢幕專屬大字增強 */
+        @media (min-width: 768px) {
+            html {
+                font-size: 18px;
+            }
+            .app-container {
+                max-width: 720px;
+                max-height: 96vh;
+            }
+            .front-word {
+                font-size: 5.6rem;
+            }
+            .section-header-line {
+                font-size: 2.1rem;
+            }
+            .example-en {
+                font-size: 2.0rem;
+            }
+            .section-text, .example-zh {
+                font-size: 1.68rem;
+            }
+            .btn-title {
+                font-size: 1.75rem;
+            }
+            .btn-sub {
+                font-size: 1.35rem;
+            }
+        }
+
+        /* 手機直立小螢幕：依然保持大字清晰 */
         @media (max-width: 600px) {
             body {
                 padding: 0.5rem;
             }
             .front-word {
-                font-size: 2.4rem;
+                font-size: 4.2rem;
             }
             .srs-btn {
-                padding: 0.55rem 0.15rem;
+                padding: 0.85rem 0.25rem;
             }
             .btn-title {
-                font-size: 0.82rem;
+                font-size: 1.45rem;
             }
             .btn-sub {
-                font-size: 0.68rem;
+                font-size: 1.15rem;
+            }
+            .btn-key {
+                font-size: 0.95rem;
             }
             .card-back {
-                padding: 1rem;
+                padding: 1.2rem 1.1rem;
+            }
+            .example-en {
+                font-size: 1.55rem;
+            }
+            .section-text, .example-zh {
+                font-size: 1.4rem;
             }
         }
     </style>
@@ -980,6 +1021,9 @@
                 </button>
                 <button class="icon-btn" id="theme-btn" title="切換深色/淺色主題">
                     <svg id="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+                <button class="icon-btn" id="reload-app-btn" title="強制刷新 / 獲取最新版本">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
                 </button>
                 <button class="icon-btn" id="help-btn" title="快速鍵與使用說明">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -1735,6 +1779,7 @@
                     uploadBtn: document.getElementById('upload-btn'),
                     csvFileInput: document.getElementById('csv-file-input'),
                     themeBtn: document.getElementById('theme-btn'),
+                    reloadAppBtn: document.getElementById('reload-app-btn'),
                     helpBtn: document.getElementById('help-btn'),
                     helpModal: document.getElementById('help-modal'),
                     modalCloseBtn: document.getElementById('modal-close-btn'),
@@ -1990,6 +2035,15 @@
                         this.theme = this.theme === 'light' ? 'dark' : 'light';
                         this.applyTheme(this.theme);
                         this.persistState();
+                    });
+                }
+
+                if (this.dom.reloadAppBtn) {
+                    this.dom.reloadAppBtn.addEventListener('click', () => {
+                        this.showToast('🔄 正在重新載入最新版本...');
+                        setTimeout(() => {
+                            window.location.reload(true);
+                        }, 250);
                     });
                 }
 
