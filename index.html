@@ -93,14 +93,14 @@
         /* 主容器：固定視窗高度，防止任何塌陷 */
         .app-container {
             width: 100%;
-            max-width: 540px;
+            max-width: 640px;
             height: 100%;
-            max-height: 860px;
-            min-height: 540px;
+            max-height: 940px;
+            min-height: 580px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 0.75rem;
+            gap: 0.85rem;
         }
 
         /* 頂部導航列 */
@@ -108,17 +108,17 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.25rem 0.2rem;
+            padding: 0.35rem 0.2rem;
             flex-shrink: 0;
         }
 
         .brand-title {
-            font-size: 1.25rem;
+            font-size: 1.85rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             display: flex;
             align-items: center;
-            gap: 0.45rem;
+            gap: 0.55rem;
             color: var(--text-primary);
         }
 
@@ -126,10 +126,10 @@
         .streak-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
-            font-size: 0.92rem;
+            gap: 0.4rem;
+            font-size: 1.35rem;
             font-weight: 700;
-            padding: 0.25rem 0.65rem;
+            padding: 0.35rem 0.85rem;
             border-radius: 9999px;
             background: var(--streak-bg);
             color: var(--streak-color);
@@ -145,15 +145,15 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.55rem;
         }
 
         .icon-btn {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             color: var(--text-secondary);
-            width: 38px;
-            height: 38px;
+            width: 48px;
+            height: 48px;
             border-radius: var(--radius-md);
             display: inline-flex;
             align-items: center;
@@ -162,7 +162,7 @@
             transition: var(--transition);
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
             user-select: none;
-            font-size: 1.05rem;
+            font-size: 1.45rem;
         }
 
         .icon-btn:hover {
@@ -189,7 +189,7 @@
         .progress-section {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.55rem;
             flex-shrink: 0;
         }
 
@@ -197,7 +197,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.95rem;
+            font-size: 1.4rem;
             font-weight: 600;
             color: var(--text-muted);
         }
@@ -205,14 +205,14 @@
         .session-tag {
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.45rem;
             font-weight: 700;
             color: var(--text-secondary);
         }
 
         .progress-track {
             width: 100%;
-            height: 6px;
+            height: 8px;
             background-color: var(--border-color);
             border-radius: 9999px;
             overflow: hidden;
@@ -231,7 +231,7 @@
             perspective: 1200px;
             width: 100%;
             flex: 1 1 auto;
-            min-height: 380px;
+            min-height: 420px;
             position: relative;
             display: flex;
         }
@@ -271,7 +271,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem;
+            padding: 1.6rem;
             text-align: center;
         }
 
@@ -283,7 +283,7 @@
         }
 
         .card-index-badge {
-            font-size: 0.9rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
@@ -293,13 +293,13 @@
             background: rgba(37, 99, 235, 0.08);
             border: 1px solid rgba(37, 99, 235, 0.2);
             color: var(--primary);
-            padding: 0.4rem 0.85rem;
+            padding: 0.55rem 1.15rem;
             border-radius: 9999px;
-            font-size: 0.95rem;
+            font-size: 1.35rem;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.55rem;
             cursor: pointer;
             transition: var(--transition);
         }
@@ -316,34 +316,35 @@
             justify-content: center;
             flex: 1;
             margin: auto 0;
-            padding: 1rem 0;
+            padding: 1.2rem 0;
         }
 
         .front-word {
-            font-size: 3.4rem;
+            font-size: 5.0rem;
             font-weight: 800;
             letter-spacing: -0.03em;
             color: var(--text-primary);
-            line-height: 1.18;
+            line-height: 1.15;
             word-break: break-word;
         }
 
         .front-hint {
-            font-size: 1rem;
+            font-size: 1.45rem;
             color: var(--text-muted);
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.55rem;
+            margin-top: 0.5rem;
         }
 
         .key-badge {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.82rem;
-            padding: 0.15rem 0.45rem;
+            font-size: 1.18rem;
+            padding: 0.2rem 0.6rem;
             background: var(--border-color);
             color: var(--text-secondary);
-            border-radius: 5px;
+            border-radius: 6px;
             font-weight: 700;
         }
 
@@ -353,8 +354,8 @@
             background: var(--bg-card-back);
             display: flex;
             flex-direction: column;
-            padding: 1.25rem 1.4rem;
-            gap: 0.75rem;
+            padding: 1.4rem 1.6rem;
+            gap: 0.85rem;
         }
 
         .back-header {
@@ -362,12 +363,12 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.65rem;
             flex-shrink: 0;
         }
 
         .back-title {
-            font-size: 1.42rem;
+            font-size: 2.1rem;
             font-weight: 800;
             color: var(--text-primary);
         }
@@ -375,8 +376,8 @@
         /* 示意圖片縮圖（完整呈現不裁切） */
         .card-image-wrap {
             width: 100%;
-            height: 175px;
-            max-height: 190px;
+            height: 185px;
+            max-height: 200px;
             border-radius: var(--radius-md);
             overflow: hidden;
             background: #0f172a;
@@ -402,7 +403,7 @@
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            font-size: 0.95rem;
+            font-size: 1.35rem;
             font-weight: 600;
             background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
         }
@@ -411,45 +412,45 @@
         .back-content {
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
-            font-size: 1.05rem;
-            line-height: 1.6;
+            gap: 0.85rem;
+            font-size: 1.55rem;
+            line-height: 1.65;
             color: var(--text-primary);
         }
 
         .section-header-line {
-            font-size: 1.25rem;
+            font-size: 1.85rem;
             font-weight: 800;
             color: var(--text-primary);
         }
 
         .section-tag {
-            font-size: 1.02rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: var(--primary);
             display: block;
-            margin-top: 0.15rem;
+            margin-top: 0.25rem;
         }
 
         .example-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 0.35rem;
-            margin-bottom: 0.2rem;
+            margin-top: 0.45rem;
+            margin-bottom: 0.25rem;
         }
 
         .dialogue-btn {
             background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.12));
             border: 1px solid rgba(124, 58, 237, 0.3);
             color: #7c3aed;
-            padding: 0.3rem 0.75rem;
+            padding: 0.45rem 1.05rem;
             border-radius: 9999px;
-            font-size: 0.88rem;
+            font-size: 1.28rem;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.5rem;
             cursor: pointer;
             transition: var(--transition);
             box-shadow: 0 1px 2px rgba(124, 58, 237, 0.06);
@@ -469,31 +470,31 @@
             color: var(--text-secondary);
             white-space: pre-wrap;
             word-break: break-word;
-            font-size: 1.05rem;
-            line-height: 1.6;
+            font-size: 1.55rem;
+            line-height: 1.65;
         }
 
         .example-block {
             background: rgba(37, 99, 235, 0.05);
-            border-left: 3.5px solid var(--primary);
-            padding: 0.65rem 0.85rem;
-            border-radius: 0 8px 8px 0;
-            font-size: 1.05rem;
-            line-height: 1.6;
+            border-left: 4px solid var(--primary);
+            padding: 0.85rem 1.15rem;
+            border-radius: 0 10px 10px 0;
+            font-size: 1.55rem;
+            line-height: 1.65;
         }
 
         .example-en {
             font-weight: 700;
-            font-size: 1.15rem;
+            font-size: 1.75rem;
             color: var(--text-primary);
             display: block;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.35rem;
             line-height: 1.55;
         }
 
         .example-zh {
             color: var(--text-secondary);
-            font-size: 1.02rem;
+            font-size: 1.52rem;
             line-height: 1.55;
         }
 
@@ -501,15 +502,15 @@
         .deeplink-list {
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
-            margin: 0.85rem 0;
+            gap: 0.85rem;
+            margin: 1rem 0;
         }
 
         .deeplink-btn {
             display: flex;
             align-items: center;
-            gap: 0.85rem;
-            padding: 0.85rem 1.1rem;
+            gap: 1.05rem;
+            padding: 1.05rem 1.35rem;
             border-radius: var(--radius-md);
             text-decoration: none;
             transition: var(--transition);
@@ -520,7 +521,7 @@
         }
 
         .deeplink-btn-icon {
-            font-size: 1.65rem;
+            font-size: 2.2rem;
             flex-shrink: 0;
             line-height: 1;
         }
@@ -528,16 +529,16 @@
         .deeplink-btn-text {
             display: flex;
             flex-direction: column;
-            gap: 0.15rem;
+            gap: 0.25rem;
         }
 
         .deeplink-btn-title {
-            font-size: 1.08rem;
+            font-size: 1.6rem;
             font-weight: 800;
         }
 
         .deeplink-btn-desc {
-            font-size: 0.85rem;
+            font-size: 1.22rem;
             opacity: 0.9;
         }
 
@@ -566,20 +567,20 @@
         .auxiliary-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-bottom: 0.85rem;
+            gap: 0.65rem;
+            margin-bottom: 1rem;
         }
 
         .prompt-preview-box {
             background: var(--bg-main);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 0.85rem;
-            font-size: 0.92rem;
-            line-height: 1.55;
+            padding: 1rem;
+            font-size: 1.35rem;
+            line-height: 1.6;
             color: var(--text-secondary);
             white-space: pre-wrap;
-            max-height: 160px;
+            max-height: 190px;
             overflow-y: auto;
             font-family: inherit;
             user-select: all;
@@ -595,7 +596,7 @@
         .controls-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.5rem;
+            gap: 0.65rem;
             width: 100%;
             flex-shrink: 0;
         }
@@ -605,7 +606,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 0.3rem;
+            padding: 0.95rem 0.4rem;
             border-radius: var(--radius-md);
             border: 1px solid transparent;
             cursor: pointer;
@@ -623,22 +624,22 @@
         }
 
         .btn-title {
-            font-size: 1.08rem;
+            font-size: 1.6rem;
             font-weight: 800;
         }
 
         .btn-sub {
-            font-size: 0.84rem;
+            font-size: 1.25rem;
             font-weight: 600;
             opacity: 0.9;
-            margin-top: 0.08rem;
+            margin-top: 0.12rem;
         }
 
         .btn-key {
-            font-size: 0.76rem;
+            font-size: 1.08rem;
             font-family: 'JetBrains Mono', monospace;
             opacity: 0.65;
-            margin-top: 0.2rem;
+            margin-top: 0.25rem;
         }
 
         .btn-again {
@@ -752,9 +753,9 @@
 
         .primary-btn, .secondary-btn {
             flex: 1;
-            padding: 0.7rem 0.8rem;
+            padding: 0.9rem 1.1rem;
             border-radius: var(--radius-md);
-            font-size: 0.88rem;
+            font-size: 1.35rem;
             font-weight: 700;
             cursor: pointer;
             transition: var(--transition);
@@ -789,14 +790,14 @@
         /* Toast 提示 */
         .toast {
             position: fixed;
-            bottom: 2rem;
+            bottom: 2.5rem;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: #0f172a;
             color: #ffffff;
-            padding: 0.65rem 1.2rem;
+            padding: 0.85rem 1.6rem;
             border-radius: 9999px;
-            font-size: 0.85rem;
+            font-size: 1.25rem;
             font-weight: 600;
             box-shadow: 0 10px 25px rgba(0,0,0,0.25);
             z-index: 999;
@@ -831,8 +832,8 @@
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            max-width: 420px;
+            padding: 1.8rem;
+            max-width: 540px;
             width: 100%;
             box-shadow: var(--card-shadow);
             max-height: 85vh;
@@ -847,14 +848,14 @@
         }
 
         .modal-title {
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.85rem;
+            font-weight: 800;
         }
 
         .modal-close {
             background: transparent;
             border: none;
-            font-size: 1.2rem;
+            font-size: 1.85rem;
             cursor: pointer;
             color: var(--text-secondary);
         }
@@ -2311,13 +2312,17 @@
             }
 
             /**
-             * 安全開啟 Gemini（手機端使用 gemini:// 協議喚醒 App，桌面端開啟新分頁）
+             * 安全開啟 Gemini（支援 iOS/iPadOS 官方 googlegemini://、Android Intent 及桌面新分頁）
              */
             openGemini(promptText) {
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                if (isMobile) {
-                    // 使用官方自訂協議 gemini:// 喚起手機上的 Google Gemini App
-                    window.location.href = 'gemini://';
+                const isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                const isAndroid = /Android/i.test(navigator.userAgent);
+                if (isIos) {
+                    // iOS / iPadOS 官方 App Scheme 喚起獨立 App
+                    window.location.href = 'googlegemini://';
+                } else if (isAndroid) {
+                    // Android 官方 App Intent 喚起獨立 App
+                    window.location.href = 'intent://gemini.google.com/app#Intent;scheme=https;package=com.google.android.apps.bard;end';
                 } else {
                     // 桌面端開啟獨立新分頁，保留 WebApp 原分頁
                     window.open('https://gemini.google.com/app', '_blank', 'noopener,noreferrer');
