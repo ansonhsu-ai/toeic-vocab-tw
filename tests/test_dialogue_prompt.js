@@ -90,4 +90,14 @@ console.log('=== 開始執行 AI 語音對話提示詞單元測試 ===');
     console.log('✓ 測試 3 通過：空值防呆驗證正常');
 }
 
+// 測試 4: iOS 捷徑 URL 生成與編碼
+{
+    const shortcutName = 'TOEIC口說';
+    const encodedName = encodeURIComponent(shortcutName);
+    const shortcutsUrl = `shortcuts://run-shortcut?name=${encodedName}&input=clipboard`;
+
+    assert.strictEqual(shortcutsUrl, 'shortcuts://run-shortcut?name=TOEIC%E5%8F%A3%E8%AA%AA&input=clipboard', 'iOS 捷徑 URL 格式與編碼需完全正確');
+    console.log('✓ 測試 4 通過：iOS 捷徑 URL 生成與編碼正確');
+}
+
 console.log('=== AI 語音對話提示詞所有單元測試全數通過！ ===');

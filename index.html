@@ -545,6 +545,18 @@
             opacity: 0.9;
         }
 
+        .shortcuts-btn {
+            background: linear-gradient(135deg, #f97316 0%, #d946ef 50%, #8b5cf6 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(217, 70, 239, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .shortcuts-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(217, 70, 239, 0.45);
+        }
+
         .chatgpt-btn {
             background: linear-gradient(135deg, #10a37f 0%, #0d8a6c 100%);
             color: #ffffff;
@@ -1165,6 +1177,14 @@
 
             <!-- 一鍵直達 Deep Links -->
             <div class="deeplink-list">
+                <!-- ⚡ iOS / iPadOS 專屬捷徑直達 -->
+                <button type="button" class="deeplink-btn shortcuts-btn" id="open-shortcuts-btn">
+                    <span class="deeplink-btn-icon">⚡</span>
+                    <div class="deeplink-btn-text">
+                        <span class="deeplink-btn-title">執行「TOEIC口說」iOS 捷徑</span>
+                        <span class="deeplink-btn-desc">自動帶入提示詞並直接啟動 ChatGPT 實時語音</span>
+                    </div>
+                </button>
                 <button type="button" class="deeplink-btn chatgpt-btn" id="open-chatgpt-btn">
                     <span class="deeplink-btn-icon">🤖</span>
                     <div class="deeplink-btn-text">
@@ -1793,6 +1813,7 @@
                     dialogueCloseBtn: document.getElementById('dialogue-close-btn'),
                     promptPreviewText: document.getElementById('prompt-preview-text'),
                     copyPromptBtn: document.getElementById('copy-prompt-btn'),
+                    openShortcutsBtn: document.getElementById('open-shortcuts-btn'),
                     openChatgptBtn: document.getElementById('open-chatgpt-btn'),
                     openGeminiBtn: document.getElementById('open-gemini-btn'),
                     systemShareBtn: document.getElementById('system-share-btn'),
@@ -1971,6 +1992,17 @@
                         if (e.target === this.dom.dialogueModal) {
                             this.dom.dialogueModal.classList.remove('active');
                         }
+                    });
+                }
+
+                if (this.dom.openShortcutsBtn) {
+                    this.dom.openShortcutsBtn.addEventListener('click', async () => {
+                        const text = this.dom.promptPreviewText ? this.dom.promptPreviewText.textContent : '';
+                        if (text && navigator.clipboard && navigator.clipboard.writeText) {
+                            try { await navigator.clipboard.writeText(text); } catch (e) {}
+                        }
+                        this.showToast('⚡ 正在啟動「TOEIC口說」捷徑...');
+                        this.openShortcuts('TOEIC口說', text);
                     });
                 }
 
@@ -2349,6 +2381,15 @@
                 // 2. 開啟對話助手彈窗（包含 ChatGPT Deep Link 與 Gemini 捷徑）
                 this.openDialogueModal(promptText);
                 this.showToast('✅ 已複製提示詞！點擊按鈕直接開啟 App 🎙️');
+            }
+
+            /**
+             * 喚起 iOS/iPadOS 原生「捷徑」App，自動執行「TOEIC口說」捷徑進行實時語音對話
+             */
+            openShortcuts(shortcutName = 'TOEIC口說', promptText = '') {
+                const encodedName = encodeURIComponent(shortcutName);
+                const shortcutsUrl = `shortcuts://run-shortcut?name=${encodedName}&input=clipboard`;
+                window.location.href = shortcutsUrl;
             }
 
             /**
